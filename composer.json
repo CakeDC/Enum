@@ -1,0 +1,40 @@
+{
+    "name": "cakedc/enum",
+    "description": "{{@TODO description}}",
+    "type": "cakephp-plugin",
+    "keywords": [
+        "cakephp",
+        "cakedc",
+        "enum"
+    ],
+    "homepage": "https://github.com/cakedc/enum",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jad Bitar",
+            "homepage": "http://jadb.io",
+            "role": "Author"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/cakedc/enum/issues",
+        "source": "https://github.com/cakedc/enum"
+    },
+    "require": {
+    },
+    "require-dev": {
+        "cakephp/cakephp": "~3.0",
+        "cakephp/cakephp-codesniffer": "2.*",
+        "phpunit/phpunit": "4.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Enum\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Enum\\Test\\": "tests"
+        }
+    }
+}
