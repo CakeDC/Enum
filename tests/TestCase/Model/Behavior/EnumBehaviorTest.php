@@ -15,7 +15,12 @@ class EnumBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $this->Articles = TableRegistry::get('Enum.Articles');
+        $this->Articles = TableRegistry::get('Enum.Articles', ['table' => 'enum_articles']);
+        $this->Articles->addBehavior('Enum.Enum', ['groups' => [
+            'priority',
+            'status',
+            'category',
+        ]]);
     }
 
     public function tearDown()
@@ -28,7 +33,7 @@ class EnumBehaviorTest extends TestCase
     {
         $expected = [
             'strategy' => 'lookup',
-            'table' => 'Enum.Lookups',
+            'implementedMethods' => ['enum' => 'enum'],
             'groups' => [
                 'priority' => [
                     'prefix' => 'PRIORITY',
@@ -71,9 +76,48 @@ class EnumBehaviorTest extends TestCase
      */
     public function testBasicConfiguration(array $config, array $expected)
     {
-        $this->Articles->addBehavior('Enum.Enum', $config);
+        TableRegistry::clear();
+        $Articles = TableRegistry::get('Enum.Articles', ['table' => 'enum_articles']);
+        $Articles->addBehavior('Enum.Enum', $config);
+        $result = $Articles->behaviors()->Enum->config();
+        $this->assertEquals($expected, $result);
+    }
 
-        $result = $this->Articles->behaviors()->Enum->config();
+    public function provideBasicLookups()
+    {
+        return [
+            [
+                'priority',
+                [
+                    'PRIORITY_URGENT' => 'Urgent',
+                    'PRIORITY_HIGH' => 'High',
+                    'PRIORITY_NORMAL' => 'Normal',
+                ]
+            ],
+            [
+                'status',
+                [
+                    'ARTICLE_STATUS_PUBLIC' => 'Published',
+                    'ARTICLE_STATUS_DRAFT' => 'Drafted',
+                    'ARTICLE_STATUS_ARCHIVE' => 'Archived',
+                ]
+            ],
+            [
+                'category',
+                [
+                    'ARTICLE_CATEGORY_CAKEPHP' => 'CakePHP',
+                    'ARTICLE_CATEGORY_OSS' => 'Open Source Software',
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideBasicLookups
+     */
+    public function testBasicLookups($group, $expected)
+    {
+        $result = $this->Articles->enum($group);
         $this->assertEquals($expected, $result);
     }
 }

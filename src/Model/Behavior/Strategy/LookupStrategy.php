@@ -8,6 +8,10 @@ use Cake\Utility\Inflector;
 
 class LookupStrategy extends AbstractStrategy
 {
+
+    /**
+     * @inheritdoc
+     */
     protected $_defaultConfig = [
         'table' => 'Enum.Lookups',
     ];
@@ -23,11 +27,17 @@ class LookupStrategy extends AbstractStrategy
         return $this->_lookups;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function hasPrefix($prefix)
     {
         return in_array(strtoupper($prefix), $this->listPrefixes());
     }
 
+    /**
+     * @inheritdoc
+     */
     public function listPrefixes()
     {
         if (empty($this->_prefixes)) {
@@ -37,5 +47,28 @@ class LookupStrategy extends AbstractStrategy
         }
 
         return $this->_prefixes;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function enum(array $config)
+    {
+        $query = $this->_lookups()
+            ->find('list', [
+                'keyField' => 'group',
+                'valueField' => 'label',
+            ])
+            ->where([
+                'prefix' => $config['prefix'],
+            ]);
+
+        foreach ($config as $method => $args) {
+            if (method_exists($query, $method)) {
+                $query = call_user_func_array([$query, $method], $args);
+            }
+        }
+
+        return $query->toArray();
     }
 }

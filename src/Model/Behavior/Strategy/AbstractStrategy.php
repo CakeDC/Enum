@@ -46,6 +46,12 @@ abstract class AbstractStrategy
     abstract public function listPrefixes();
 
     /**
+     * @param array $config
+     * @return array
+     */
+    abstract public function enum(array $config);
+
+    /**
      * @param array $config Configuration.
      * @return array
      * @throws \RuntimeException if group's prefix is not defined.

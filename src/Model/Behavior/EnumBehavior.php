@@ -5,11 +5,23 @@ use Cake\ORM\Behavior;
 
 class EnumBehavior extends Behavior
 {
+    /**
+     * Default configuration.
+     *
+     * @var array
+     */
     protected $_defaultConfig = [
         'strategy' => 'lookup',
-        'table' => 'Enum.Lookups',
+        'implementedMethods' => [
+            'enum' => 'enum',
+        ]
     ];
 
+    /**
+     * Class map.
+     *
+     * @var array
+     */
     protected $_classMap = [
         'lookup' => 'Enum\Model\Behavior\Strategy\LookupStrategy',
         'const' => 'Enum\Model\Behavior\Strategy\ConstStrategy',
@@ -57,5 +69,19 @@ class EnumBehavior extends Behavior
     {
         $config = $this->strategy()->normalizeConfig($this->config());
         $this->config($config, null, false);
+    }
+
+    /**
+     * @param string $group Defined group name.
+     * @return array
+     */
+    public function enum($group)
+    {
+        $config = $this->config('groups.' . $group);
+        if (empty($config)) {
+            throw new RuntimeException();
+        }
+
+        return $this->strategy()->enum($config);
     }
 }
