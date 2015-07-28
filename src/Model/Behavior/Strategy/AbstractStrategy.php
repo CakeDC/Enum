@@ -28,9 +28,9 @@ abstract class AbstractStrategy
      * @param array $config Configuration.
      * @param \Cake\ORM\Table $table Target table.
      */
-    public function __construct(array $config, Table $table)
+    public function __construct($alias, Table $table)
     {
-        $this->config($config);
+        $this->_alias = $alias;
         $this->_table = $table;
     }
 
@@ -57,7 +57,7 @@ abstract class AbstractStrategy
      * @return array
      * @throws \RuntimeException if group's prefix is not defined.
      */
-    public function normalizeGroupConfig($group, $config)
+    public function initialize($config)
     {
         if (is_string($config)) {
             $config = ['prefix' => strtoupper($config)];
@@ -65,12 +65,12 @@ abstract class AbstractStrategy
 
         if (empty($config['prefix'])) {
             $prefix = Inflector::underscore(Inflector::singularize($this->_table->alias()));
-            $prefix .= '_' . $group;
+            $prefix .= '_' . $this->_alias;
             if (!$this->hasPrefix($prefix)) {
-                if (!$this->hasPrefix($group)) {
-                    throw new RuntimeException(sprintf('Undefined prefix for group (%s)', $group));
+                if (!$this->hasPrefix($this->_alias)) {
+                    throw new RuntimeException(sprintf('Undefined prefix for provider (%s)', $this->_alias));
                 }
-                $prefix = $group;
+                $prefix = $this->_alias;
             }
             $config += ['prefix' => strtoupper($prefix)];
         }

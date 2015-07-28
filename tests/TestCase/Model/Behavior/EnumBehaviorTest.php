@@ -16,7 +16,7 @@ class EnumBehaviorTest extends TestCase
         parent::setUp();
 
         $this->Articles = TableRegistry::get('Enum.Articles', ['table' => 'enum_articles']);
-        $this->Articles->addBehavior('Enum.Enum', ['groups' => [
+        $this->Articles->addBehavior('Enum.Enum', ['providers' => [
             'priority',
             'status',
             'category',
@@ -34,7 +34,7 @@ class EnumBehaviorTest extends TestCase
         $expected = [
             'defaultStrategy' => 'lookup',
             'implementedMethods' => ['enum' => 'enum'],
-            'groups' => [
+            'providers' => [
                 'priority' => [
                     'strategy' => 'lookup',
                     'prefix' => 'PRIORITY',
@@ -53,7 +53,7 @@ class EnumBehaviorTest extends TestCase
         return [
             [
                 [
-                    'groups' => [
+                    'providers' => [
                         'priority',
                         'status',
                         'category',
@@ -63,7 +63,7 @@ class EnumBehaviorTest extends TestCase
             ],
             [
                 [
-                    'groups' => [
+                    'providers' => [
                         'priority',
                         'status' => 'article_status',
                         'category' => 'ARTICLE_CATEGORY',

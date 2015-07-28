@@ -9,9 +9,6 @@ use Cake\Utility\Inflector;
 class LookupStrategy extends AbstractStrategy
 {
 
-    /**
-     * @inheritdoc
-     */
     protected $_defaultConfig = [
         'table' => 'Enum.Lookups',
     ];

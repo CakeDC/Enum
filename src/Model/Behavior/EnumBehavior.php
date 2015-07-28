@@ -16,7 +16,8 @@ class EnumBehavior extends Behavior
         'defaultStrategy' => 'lookup',
         'implementedMethods' => [
             'enum' => 'enum',
-        ]
+        ],
+        'providers' => [],
     ];
 
     /**
@@ -30,7 +31,7 @@ class EnumBehavior extends Behavior
         'enum' => 'Enum\Model\Behavior\Strategy\EnumStrategy',
     ];
 
-    protected $_strategy = [];
+    protected $_strategies = [];
 
     public function initialize(array $config)
     {
@@ -41,13 +42,13 @@ class EnumBehavior extends Behavior
     /**
      * @return \Enum\Model\Behavior\Strategy\AbstractStrategy
      */
-    public function strategy($group, $strategy)
+    public function strategy($alias, $strategy)
     {
-        if (!empty($this->_strategy[$group])) {
-            return $this->_strategy[$group];
+        if (!empty($this->_strategies[$alias])) {
+            return $this->_strategies[$alias];
         }
 
-        $this->_strategy[$group] = $strategy;
+        $this->_strategies[$alias] = $strategy;
         if (!($strategy instanceof AbstractStrategy)) {
             if (isset($this->_classMap[$strategy])) {
                 $strategy = $this->_classMap[$strategy];
@@ -57,23 +58,23 @@ class EnumBehavior extends Behavior
                 throw new RuntimeException();
             }
 
-            $this->_strategy[$group] = new $strategy($this->config(), $this->_table);
+            $this->_strategies[$alias] = new $strategy($alias, $this->_table);
         }
 
-        return $this->_strategy[$group];
+        return $this->_strategies[$alias];
     }
 
     protected function _normalizeConfig()
     {
-        $groups = $this->config('groups');
+        $providers = $this->config('providers');
         $strategy = $this->config('defaultStrategy');
 
-        foreach ($groups as $group => $options) {
-            if (is_numeric($group)) {
-                unset($groups[$group]);
-                $group = $options;
+        foreach ($providers as $alias => $options) {
+            if (is_numeric($alias)) {
+                unset($providers[$alias]);
+                $alias = $options;
                 $options = [];
-                $groups[$group] = $options;
+                $providers[$alias] = $options;
             }
 
             if (is_string($options)) {
@@ -84,11 +85,11 @@ class EnumBehavior extends Behavior
                 $options['strategy'] = $strategy;
             }
 
-           $groups[$group] =  $this->strategy($group, $options['strategy'])
-               ->normalizeGroupConfig($group, $options);
+           $providers[$alias] =  $this->strategy($alias, $options['strategy'])
+               ->initialize($options);
         }
 
-        $this->config('groups', $groups, false);
+        $this->config('providers', $providers, false);
     }
 
     /**
@@ -97,7 +98,7 @@ class EnumBehavior extends Behavior
      */
     public function enum($group)
     {
-        $config = $this->config('groups.' . $group);
+        $config = $this->config('providers.' . $group);
         if (empty($config)) {
             throw new RuntimeException();
         }
