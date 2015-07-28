@@ -2,6 +2,8 @@
 namespace Enum\Model\Behavior;
 
 use Cake\ORM\Behavior;
+use Enum\Model\Behavior\Strategy\AbstractStrategy;
+use RuntimeException;
 
 class EnumBehavior extends Behavior
 {
@@ -11,7 +13,7 @@ class EnumBehavior extends Behavior
      * @var array
      */
     protected $_defaultConfig = [
-        'strategy' => 'lookup',
+        'defaultStrategy' => 'lookup',
         'implementedMethods' => [
             'enum' => 'enum',
         ]
@@ -28,7 +30,7 @@ class EnumBehavior extends Behavior
         'enum' => 'Enum\Model\Behavior\Strategy\EnumStrategy',
     ];
 
-    protected $_strategy;
+    protected $_strategy = [];
 
     public function initialize(array $config)
     {
@@ -39,36 +41,54 @@ class EnumBehavior extends Behavior
     /**
      * @return \Enum\Model\Behavior\Strategy\AbstractStrategy
      */
-    public function strategy()
+    public function strategy($group, $strategy)
     {
-        if (empty($this->_strategy)) {
-            $this->_strategy = $this->_getStrategy($this->config('strategy'));
+        if (!empty($this->_strategy[$group])) {
+            return $this->_strategy[$group];
         }
 
-        return $this->_strategy;
-    }
-
-    /**
-     * @param \Enum\Model\Behavior\Strategy\AbstractStrategy|string $strategy Strategy.
-     * @return \Enum\Model\Behavior\Strategy\AbstractStrategy
-     */
-    protected function _getStrategy($strategy)
-    {
-        $instance = $strategy;
-        if (!($strategy instanceof AbstractEnumStrategy)) {
+        $this->_strategy[$group] = $strategy;
+        if (!($strategy instanceof AbstractStrategy)) {
             if (isset($this->_classMap[$strategy])) {
                 $strategy = $this->_classMap[$strategy];
             }
-            $instance = new $strategy($this->config(), $this->_table);
+
+            if (!class_exists($strategy)) {
+                throw new RuntimeException();
+            }
+
+            $this->_strategy[$group] = new $strategy($this->config(), $this->_table);
         }
 
-        return $instance;
+        return $this->_strategy[$group];
     }
 
     protected function _normalizeConfig()
     {
-        $config = $this->strategy()->normalizeConfig($this->config());
-        $this->config($config, null, false);
+        $groups = $this->config('groups');
+        $strategy = $this->config('defaultStrategy');
+
+        foreach ($groups as $group => $options) {
+            if (is_numeric($group)) {
+                unset($groups[$group]);
+                $group = $options;
+                $options = [];
+                $groups[$group] = $options;
+            }
+
+            if (is_string($options)) {
+                $options = ['prefix' => strtoupper($options)];
+            }
+
+            if (empty($options['strategy'])) {
+                $options['strategy'] = $strategy;
+            }
+
+           $groups[$group] =  $this->strategy($group, $options['strategy'])
+               ->normalizeGroupConfig($group, $options);
+        }
+
+        $this->config('groups', $groups, false);
     }
 
     /**
@@ -82,6 +102,6 @@ class EnumBehavior extends Behavior
             throw new RuntimeException();
         }
 
-        return $this->strategy()->enum($config);
+        return $this->strategy($group, $config['strategy'])->enum($config);
     }
 }

@@ -32,16 +32,19 @@ class EnumBehaviorTest extends TestCase
     public function provideBasicConfiguration()
     {
         $expected = [
-            'strategy' => 'lookup',
+            'defaultStrategy' => 'lookup',
             'implementedMethods' => ['enum' => 'enum'],
             'groups' => [
                 'priority' => [
+                    'strategy' => 'lookup',
                     'prefix' => 'PRIORITY',
                 ],
                 'status' => [
+                    'strategy' => 'lookup',
                     'prefix' => 'ARTICLE_STATUS',
                 ],
                 'category' => [
+                    'strategy' => 'lookup',
                     'prefix' => 'ARTICLE_CATEGORY'
                 ],
             ],

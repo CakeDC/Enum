@@ -52,36 +52,27 @@ abstract class AbstractStrategy
     abstract public function enum(array $config);
 
     /**
+     * @param string $group Group name.
      * @param array $config Configuration.
      * @return array
      * @throws \RuntimeException if group's prefix is not defined.
      */
-    public function normalizeConfig($config)
+    public function normalizeGroupConfig($group, $config)
     {
-        foreach ($config['groups'] as $group => $options) {
-            if (is_numeric($group)) {
-                unset($config['groups'][$group]);
-                $group = $options;
-                $config['groups'][$group] = $options = [];
-            }
+        if (is_string($config)) {
+            $config = ['prefix' => strtoupper($config)];
+        }
 
-            if (is_string($options)) {
-                $options = ['prefix' => strtoupper($options)];
-            }
-
-            if (empty($options['prefix'])) {
-                $prefix = Inflector::underscore(Inflector::singularize($this->_table->alias()));
-                $prefix .= '_' . $group;
-                if (!$this->hasPrefix($prefix)) {
-                    if (!$this->hasPrefix($group)) {
-                        throw new RuntimeException(sprintf('Undefined prefix for group (%s)', $group));
-                    }
-                    $prefix = $group;
+        if (empty($config['prefix'])) {
+            $prefix = Inflector::underscore(Inflector::singularize($this->_table->alias()));
+            $prefix .= '_' . $group;
+            if (!$this->hasPrefix($prefix)) {
+                if (!$this->hasPrefix($group)) {
+                    throw new RuntimeException(sprintf('Undefined prefix for group (%s)', $group));
                 }
+                $prefix = $group;
             }
-
-            $options += ['prefix' => strtoupper($prefix)];
-            $config['groups'][$group] = $options;
+            $config += ['prefix' => strtoupper($prefix)];
         }
 
         return $config;
