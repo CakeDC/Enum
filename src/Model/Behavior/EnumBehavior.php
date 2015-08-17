@@ -3,6 +3,7 @@ namespace Enum\Model\Behavior;
 
 use Cake\ORM\Behavior;
 use Enum\Model\Behavior\Strategy\AbstractStrategy;
+use InvalidArgumentException;
 use RuntimeException;
 
 class EnumBehavior extends Behavior
@@ -83,14 +84,14 @@ class EnumBehavior extends Behavior
         $this->_strategies[$alias] = $strategy;
         if (!($strategy instanceof AbstractStrategy)) {
             if (isset($this->_classMap[$strategy])) {
-                $strategy = $this->_classMap[$strategy];
+                $class = $this->_classMap[$strategy];
             }
 
-            if (!class_exists($strategy)) {
-                throw new RuntimeException();
+            if (!class_exists($class)) {
+                throw new InvalidArgumentException(sprintf('Class not found for strategy (%s)', $strategy));
             }
 
-            $this->_strategies[$alias] = new $strategy($alias, $this->_table);
+            $this->_strategies[$alias] = new $class($alias, $this->_table);
         }
 
         return $this->_strategies[$alias];
