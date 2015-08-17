@@ -10,6 +10,24 @@ class EnumBehavior extends Behavior
     /**
      * Default configuration.
      *
+     * - `defaultStrategy`: the default strategy to use.
+     * - `implementedMethods`: custom table methods made accessible by this behavior.
+     * - `providers`: the defined enumeration lists. Providers can use different strategies,
+     *   use prefixes to differentiate them (defaults to the uppercased provider name) and
+     *   are persisted into a table's field (default to the underscored provider name).
+     *
+     *   Example:
+     *
+     *   ```php
+     *   $providers = [
+     *       'priority' => [
+     *           'strategy' => 'lookup',
+     *           'prefix' => 'PRIORITY',
+     *           'field' => 'priority',
+     *       ],
+     *   ];
+     *   ```
+     *
      * @var array
      */
     protected $_defaultConfig = [
@@ -31,8 +49,18 @@ class EnumBehavior extends Behavior
         'enum' => 'Enum\Model\Behavior\Strategy\EnumStrategy',
     ];
 
+    /**
+     * Stack of strategies in use.
+     *
+     * @var array
+     */
     protected $_strategies = [];
 
+    /**
+     * Initializes the behavior.
+     *
+     * @return void
+     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -40,6 +68,10 @@ class EnumBehavior extends Behavior
     }
 
     /**
+     * Getter/setter for strategies.
+     *
+     * @param string $alias
+     * @param mixed $strategy Strategy name from the classmap,
      * @return \Enum\Model\Behavior\Strategy\AbstractStrategy
      */
     public function strategy($alias, $strategy)
@@ -64,6 +96,11 @@ class EnumBehavior extends Behavior
         return $this->_strategies[$alias];
     }
 
+    /**
+     * Normalizes the providers configuration and initializes the strategies.
+     *
+     * @return void
+     */
     protected function _normalizeConfig()
     {
         $providers = $this->config('providers');
@@ -85,7 +122,7 @@ class EnumBehavior extends Behavior
                 $options['strategy'] = $strategy;
             }
 
-           $providers[$alias] =  $this->strategy($alias, $options['strategy'])
+            $providers[$alias] =  $this->strategy($alias, $options['strategy'])
                ->initialize($options);
         }
 
