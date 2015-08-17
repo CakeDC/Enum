@@ -60,7 +60,7 @@ abstract class AbstractStrategy
     public function initialize($config)
     {
         if (is_string($config)) {
-            $config = ['prefix' => strtoupper($config)];
+            $config = ['prefix' => $config];
         }
 
         if (empty($config['prefix'])) {
@@ -73,6 +73,10 @@ abstract class AbstractStrategy
                 $prefix = $this->_alias;
             }
             $config += ['prefix' => strtoupper($prefix)];
+        }
+
+        if (empty($config['field'])) {
+            $config['field'] = Inflector::underscore(Inflector::singularize($this->_alias));
         }
 
         return $config;
