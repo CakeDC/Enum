@@ -129,7 +129,8 @@ class EnumBehavior extends Behavior
             }
 
             $lists[$alias] =  $this->strategy($alias, $config['strategy'])
-               ->normalize($config);
+                ->initialize($config)
+                ->config();
         }
 
         $this->config('lists', $lists, false);

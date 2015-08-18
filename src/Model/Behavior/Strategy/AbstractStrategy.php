@@ -68,10 +68,10 @@ abstract class AbstractStrategy
     /**
      * @param string $group Group name.
      * @param array $config Configuration.
-     * @return array
+     * @return \Enum\Model\Behavior\Strategy\AbstractStrategy
      * @throws \RuntimeException if group's prefix is not defined.
      */
-    public function normalize($config)
+    public function initialize($config)
     {
         if (is_string($config)) {
             $config = ['prefix' => $config];
@@ -98,6 +98,6 @@ abstract class AbstractStrategy
         }
 
         $this->config($config);
-        return $config;
+        return $this;
     }
 }

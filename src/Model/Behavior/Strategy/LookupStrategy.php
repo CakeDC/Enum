@@ -85,9 +85,9 @@ class LookupStrategy extends AbstractStrategy
     /**
      * @inheritdoc
      */
-    public function normalize($config)
+    public function initialize($config)
     {
-        $config = parent::normalize($config);
+        $config = parent::initialize($config)->config();
         $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
 
         $this->_table->belongsTo($assocName, [
@@ -97,6 +97,6 @@ class LookupStrategy extends AbstractStrategy
             'conditions' => [$assocName . '.prefix' => $config['prefix']],
         ]);
 
-        return $config;
+        return $this;
     }
 }
