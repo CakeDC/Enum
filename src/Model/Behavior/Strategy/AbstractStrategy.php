@@ -86,6 +86,10 @@ abstract class AbstractStrategy
             $config['field'] = Inflector::underscore(Inflector::singularize($this->_alias));
         }
 
+        if (empty($config['errorMessage'])) {
+            $config['errorMessage'] = __d('cake', 'The provided value is invalid');
+        }
+
         $this->config($config);
         return $config;
     }

@@ -4,6 +4,8 @@ namespace Enum\Model\Behavior;
 use ArrayObject;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
+use Cake\ORM\RulesChecker;
+use Cake\Utility\Inflector;
 use Enum\Model\Behavior\Strategy\AbstractStrategy;
 use InvalidArgumentException;
 use RuntimeException;
@@ -68,23 +70,6 @@ class EnumBehavior extends Behavior
     {
         parent::initialize($config);
         $this->_normalizeConfig();
-    }
-
-    /**
-     * Marshaller's callback.
-     *
-     * @return void
-     */
-    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
-    {
-        foreach ($this->config('strategies') as $provider => $config) {
-            if (empty($data[$config['field']])) {
-                continue;
-            }
-
-            $data[$config['field']] = $this->strategy($provider, $config['className'])
-                ->get($data[$config['field']]);
-        }
     }
 
     /**
@@ -161,5 +146,46 @@ class EnumBehavior extends Behavior
         }
 
         return $this->strategy($alias, $config['className'])->enum($config);
+    }
+
+    /**
+     * @param \Cake\Event\Event $event Event.
+     * @param \Cake\ORM\RulesChecker $rules Rules checker.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(Event $event, RulesChecker $rules)
+    {
+        foreach ($this->config('strategies') as $alias => $config) {
+            $ruleName = 'isValid' . Inflector::classify($alias);
+            $rules->add([$this, $ruleName], $ruleName, [
+                'errorField' => $config['field'],
+                'message' => $config['errorMessage']
+            ]);
+        }
+        return $rules;
+    }
+
+    /**
+     * Universal validation rule for strategies.
+     *
+     * @param string $method
+     * @param array $args
+     */
+    public function __call($method, $args)
+    {
+        if (strpos($method, 'isValid') !== 0) {
+            throw new RuntimeException();
+        }
+
+        $alias = Inflector::underscore(str_replace('isValid', '', $method));
+
+        if (!$config = $this->config('strategies.' . $alias)) {
+            throw new RuntimeException();
+        }
+
+        list($entity, $options) = $args;
+
+        $value = $entity->{$config['field']};
+        return array_key_exists($entity->{$config['field']}, $this->enum($alias));
     }
 }

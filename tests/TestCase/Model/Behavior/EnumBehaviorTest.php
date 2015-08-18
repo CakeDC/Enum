@@ -17,7 +17,7 @@ class EnumBehaviorTest extends TestCase
 
         $this->Articles = TableRegistry::get('Enum.Articles', ['table' => 'enum_articles']);
         $this->Articles->addBehavior('Enum.Enum', ['strategies' => [
-            'priority',
+            'priority' => ['errorMessage' => 'Invalid priority'],
             'status',
             'category',
         ]]);
@@ -39,16 +39,19 @@ class EnumBehaviorTest extends TestCase
                     'className' => 'lookup',
                     'prefix' => 'PRIORITY',
                     'field' => 'priority',
+                    'errorMessage' => 'Invalid priority'
                 ],
                 'status' => [
                     'className' => 'lookup',
                     'prefix' => 'ARTICLE_STATUS',
                     'field' => 'status',
+                    'errorMessage' => 'The provided value is invalid'
                 ],
                 'category' => [
                     'className' => 'lookup',
                     'prefix' => 'ARTICLE_CATEGORY',
                     'field' => 'category',
+                    'errorMessage' => 'The provided value is invalid'
                 ],
             ],
         ];
@@ -57,7 +60,7 @@ class EnumBehaviorTest extends TestCase
             [
                 [
                     'strategies' => [
-                        'priority',
+                        'priority' => ['errorMessage' => 'Invalid priority'],
                         'status',
                         'category',
                     ],
@@ -67,7 +70,7 @@ class EnumBehaviorTest extends TestCase
             [
                 [
                     'strategies' => [
-                        'priority',
+                        'priority' => ['errorMessage' => 'Invalid priority'],
                         'status' => 'article_status',
                         'category' => 'ARTICLE_CATEGORY',
                     ],
@@ -124,6 +127,44 @@ class EnumBehaviorTest extends TestCase
     public function testBasicLookups($group, $expected)
     {
         $result = $this->Articles->enum($group);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function provideBuildRules()
+    {
+        return [
+            [
+                [
+                    'priority' => 'PRIORITY_URGENT',
+                    'status' => 'ARTICLE_STATUS_DRAFT',
+                    'category' => 'Cake',
+                ],
+                [
+                    'category' => ['isValidCategory' => 'The provided value is invalid'],
+                ]
+            ],
+            [
+                [
+                    'priority' => 'Urgent',
+                    'status' => 'Drafted',
+                    'category' => 'ARTICLE_CATEGORY_OSS',
+                ],
+                [
+                    'priority' => ['isValidPriority' => 'Invalid priority'],
+                    'status' => ['isValidStatus' => 'The provided value is invalid'],
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider provideBuildRules
+     */
+    public function testBuildRules($data, $expected)
+    {
+        $article = new \Cake\ORM\Entity($data);
+        $this->Articles->save($article);
+        $result = $article->errors();
         $this->assertEquals($expected, $result);
     }
 
