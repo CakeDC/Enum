@@ -6,7 +6,7 @@ use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use RuntimeException;
 
-abstract class AbstractStrategy
+abstract class AbstractStrategy implements StrategyInterface
 {
 
     use InstanceConfigTrait;
@@ -43,33 +43,7 @@ abstract class AbstractStrategy
     }
 
     /**
-     * @param string $prefix Prefix.
-     * @return bool
-     */
-    abstract public function hasPrefix($prefix);
-
-    /**
-     * @return array
-     */
-    abstract public function listPrefixes();
-
-    /**
-     * @param array $config
-     * @return array
-     */
-    abstract public function enum(array $config);
-
-    /**
-     * @param string $key
-     * @return string
-     */
-    abstract public function get($key);
-
-    /**
-     * @param string $group Group name.
-     * @param array $config Configuration.
-     * @return \Enum\Model\Behavior\Strategy\AbstractStrategy
-     * @throws \RuntimeException if group's prefix is not defined.
+     * @inheritdoc
      */
     public function initialize($config)
     {
