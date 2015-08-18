@@ -1,6 +1,7 @@
 <?php
 namespace Enum\Model\Behavior;
 
+use ArrayObject;
 use Cake\ORM\Behavior;
 use Enum\Model\Behavior\Strategy\AbstractStrategy;
 use InvalidArgumentException;
@@ -66,6 +67,23 @@ class EnumBehavior extends Behavior
     {
         parent::initialize($config);
         $this->_normalizeConfig();
+    }
+
+    /**
+     * Marshaller's callback.
+     *
+     * @return void
+     */
+    public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
+    {
+        foreach ($this->config('providers') as $provider => $config) {
+            if (empty($data[$config['field']])) {
+                continue;
+            }
+
+            $data[$config['field']] = $this->strategy($provider, $config['strategy'])
+                ->get($data[$config['field']]);
+        }
     }
 
     /**
