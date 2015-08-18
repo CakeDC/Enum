@@ -75,4 +75,22 @@ class LookupStrategy extends AbstractStrategy
         return $this->loadModel()->find()
             ->where(['name' => $key, 'prefix' => $this->config('prefix')]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function initialize($config)
+    {
+        $config = parent::initialize($config);
+        $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
+
+        $this->_table->belongsTo($assocName, [
+            'className' => $this->modelClass,
+            'foreignKey' => $config['field'],
+            'bindingKey' => 'name',
+            'conditions' => [$assocName . '.prefix' => strtoupper($this->_alias)],
+        ]);
+
+        return $config;
+    }
 }
