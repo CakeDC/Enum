@@ -79,9 +79,9 @@ class LookupStrategy extends AbstractStrategy
     /**
      * @inheritdoc
      */
-    public function initialize($config)
+    public function normalize($config)
     {
-        $config = parent::initialize($config);
+        $config = parent::normalize($config);
         $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
 
         $this->_table->belongsTo($assocName, [

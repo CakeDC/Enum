@@ -60,7 +60,7 @@ abstract class AbstractStrategy
      * @return array
      * @throws \RuntimeException if group's prefix is not defined.
      */
-    public function initialize($config)
+    public function normalize($config)
     {
         if (is_string($config)) {
             $config = ['prefix' => $config];

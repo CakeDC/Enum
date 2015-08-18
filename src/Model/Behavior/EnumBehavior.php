@@ -2,6 +2,7 @@
 namespace Enum\Model\Behavior;
 
 use ArrayObject;
+use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Enum\Model\Behavior\Strategy\AbstractStrategy;
 use InvalidArgumentException;
@@ -14,16 +15,16 @@ class EnumBehavior extends Behavior
      *
      * - `defaultStrategy`: the default strategy to use.
      * - `implementedMethods`: custom table methods made accessible by this behavior.
-     * - `providers`: the defined enumeration lists. Providers can use different strategies,
+     * - `strategies`: the defined enumeration lists. Providers can use different strategies,
      *   use prefixes to differentiate them (defaults to the uppercased provider name) and
      *   are persisted into a table's field (default to the underscored provider name).
      *
      *   Example:
      *
      *   ```php
-     *   $providers = [
+     *   $strategies = [
      *       'priority' => [
-     *           'strategy' => 'lookup',
+     *           'className' => 'lookup',
      *           'prefix' => 'PRIORITY',
      *           'field' => 'priority',
      *       ],
@@ -37,7 +38,7 @@ class EnumBehavior extends Behavior
         'implementedMethods' => [
             'enum' => 'enum',
         ],
-        'providers' => [],
+        'strategies' => [],
     ];
 
     /**
@@ -76,12 +77,12 @@ class EnumBehavior extends Behavior
      */
     public function beforeMarshal(Event $event, ArrayObject $data, ArrayObject $options)
     {
-        foreach ($this->config('providers') as $provider => $config) {
+        foreach ($this->config('strategies') as $provider => $config) {
             if (empty($data[$config['field']])) {
                 continue;
             }
 
-            $data[$config['field']] = $this->strategy($provider, $config['strategy'])
+            $data[$config['field']] = $this->strategy($provider, $config['className'])
                 ->get($data[$config['field']]);
         }
     }
@@ -116,49 +117,49 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * Normalizes the providers configuration and initializes the strategies.
+     * Normalizes the strategies configuration and initializes the strategies.
      *
      * @return void
      */
     protected function _normalizeConfig()
     {
-        $providers = $this->config('providers');
+        $strategies = $this->config('strategies');
         $strategy = $this->config('defaultStrategy');
 
-        foreach ($providers as $alias => $options) {
+        foreach ($strategies as $alias => $config) {
             if (is_numeric($alias)) {
-                unset($providers[$alias]);
-                $alias = $options;
-                $options = [];
-                $providers[$alias] = $options;
+                unset($strategies[$alias]);
+                $alias = $config;
+                $config = [];
+                $strategies[$alias] = $config;
             }
 
-            if (is_string($options)) {
-                $options = ['prefix' => strtoupper($options)];
+            if (is_string($config)) {
+                $config = ['prefix' => strtoupper($config)];
             }
 
-            if (empty($options['strategy'])) {
-                $options['strategy'] = $strategy;
+            if (empty($config['className'])) {
+                $config['className'] = $strategy;
             }
 
-            $providers[$alias] =  $this->strategy($alias, $options['strategy'])
-               ->initialize($options);
+            $strategies[$alias] =  $this->strategy($alias, $config['className'])
+               ->normalize($config);
         }
 
-        $this->config('providers', $providers, false);
+        $this->config('strategies', $strategies, false);
     }
 
     /**
-     * @param string $group Defined group name.
+     * @param string $alias Defined list's alias/name.
      * @return array
      */
-    public function enum($group)
+    public function enum($alias)
     {
-        $config = $this->config('providers.' . $group);
+        $config = $this->config('strategies.' . $alias);
         if (empty($config)) {
             throw new RuntimeException();
         }
 
-        return $this->strategy($group, $config['strategy'])->enum($config);
+        return $this->strategy($alias, $config['className'])->enum($config);
     }
 }
