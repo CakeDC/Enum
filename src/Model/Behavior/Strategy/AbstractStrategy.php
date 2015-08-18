@@ -1,12 +1,16 @@
 <?php
 namespace Enum\Model\Behavior\Strategy;
 
+use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use RuntimeException;
 
 abstract class AbstractStrategy
 {
+
+    use InstanceConfigTrait;
+
     /**
      * List of defined group prefixes.
      *
@@ -82,6 +86,7 @@ abstract class AbstractStrategy
             $config['field'] = Inflector::underscore(Inflector::singularize($this->_alias));
         }
 
+        $this->config($config);
         return $config;
     }
 }

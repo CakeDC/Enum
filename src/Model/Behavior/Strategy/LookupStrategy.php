@@ -12,12 +12,17 @@ class LookupStrategy extends AbstractStrategy
 
     use ModelAwareTrait;
 
+    protected $_defaultConfig = [
+        'prefix' => null,
+    ];
+
     /**
      * @inheritdoc
      */
     public function __construct($alias, Table $table)
     {
         parent::__construct($alias, $table);
+        $this->_defaultConfig['prefix'] = strtoupper($alias);
         $this->modelClass = 'Enum.Lookups';
         $this->modelFactory('Table', ['Cake\ORM\TableRegistry', 'get']);
     }
@@ -55,7 +60,7 @@ class LookupStrategy extends AbstractStrategy
                 'valueField' => 'label',
             ])
             ->where([
-                'prefix' => $config['prefix'],
+                'prefix' => $this->config('prefix'),
             ]);
 
         foreach ($config as $method => $args) {
@@ -72,8 +77,13 @@ class LookupStrategy extends AbstractStrategy
      */
     public function get($key)
     {
+        $prefix = $this->config('prefix');
+        $name = str_replace($prefix . '_', '', $key);
+
         return $this->loadModel()->find()
-            ->where(['name' => $key, 'prefix' => $this->config('prefix')]);
+            ->where(compact('prefix', 'name'))
+            ->firstOrFail()
+            ->id;
     }
 
     /**
@@ -88,7 +98,7 @@ class LookupStrategy extends AbstractStrategy
             'className' => $this->modelClass,
             'foreignKey' => $config['field'],
             'bindingKey' => 'name',
-            'conditions' => [$assocName . '.prefix' => strtoupper($this->_alias)],
+            'conditions' => [$assocName . '.prefix' => $config['prefix']],
         ]);
 
         return $config;
