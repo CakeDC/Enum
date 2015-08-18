@@ -68,4 +68,13 @@ class LookupStrategy extends AbstractStrategy
 
         return $query->toArray();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function get($key)
+    {
+        return $this->loadModel()->find()
+            ->where(['name' => $key, 'prefix' => $this->config('prefix')]);
+    }
 }

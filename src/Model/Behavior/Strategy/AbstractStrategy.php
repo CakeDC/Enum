@@ -52,6 +52,12 @@ abstract class AbstractStrategy
     abstract public function enum(array $config);
 
     /**
+     * @param string $key
+     * @return string
+     */
+    abstract public function get($key);
+
+    /**
      * @param string $group Group name.
      * @param array $config Configuration.
      * @return array
