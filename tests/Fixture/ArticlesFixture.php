@@ -11,9 +11,9 @@ class ArticlesFixture extends TestFixture
         'id' => ['type' => 'integer'],
         'title' => ['type' => 'string'],
         'body' => ['type' => 'text'],
-        'priority_id' => ['type' => 'integer'],
-        'status_id' => ['type' => 'integer'],
-        'article_category_id' => ['type' => 'integer'],
+        'priority' => ['type' => 'string'],
+        'status' => ['type' => 'string'],
+        'article_category' => ['type' => 'string'],
         '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
         '_options' => ['engine' => 'InnoDB', 'collation' => 'utf8_general_ci'],
     ];
@@ -22,9 +22,9 @@ class ArticlesFixture extends TestFixture
         [
             'title' => 'Dummy article',
             'body' => '',
-            'priority_id' => 2,
-            'status_id' => 4,
-            'article_category_id' => 6
+            'priority' => 'HIGH',
+            'status' => 'PUBLIC',
+            'article_category' => 6
         ],
     ];
 }

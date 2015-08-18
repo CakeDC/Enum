@@ -38,14 +38,17 @@ class EnumBehaviorTest extends TestCase
                 'priority' => [
                     'strategy' => 'lookup',
                     'prefix' => 'PRIORITY',
+                    'field' => 'priority',
                 ],
                 'status' => [
                     'strategy' => 'lookup',
                     'prefix' => 'ARTICLE_STATUS',
+                    'field' => 'status',
                 ],
                 'category' => [
                     'strategy' => 'lookup',
-                    'prefix' => 'ARTICLE_CATEGORY'
+                    'prefix' => 'ARTICLE_CATEGORY',
+                    'field' => 'category',
                 ],
             ],
         ];
@@ -122,5 +125,18 @@ class EnumBehaviorTest extends TestCase
     {
         $result = $this->Articles->enum($group);
         $this->assertEquals($expected, $result);
+    }
+
+    public function testAssociationsCreated()
+    {
+        $result = $this->Articles->associations()->keys();
+        $expected = ['priorities', 'statuses', 'categories'];
+        $this->assertEquals($expected, $result);
+
+        foreach ($result as $assoc) {
+            $this->assertInstanceOf('\Cake\ORM\Association\BelongsTo', $this->Articles->association($assoc));
+        }
+
+        $result = $this->Articles->get(1);
     }
 }
