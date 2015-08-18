@@ -2,6 +2,7 @@
 namespace Enum\Model\Behavior\Strategy;
 
 use Cake\Core\InstanceConfigTrait;
+use Cake\Datasource\ModelAwareTrait;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
@@ -9,19 +10,16 @@ use Cake\Utility\Inflector;
 class LookupStrategy extends AbstractStrategy
 {
 
-    protected $_defaultConfig = [
-        'table' => 'Enum.Lookups',
-    ];
+    use ModelAwareTrait;
 
-    protected $_lookups;
-
-    protected function _lookups()
+    /**
+     * @inheritdoc
+     */
+    public function __construct($alias, Table $table)
     {
-        if (empty($this->_lookups)) {
-            $this->_lookups = TableRegistry::get($this->config('table'));
-        }
-
-        return $this->_lookups;
+        parent::__construct($alias, $table);
+        $this->modelClass = 'Enum.Lookups';
+        $this->modelFactory('Table', ['Cake\ORM\TableRegistry', 'get']);
     }
 
     /**
@@ -38,7 +36,7 @@ class LookupStrategy extends AbstractStrategy
     public function listPrefixes()
     {
         if (empty($this->_prefixes)) {
-            $this->_prefixes = array_keys($this->_lookups()->find('list', [
+            $this->_prefixes = array_keys($this->loadModel()->find('list', [
                 'keyField' => 'prefix',
             ])->toArray());
         }
@@ -51,7 +49,7 @@ class LookupStrategy extends AbstractStrategy
      */
     public function enum(array $config)
     {
-        $query = $this->_lookups()
+        $query = $this->loadModel()
             ->find('list', [
                 'keyField' => 'group',
                 'valueField' => 'label',

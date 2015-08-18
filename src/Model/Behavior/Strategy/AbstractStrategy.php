@@ -1,15 +1,12 @@
 <?php
 namespace Enum\Model\Behavior\Strategy;
 
-use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 use RuntimeException;
 
 abstract class AbstractStrategy
 {
-    use InstanceConfigTrait;
-
     /**
      * List of defined group prefixes.
      *
