@@ -12,6 +12,13 @@ abstract class AbstractStrategy
     use InstanceConfigTrait;
 
     /**
+     * Default configuration.
+     *
+     * @var array
+     */
+    protected $_defaultConfig = [];
+
+    /**
      * List of defined group prefixes.
      *
      * @var array
@@ -21,7 +28,7 @@ abstract class AbstractStrategy
     /**
      * Target table.
      *
-     * @var |Cake\ORM\Table
+     * @var \Cake\ORM\Table
      */
     protected $_table;
 

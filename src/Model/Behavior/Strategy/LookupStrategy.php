@@ -12,10 +12,6 @@ class LookupStrategy extends AbstractStrategy
 
     use ModelAwareTrait;
 
-    protected $_defaultConfig = [
-        'prefix' => null,
-    ];
-
     /**
      * @inheritdoc
      */
