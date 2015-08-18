@@ -17,18 +17,19 @@ class EnumBehavior extends Behavior
      *
      * - `defaultStrategy`: the default strategy to use.
      * - `implementedMethods`: custom table methods made accessible by this behavior.
-     * - `strategies`: the defined enumeration lists. Providers can use different strategies,
-     *   use prefixes to differentiate them (defaults to the uppercased provider name) and
-     *   are persisted into a table's field (default to the underscored provider name).
+     * - `lists`: the defined enumeration lists. Lists can use different strategies,
+     *   use prefixes to differentiate them (defaults to the uppercased list name) and
+     *   are persisted into a table's field (default to the underscored list name).
      *
      *   Example:
      *
      *   ```php
-     *   $strategies = [
+     *   $lists = [
      *       'priority' => [
-     *           'className' => 'lookup',
+     *           'strategy' => 'lookup',
      *           'prefix' => 'PRIORITY',
      *           'field' => 'priority',
+     *           'errorMessage' => 'Invalid priority',
      *       ],
      *   ];
      *   ```
@@ -40,7 +41,7 @@ class EnumBehavior extends Behavior
         'implementedMethods' => [
             'enum' => 'enum',
         ],
-        'strategies' => [],
+        'lists' => [],
     ];
 
     /**
@@ -108,30 +109,30 @@ class EnumBehavior extends Behavior
      */
     protected function _normalizeConfig()
     {
-        $strategies = $this->config('strategies');
-        $strategy = $this->config('defaultStrategy');
+        $lists = $this->config('lists');
+        $defaultStrategy = $this->config('defaultStrategy');
 
-        foreach ($strategies as $alias => $config) {
+        foreach ($lists as $alias => $config) {
             if (is_numeric($alias)) {
-                unset($strategies[$alias]);
+                unset($lists[$alias]);
                 $alias = $config;
                 $config = [];
-                $strategies[$alias] = $config;
+                $lists[$alias] = $config;
             }
 
             if (is_string($config)) {
                 $config = ['prefix' => strtoupper($config)];
             }
 
-            if (empty($config['className'])) {
-                $config['className'] = $strategy;
+            if (empty($config['strategy'])) {
+                $config['strategy'] = $defaultStrategy;
             }
 
-            $strategies[$alias] =  $this->strategy($alias, $config['className'])
+            $lists[$alias] =  $this->strategy($alias, $config['strategy'])
                ->normalize($config);
         }
 
-        $this->config('strategies', $strategies, false);
+        $this->config('lists', $lists, false);
     }
 
     /**
@@ -140,12 +141,12 @@ class EnumBehavior extends Behavior
      */
     public function enum($alias)
     {
-        $config = $this->config('strategies.' . $alias);
+        $config = $this->config('lists.' . $alias);
         if (empty($config)) {
             throw new RuntimeException();
         }
 
-        return $this->strategy($alias, $config['className'])->enum($config);
+        return $this->strategy($alias, $config['strategy'])->enum($config);
     }
 
     /**
@@ -155,7 +156,7 @@ class EnumBehavior extends Behavior
      */
     public function buildRules(Event $event, RulesChecker $rules)
     {
-        foreach ($this->config('strategies') as $alias => $config) {
+        foreach ($this->config('lists') as $alias => $config) {
             $ruleName = 'isValid' . Inflector::classify($alias);
             $rules->add([$this, $ruleName], $ruleName, [
                 'errorField' => $config['field'],
@@ -166,7 +167,7 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * Universal validation rule for strategies.
+     * Universal validation rule for lists.
      *
      * @param string $method
      * @param array $args
@@ -179,7 +180,7 @@ class EnumBehavior extends Behavior
 
         $alias = Inflector::underscore(str_replace('isValid', '', $method));
 
-        if (!$config = $this->config('strategies.' . $alias)) {
+        if (!$config = $this->config('lists.' . $alias)) {
             throw new RuntimeException();
         }
 

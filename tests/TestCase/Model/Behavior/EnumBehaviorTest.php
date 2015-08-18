@@ -16,7 +16,7 @@ class EnumBehaviorTest extends TestCase
         parent::setUp();
 
         $this->Articles = TableRegistry::get('Enum.Articles', ['table' => 'enum_articles']);
-        $this->Articles->addBehavior('Enum.Enum', ['strategies' => [
+        $this->Articles->addBehavior('Enum.Enum', ['lists' => [
             'priority' => ['errorMessage' => 'Invalid priority'],
             'status',
             'category',
@@ -34,21 +34,21 @@ class EnumBehaviorTest extends TestCase
         $expected = [
             'defaultStrategy' => 'lookup',
             'implementedMethods' => ['enum' => 'enum'],
-            'strategies' => [
+            'lists' => [
                 'priority' => [
-                    'className' => 'lookup',
+                    'strategy' => 'lookup',
                     'prefix' => 'PRIORITY',
                     'field' => 'priority',
                     'errorMessage' => 'Invalid priority'
                 ],
                 'status' => [
-                    'className' => 'lookup',
+                    'strategy' => 'lookup',
                     'prefix' => 'ARTICLE_STATUS',
                     'field' => 'status',
                     'errorMessage' => 'The provided value is invalid'
                 ],
                 'category' => [
-                    'className' => 'lookup',
+                    'strategy' => 'lookup',
                     'prefix' => 'ARTICLE_CATEGORY',
                     'field' => 'category',
                     'errorMessage' => 'The provided value is invalid'
@@ -59,7 +59,7 @@ class EnumBehaviorTest extends TestCase
         return [
             [
                 [
-                    'strategies' => [
+                    'lists' => [
                         'priority' => ['errorMessage' => 'Invalid priority'],
                         'status',
                         'category',
@@ -69,7 +69,7 @@ class EnumBehaviorTest extends TestCase
             ],
             [
                 [
-                    'strategies' => [
+                    'lists' => [
                         'priority' => ['errorMessage' => 'Invalid priority'],
                         'status' => 'article_status',
                         'category' => 'ARTICLE_CATEGORY',
