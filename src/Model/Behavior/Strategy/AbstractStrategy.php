@@ -71,7 +71,7 @@ abstract class AbstractStrategy
             $prefix .= '_' . $this->_alias;
             if (!$this->hasPrefix($prefix)) {
                 if (!$this->hasPrefix($this->_alias)) {
-                    throw new RuntimeException(sprintf('Undefined prefix for provider (%s)', $this->_alias));
+                    throw new RuntimeException(sprintf('Undefined prefix for strategy (%s)', $this->_alias));
                 }
                 $prefix = $this->_alias;
             }
