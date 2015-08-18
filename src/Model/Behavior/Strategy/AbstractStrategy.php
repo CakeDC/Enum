@@ -52,15 +52,7 @@ abstract class AbstractStrategy implements StrategyInterface
         }
 
         if (empty($config['prefix'])) {
-            $prefix = Inflector::underscore(Inflector::singularize($this->_table->alias()));
-            $prefix .= '_' . $this->_alias;
-            if (!$this->hasPrefix($prefix)) {
-                if (!$this->hasPrefix($this->_alias)) {
-                    throw new RuntimeException(sprintf('Undefined prefix for strategy (%s)', $this->_alias));
-                }
-                $prefix = $this->_alias;
-            }
-            $config += ['prefix' => strtoupper($prefix)];
+            $config['prefix'] = $this->_generatePrefix();
         }
 
         if (empty($config['field'])) {
@@ -72,6 +64,26 @@ abstract class AbstractStrategy implements StrategyInterface
         }
 
         $this->config($config);
+
         return $this;
+    }
+
+    /**
+     * Generates default prefix for strategy.
+     *
+     * @return string
+     */
+    protected function _generatePrefix()
+    {
+        $prefix = Inflector::underscore(Inflector::singularize($this->_table->alias()));
+        $prefix .= '_' . $this->_alias;
+        if (!$this->hasPrefix($prefix)) {
+            if (!$this->hasPrefix($this->_alias)) {
+                throw new RuntimeException(sprintf('Undefined prefix for strategy (%s)', $this->_alias));
+            }
+            $prefix = $this->_alias;
+        }
+
+        return strtoupper($prefix);
     }
 }

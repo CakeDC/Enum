@@ -71,20 +71,6 @@ class LookupStrategy extends AbstractStrategy
     /**
      * @inheritdoc
      */
-    public function get($key)
-    {
-        $prefix = $this->config('prefix');
-        $name = str_replace($prefix . '_', '', $key);
-
-        return $this->loadModel()->find()
-            ->where(compact('prefix', 'name'))
-            ->firstOrFail()
-            ->id;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function initialize($config)
     {
         $config = parent::initialize($config)->config();

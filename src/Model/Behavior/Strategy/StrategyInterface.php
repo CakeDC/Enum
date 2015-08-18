@@ -22,12 +22,6 @@ interface StrategyInterface
     public function enum(array $config);
 
     /**
-     * @param string $key
-     * @return string
-     */
-    public function get($key);
-
-    /**
      * @param string $group Group name.
      * @param array $config Configuration.
      * @return \Enum\Model\Behavior\Strategy\AbstractStrategy

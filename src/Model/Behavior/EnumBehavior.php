@@ -87,19 +87,20 @@ class EnumBehavior extends Behavior
         }
 
         $this->_strategies[$alias] = $strategy;
-        if (!($strategy instanceof AbstractStrategy)) {
-            if (isset($this->_classMap[$strategy])) {
-                $class = $this->_classMap[$strategy];
-            }
 
-            if (!class_exists($class)) {
-                throw new InvalidArgumentException(sprintf('Class not found for strategy (%s)', $strategy));
-            }
-
-            $this->_strategies[$alias] = new $class($alias, $this->_table);
+        if ($strategy instanceof AbstractStrategy) {
+            return $strategy;
         }
 
-        return $this->_strategies[$alias];
+        if (isset($this->_classMap[$strategy])) {
+            $class = $this->_classMap[$strategy];
+        }
+
+        if (!class_exists($class)) {
+            throw new InvalidArgumentException(sprintf('Class not found for strategy (%s)', $strategy));
+        }
+
+        return $this->_strategies[$alias] = new $class($alias, $this->_table);
     }
 
     /**
