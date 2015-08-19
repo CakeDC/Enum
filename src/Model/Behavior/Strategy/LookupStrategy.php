@@ -26,14 +26,6 @@ class LookupStrategy extends AbstractStrategy
     /**
      * @inheritdoc
      */
-    public function hasPrefix($prefix)
-    {
-        return in_array(strtoupper($prefix), $this->listPrefixes());
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function listPrefixes()
     {
         if (empty($this->_prefixes)) {
@@ -48,7 +40,7 @@ class LookupStrategy extends AbstractStrategy
     /**
      * @inheritdoc
      */
-    public function enum(array $config)
+    public function enum(array $config = [])
     {
         $query = $this->loadModel()
             ->find('list', [

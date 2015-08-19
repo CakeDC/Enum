@@ -19,7 +19,7 @@ interface StrategyInterface
      * @param array $config
      * @return array
      */
-    public function enum(array $config);
+    public function enum(array $config = []);
 
     /**
      * @param string $group Group name.

@@ -7,11 +7,15 @@ use Cake\TestSuite\TestCase;
 
 class ArticlesTable extends Table
 {
+    const STATUS_PUBLIC = 'Published';
+    const STATUS_DRAFT = 'Drafted';
+    const STATUS_ARCHIVE = 'Archived';
+
     public function initialize(array $config)
     {
         $this->addBehavior('Enum.Enum', ['lists' => [
             'priority' => ['errorMessage' => 'Invalid priority'],
-            'status',
+            'status' => ['strategy' => 'const'],
             'category',
         ]]);
     }
@@ -53,8 +57,8 @@ class EnumBehaviorTest extends TestCase
                     'errorMessage' => 'Invalid priority'
                 ],
                 'status' => [
-                    'strategy' => 'lookup',
-                    'prefix' => 'ARTICLE_STATUS',
+                    'strategy' => 'const',
+                    'prefix' => 'STATUS',
                     'field' => 'status',
                     'errorMessage' => 'The provided value is invalid'
                 ],
@@ -72,7 +76,7 @@ class EnumBehaviorTest extends TestCase
                 [
                     'lists' => [
                         'priority' => ['errorMessage' => 'Invalid priority'],
-                        'status',
+                        'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
                         'category',
                     ],
                 ],
@@ -82,7 +86,7 @@ class EnumBehaviorTest extends TestCase
                 [
                     'lists' => [
                         'priority' => ['errorMessage' => 'Invalid priority'],
-                        'status' => 'article_status',
+                        'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
                         'category' => 'ARTICLE_CATEGORY',
                     ],
                 ],
@@ -117,9 +121,9 @@ class EnumBehaviorTest extends TestCase
             [
                 'status',
                 [
-                    'ARTICLE_STATUS_PUBLIC' => 'Published',
-                    'ARTICLE_STATUS_DRAFT' => 'Drafted',
-                    'ARTICLE_STATUS_ARCHIVE' => 'Archived',
+                    'STATUS_PUBLIC' => 'Published',
+                    'STATUS_DRAFT' => 'Drafted',
+                    'STATUS_ARCHIVE' => 'Archived',
                 ]
             ],
             [
@@ -147,7 +151,7 @@ class EnumBehaviorTest extends TestCase
             [
                 [
                     'priority' => 'PRIORITY_URGENT',
-                    'status' => 'ARTICLE_STATUS_DRAFT',
+                    'status' => 'STATUS_DRAFT',
                     'category' => 'Cake',
                 ],
                 [
@@ -182,7 +186,7 @@ class EnumBehaviorTest extends TestCase
     public function testAssociationsCreated()
     {
         $result = $this->Articles->associations()->keys();
-        $expected = ['priorities', 'statuses', 'categories'];
+        $expected = ['priorities', 'categories'];
         $this->assertEquals($expected, $result);
 
         foreach ($result as $assoc) {

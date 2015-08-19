@@ -69,6 +69,14 @@ abstract class AbstractStrategy implements StrategyInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function hasPrefix($prefix)
+    {
+        return in_array(strtoupper($prefix), $this->listPrefixes());
+    }
+
+    /**
      * Generates default prefix for strategy.
      *
      * @return string
