@@ -1,8 +1,21 @@
 <?php
 namespace Enum\Test\TestCase\Model\Behavior;
 
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+
+class ArticlesTable extends Table
+{
+    public function initialize(array $config)
+    {
+        $this->addBehavior('Enum.Enum', ['lists' => [
+            'priority' => ['errorMessage' => 'Invalid priority'],
+            'status',
+            'category',
+        ]]);
+    }
+}
 
 class EnumBehaviorTest extends TestCase
 {
@@ -15,12 +28,10 @@ class EnumBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $this->Articles = TableRegistry::get('Enum.Articles', ['table' => 'enum_articles']);
-        $this->Articles->addBehavior('Enum.Enum', ['lists' => [
-            'priority' => ['errorMessage' => 'Invalid priority'],
-            'status',
-            'category',
-        ]]);
+        $this->Articles = TableRegistry::get('Enum.Articles', [
+            'className' => ArticlesTable::class,
+            'table' => 'enum_articles'
+        ]);
     }
 
     public function tearDown()
