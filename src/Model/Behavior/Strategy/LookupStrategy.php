@@ -12,7 +12,7 @@ class LookupStrategy extends AbstractStrategy
     use ModelAwareTrait;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function __construct($alias, Table $table)
     {
@@ -23,7 +23,7 @@ class LookupStrategy extends AbstractStrategy
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function listPrefixes()
     {
@@ -37,7 +37,7 @@ class LookupStrategy extends AbstractStrategy
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function enum(array $config = [])
     {
@@ -60,7 +60,7 @@ class LookupStrategy extends AbstractStrategy
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function initialize($config)
     {

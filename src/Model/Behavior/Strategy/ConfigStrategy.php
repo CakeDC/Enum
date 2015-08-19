@@ -5,6 +5,9 @@ use Cake\Core\Configure;
 
 class ConfigStrategy extends AbstractStrategy
 {
+    /**
+     * {@inheritdoc}
+     */
     public function listPrefixes()
     {
         if (!$lists = Configure::read('Enum')) {
@@ -15,6 +18,9 @@ class ConfigStrategy extends AbstractStrategy
         return array_map('strtoupper', $prefixes);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function enum(array $config = [])
     {
         if (!$list = Configure::read('Enum.' . strtolower($this->config('prefix')))) {
@@ -24,6 +30,9 @@ class ConfigStrategy extends AbstractStrategy
         return $list;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function initialize($config)
     {
         parent::initialize($config);

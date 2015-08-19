@@ -33,7 +33,9 @@ abstract class AbstractStrategy implements StrategyInterface
     protected $_table;
 
     /**
-     * @param array $config Configuration.
+     * Constructor.
+     *
+     * @param string $alias Alias assigned to the strategy in the behavior.
      * @param \Cake\ORM\Table $table Target table.
      */
     public function __construct($alias, Table $table)
@@ -43,7 +45,7 @@ abstract class AbstractStrategy implements StrategyInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function initialize($config)
     {
@@ -69,7 +71,7 @@ abstract class AbstractStrategy implements StrategyInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasPrefix($prefix)
     {

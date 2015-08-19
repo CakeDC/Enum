@@ -1,8 +1,13 @@
 <?php
 namespace Enum\Model\Behavior\Strategy;
 
+use ReflectionClass;
+
 class ConstStrategy extends AbstractStrategy
 {
+    /**
+     * {@inheritdoc}
+     */
     public function listPrefixes()
     {
         $constants = array_keys($this->_getConstants());
@@ -23,6 +28,9 @@ class ConstStrategy extends AbstractStrategy
         }));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function enum(array $config = [])
     {
         $prefix = $this->config('prefix');
@@ -46,8 +54,13 @@ class ConstStrategy extends AbstractStrategy
         return array_combine($keys, $values);
     }
 
+    /**
+     * Returns defined constants for the current `$_table`.
+     *
+     * @return array
+     */
     protected function _getConstants()
     {
-        return (new \ReflectionClass(get_class($this->_table)))->getConstants();
+        return (new ReflectionClass(get_class($this->_table)))->getConstants();
     }
 }
