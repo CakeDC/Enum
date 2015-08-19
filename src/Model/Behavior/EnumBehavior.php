@@ -1,14 +1,14 @@
 <?php
 namespace Enum\Model\Behavior;
 
-use ArrayObject;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Inflector;
+use Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
+use Enum\Model\Behavior\Exception\MissingEnumStrategyException;
 use Enum\Model\Behavior\Strategy\AbstractStrategy;
-use InvalidArgumentException;
-use RuntimeException;
+use BadMethodCallException;
 
 class EnumBehavior extends Behavior
 {
@@ -52,7 +52,6 @@ class EnumBehavior extends Behavior
     protected $_classMap = [
         'lookup' => 'Enum\Model\Behavior\Strategy\LookupStrategy',
         'const' => 'Enum\Model\Behavior\Strategy\ConstStrategy',
-        'enum' => 'Enum\Model\Behavior\Strategy\EnumStrategy',
         'config' => 'Enum\Model\Behavior\Strategy\ConfigStrategy',
     ];
 
@@ -78,8 +77,9 @@ class EnumBehavior extends Behavior
      * Getter/setter for strategies.
      *
      * @param string $alias
-     * @param mixed $strategy Strategy name from the classmap,
-     * @return \Enum\Model\Behavior\Strategy\AbstractStrategy
+     * @param mixed $strategy Strategy name from the class map or some strategy instance.
+     * @return \Enum\Model\Behavior\Strategy\StrategyInterface
+     * @throws \Enum\Model\Behavior\Exception\MissingEnumStrategyException
      */
     public function strategy($alias, $strategy)
     {
@@ -98,7 +98,7 @@ class EnumBehavior extends Behavior
         }
 
         if (!class_exists($class)) {
-            throw new InvalidArgumentException(sprintf('Class not found for strategy (%s)', $strategy));
+            throw new MissingEnumStrategyException([$class]);
         }
 
         return $this->_strategies[$alias] = new $class($alias, $this->_table);
@@ -141,12 +141,13 @@ class EnumBehavior extends Behavior
     /**
      * @param string $alias Defined list's alias/name.
      * @return array
+     * @throws \Enum\Model\Behavior\Exception\MissingEnumConfigurationException
      */
     public function enum($alias)
     {
         $config = $this->config('lists.' . $alias);
         if (empty($config)) {
-            throw new RuntimeException();
+            throw new MissingEnumConfigurationException([$alias]);
         }
 
         return $this->strategy($alias, $config['strategy'])->enum($config);
@@ -174,22 +175,23 @@ class EnumBehavior extends Behavior
      *
      * @param string $method
      * @param array $args
+     * @return bool
+     * @throws \BadMethodCallException
+     * @throws \Enum\Model\Behavior\Exception\MissingEnumConfigurationException
      */
     public function __call($method, $args)
     {
         if (strpos($method, 'isValid') !== 0) {
-            throw new RuntimeException();
+            throw new BadMethodCallException(sprintf('Call to undefined method (%s)', $method));
         }
 
         $alias = Inflector::underscore(str_replace('isValid', '', $method));
+        list($entity,) = $args;
 
         if (!$config = $this->config('lists.' . $alias)) {
-            throw new RuntimeException();
+            throw new MissingEnumConfigurationException([$alias]);
         }
 
-        list($entity, $options) = $args;
-
-        $value = $entity->{$config['field']};
         return array_key_exists($entity->{$config['field']}, $this->enum($alias));
     }
 }

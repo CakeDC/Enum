@@ -1,7 +1,6 @@
 <?php
 namespace Enum\Model\Behavior\Strategy;
 
-use Cake\Core\InstanceConfigTrait;
 use Cake\Datasource\ModelAwareTrait;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;

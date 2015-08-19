@@ -24,8 +24,7 @@ interface StrategyInterface
     /**
      * @param string $group Group name.
      * @param array $config Configuration.
-     * @return \Enum\Model\Behavior\Strategy\AbstractStrategy
-     * @throws \RuntimeException if group's prefix is not defined.
+     * @return \Enum\Model\Behavior\Strategy\StrategyInterface
      */
     public function initialize($config);
 

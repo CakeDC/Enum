@@ -8,7 +8,7 @@ class ConfigStrategy extends AbstractStrategy
     public function listPrefixes()
     {
         if (!$lists = Configure::read('Enum')) {
-            throw new \RuntimeException();
+            return [];
         }
 
         $prefixes = array_keys($lists);
@@ -18,7 +18,7 @@ class ConfigStrategy extends AbstractStrategy
     public function enum(array $config = [])
     {
         if (!$list = Configure::read('Enum.' . strtolower($this->config('prefix')))) {
-            throw new \RuntimeException();
+            return [];
         }
 
         return $list;
