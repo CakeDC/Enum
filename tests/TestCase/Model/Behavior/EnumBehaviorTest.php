@@ -1,6 +1,7 @@
 <?php
 namespace Enum\Test\TestCase\Model\Behavior;
 
+use Cake\Core\Configure;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -16,7 +17,7 @@ class ArticlesTable extends Table
         $this->addBehavior('Enum.Enum', ['lists' => [
             'priority' => ['errorMessage' => 'Invalid priority'],
             'status' => ['strategy' => 'const'],
-            'category',
+            'category' => ['strategy' => 'config'],
         ]]);
     }
 }
@@ -28,9 +29,18 @@ class EnumBehaviorTest extends TestCase
         'plugin.Enum.lookups',
     ];
 
+    protected $Articles;
+
     public function setUp()
     {
         parent::setUp();
+
+        Configure::write('Enum', [
+            'ARTICLE_CATEGORY' => [
+                'CakePHP',
+                'Open Source Software',
+            ]
+        ]);
 
         $this->Articles = TableRegistry::get('Enum.Articles', [
             'className' => ArticlesTable::class,
@@ -63,7 +73,7 @@ class EnumBehaviorTest extends TestCase
                     'errorMessage' => 'The provided value is invalid'
                 ],
                 'category' => [
-                    'strategy' => 'lookup',
+                    'strategy' => 'config',
                     'prefix' => 'ARTICLE_CATEGORY',
                     'field' => 'category',
                     'errorMessage' => 'The provided value is invalid'
@@ -77,7 +87,7 @@ class EnumBehaviorTest extends TestCase
                     'lists' => [
                         'priority' => ['errorMessage' => 'Invalid priority'],
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
-                        'category',
+                        'category' => ['strategy' => 'config', 'prefix' => 'ARTICLE_CATEGORY'],
                     ],
                 ],
                 $expected
@@ -87,7 +97,7 @@ class EnumBehaviorTest extends TestCase
                     'lists' => [
                         'priority' => ['errorMessage' => 'Invalid priority'],
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
-                        'category' => 'ARTICLE_CATEGORY',
+                        'category' => ['strategy' => 'config', 'prefix' => 'ARTICLE_CATEGORY'],
                     ],
                 ],
                 $expected
@@ -129,8 +139,8 @@ class EnumBehaviorTest extends TestCase
             [
                 'category',
                 [
-                    'ARTICLE_CATEGORY_CAKEPHP' => 'CakePHP',
-                    'ARTICLE_CATEGORY_OSS' => 'Open Source Software',
+                    'CakePHP',
+                    'Open Source Software',
                 ]
             ],
         ];
@@ -152,7 +162,7 @@ class EnumBehaviorTest extends TestCase
                 [
                     'priority' => 'PRIORITY_URGENT',
                     'status' => 'STATUS_DRAFT',
-                    'category' => 'Cake',
+                    'category' => 2,
                 ],
                 [
                     'category' => ['isValidCategory' => 'The provided value is invalid'],
@@ -162,7 +172,7 @@ class EnumBehaviorTest extends TestCase
                 [
                     'priority' => 'Urgent',
                     'status' => 'Drafted',
-                    'category' => 'ARTICLE_CATEGORY_OSS',
+                    'category' => 1,
                 ],
                 [
                     'priority' => ['isValidPriority' => 'Invalid priority'],
@@ -186,7 +196,7 @@ class EnumBehaviorTest extends TestCase
     public function testAssociationsCreated()
     {
         $result = $this->Articles->associations()->keys();
-        $expected = ['priorities', 'categories'];
+        $expected = ['priorities'];
         $this->assertEquals($expected, $result);
 
         foreach ($result as $assoc) {

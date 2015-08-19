@@ -53,6 +53,7 @@ class EnumBehavior extends Behavior
         'lookup' => 'Enum\Model\Behavior\Strategy\LookupStrategy',
         'const' => 'Enum\Model\Behavior\Strategy\ConstStrategy',
         'enum' => 'Enum\Model\Behavior\Strategy\EnumStrategy',
+        'config' => 'Enum\Model\Behavior\Strategy\ConfigStrategy',
     ];
 
     /**
