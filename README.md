@@ -24,7 +24,7 @@ bin/cake plugin load Enum
 or by manually adding statement shown below to `bootstrap.php`:
 
 ```php
-Plugin::load('Enum');
+Plugin::load('CakeDC/Enum');
 ```
 
 ## Usage

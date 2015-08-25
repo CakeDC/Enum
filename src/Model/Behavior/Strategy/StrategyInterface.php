@@ -1,5 +1,5 @@
 <?php
-namespace Enum\Model\Behavior\Strategy;
+namespace CakeDC\Enum\Model\Behavior\Strategy;
 
 interface StrategyInterface
 {
@@ -23,7 +23,7 @@ interface StrategyInterface
 
     /**
      * @param array $config Configuration.
-     * @return \Enum\Model\Behavior\Strategy\StrategyInterface
+     * @return \CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface
      */
     public function initialize($config);
 

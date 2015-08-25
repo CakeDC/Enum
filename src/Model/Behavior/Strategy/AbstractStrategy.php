@@ -1,10 +1,10 @@
 <?php
-namespace Enum\Model\Behavior\Strategy;
+namespace CakeDC\Enum\Model\Behavior\Strategy;
 
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
-use Enum\Model\Behavior\Exception\MissingEnumStrategyPrefixException;
+use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyPrefixException;
 
 abstract class AbstractStrategy implements StrategyInterface
 {

@@ -1,15 +1,15 @@
 <?php
-
-namespace Enum\Test\TestCase\Model\Behavior\Strategy;
+namespace CakeDC\Enum\Test\TestCase\Model\Behavior\Strategy;
 
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Enum\Model\Behavior\Strategy\LookupStrategy;
+use CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy;
 
 class LookupStrategyTest extends TestCase
 {
     public $fixtures = [
-        'plugin.Enum.lookups',
+        'plugin.CakeDC/Enum.Lookups',
     ];
 
     public function setUp()

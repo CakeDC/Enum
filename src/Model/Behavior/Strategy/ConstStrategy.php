@@ -1,5 +1,5 @@
 <?php
-namespace Enum\Model\Behavior\Strategy;
+namespace CakeDC\Enum\Model\Behavior\Strategy;
 
 use ReflectionClass;
 

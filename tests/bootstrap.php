@@ -27,4 +27,4 @@ if (file_exists($root . '/config/bootstrap.php')) {
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
-\Cake\Core\Plugin::load('Enum', ['path' => dirname(dirname(__FILE__)) . DS]);
+\Cake\Core\Plugin::load('CakeDC/Enum', ['path' => dirname(dirname(__FILE__)) . DS]);

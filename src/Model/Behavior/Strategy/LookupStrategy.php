@@ -1,5 +1,5 @@
 <?php
-namespace Enum\Model\Behavior\Strategy;
+namespace CakeDC\Enum\Model\Behavior\Strategy;
 
 use Cake\Datasource\ModelAwareTrait;
 use Cake\ORM\Table;
@@ -18,7 +18,7 @@ class LookupStrategy extends AbstractStrategy
     {
         parent::__construct($alias, $table);
         $this->_defaultConfig['prefix'] = strtoupper($alias);
-        $this->modelClass = 'Enum.Lookups';
+        $this->modelClass = 'CakeDC/Enum.Lookups';
         $this->modelFactory('Table', ['Cake\ORM\TableRegistry', 'get']);
     }
 

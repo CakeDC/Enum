@@ -1,5 +1,5 @@
 <?php
-namespace Enum\Model\Entity;
+namespace CakeDC\Enum\Model\Entity;
 
 use Cake\ORM\Entity;
 

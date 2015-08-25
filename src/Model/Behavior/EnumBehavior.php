@@ -1,13 +1,13 @@
 <?php
-namespace Enum\Model\Behavior;
+namespace CakeDC\Enum\Model\Behavior;
 
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Inflector;
-use Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
-use Enum\Model\Behavior\Exception\MissingEnumStrategyException;
-use Enum\Model\Behavior\Strategy\AbstractStrategy;
+use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
+use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
+use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 use BadMethodCallException;
 
 class EnumBehavior extends Behavior
@@ -50,9 +50,9 @@ class EnumBehavior extends Behavior
      * @var array
      */
     protected $_classMap = [
-        'lookup' => 'Enum\Model\Behavior\Strategy\LookupStrategy',
-        'const' => 'Enum\Model\Behavior\Strategy\ConstStrategy',
-        'config' => 'Enum\Model\Behavior\Strategy\ConfigStrategy',
+        'lookup' => 'CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy',
+        'const' => 'CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy',
+        'config' => 'CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy',
     ];
 
     /**
@@ -78,8 +78,8 @@ class EnumBehavior extends Behavior
      *
      * @param string $alias
      * @param mixed $strategy Strategy name from the class map or some strategy instance.
-     * @return \Enum\Model\Behavior\Strategy\StrategyInterface
-     * @throws \Enum\Model\Behavior\Exception\MissingEnumStrategyException
+     * @return \CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface
+     * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException
      */
     public function strategy($alias, $strategy)
     {
@@ -141,7 +141,7 @@ class EnumBehavior extends Behavior
     /**
      * @param string $alias Defined list's alias/name.
      * @return array
-     * @throws \Enum\Model\Behavior\Exception\MissingEnumConfigurationException
+     * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
      */
     public function enum($alias)
     {
@@ -177,7 +177,7 @@ class EnumBehavior extends Behavior
      * @param array $args
      * @return bool
      * @throws \BadMethodCallException
-     * @throws \Enum\Model\Behavior\Exception\MissingEnumConfigurationException
+     * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
      */
     public function __call($method, $args)
     {

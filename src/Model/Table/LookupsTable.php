@@ -1,5 +1,5 @@
 <?php
-namespace Enum\Model\Table;
+namespace CakeDC\Enum\Model\Table;
 
 use Cake\ORM\Table;
 

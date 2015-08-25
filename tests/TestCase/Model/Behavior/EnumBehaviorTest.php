@@ -1,5 +1,5 @@
 <?php
-namespace Enum\Test\TestCase\Model\Behavior;
+namespace CakeDC\Enum\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\ORM\Table;
@@ -14,7 +14,7 @@ class ArticlesTable extends Table
 
     public function initialize(array $config)
     {
-        $this->addBehavior('Enum.Enum', ['lists' => [
+        $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
             'priority' => ['errorMessage' => 'Invalid priority'],
             'status' => ['strategy' => 'const'],
             'category' => ['strategy' => 'config'],
@@ -25,8 +25,8 @@ class ArticlesTable extends Table
 class EnumBehaviorTest extends TestCase
 {
     public $fixtures = [
-        'plugin.Enum.articles',
-        'plugin.Enum.lookups',
+        'plugin.CakeDC/Enum.articles',
+        'plugin.CakeDC/Enum.lookups',
     ];
 
     protected $Articles;
@@ -35,14 +35,14 @@ class EnumBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        Configure::write('Enum', [
+        Configure::write('CakeDC/Enum', [
             'ARTICLE_CATEGORY' => [
                 'CakePHP',
                 'Open Source Software',
             ]
         ]);
 
-        $this->Articles = TableRegistry::get('Enum.Articles', [
+        $this->Articles = TableRegistry::get('CakeDC/Enum.Articles', [
             'className' => ArticlesTable::class,
             'table' => 'enum_articles'
         ]);
@@ -111,8 +111,8 @@ class EnumBehaviorTest extends TestCase
     public function testBasicConfiguration(array $config, array $expected)
     {
         TableRegistry::clear();
-        $Articles = TableRegistry::get('Enum.Articles', ['table' => 'enum_articles']);
-        $Articles->addBehavior('Enum.Enum', $config);
+        $Articles = TableRegistry::get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
+        $Articles->addBehavior('CakeDC/Enum.Enum', $config);
         $result = $Articles->behaviors()->Enum->config();
         $this->assertEquals($expected, $result);
     }

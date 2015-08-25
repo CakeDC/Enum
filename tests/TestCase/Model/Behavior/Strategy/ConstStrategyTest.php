@@ -1,9 +1,9 @@
 <?php
-namespace Enum\Test\TestCase\Model\Behavior\Strategy;
+namespace CakeDC\Enum\Test\TestCase\Model\Behavior\Strategy;
 
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
-use Enum\Model\Behavior\Strategy\ConstStrategy;
+use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
 
 class ArticlesTable extends Table
 {

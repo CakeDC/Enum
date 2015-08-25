@@ -1,10 +1,10 @@
 <?php
-namespace Enum\Test\TestCase\Model\Behavior\Strategy;
+namespace CakeDC\Enum\Test\TestCase\Model\Behavior\Strategy;
 
 use Cake\Core\Configure;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
-use Enum\Model\Behavior\Strategy\ConfigStrategy;
+use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
 
 class ConfigStrategyTest extends TestCase
 {
@@ -13,7 +13,7 @@ class ConfigStrategyTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        Configure::write('Enum', [
+        Configure::write(ConfigStrategy::KEY, [
             'status' => [
                 'Published',
                 'Drafted',

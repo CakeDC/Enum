@@ -1,5 +1,5 @@
 <?php
-namespace Enum\Model\Behavior\Exception;
+namespace CakeDC\Enum\Model\Behavior\Exception;
 
 use Cake\Core\Exception\Exception;
 
