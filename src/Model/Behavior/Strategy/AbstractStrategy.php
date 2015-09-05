@@ -58,7 +58,7 @@ abstract class AbstractStrategy implements StrategyInterface
         }
 
         if (empty($config['field'])) {
-            $config['field'] = Inflector::underscore(Inflector::singularize($this->_alias));
+            $config['field'] = Inflector::underscore($this->_alias);
         }
 
         if (empty($config['errorMessage'])) {
