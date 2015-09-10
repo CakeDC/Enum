@@ -18,7 +18,7 @@ composer require cakedc/enum:dev-master
 You then need to load the plugin. You can use the shell command:
 
 ```
-bin/cake plugin load Enum
+bin/cake plugin load CakeDC/Enum
 ```
 
 or by manually adding statement shown below to `bootstrap.php`:
