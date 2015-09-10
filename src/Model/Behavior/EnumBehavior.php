@@ -161,7 +161,7 @@ class EnumBehavior extends Behavior
     public function buildRules(Event $event, RulesChecker $rules)
     {
         foreach ($this->config('lists') as $alias => $config) {
-            $ruleName = 'isValid' . Inflector::classify($alias);
+            $ruleName = 'isValid' . Inflector::camelize($alias);
             $rules->add([$this, $ruleName], $ruleName, [
                 'errorField' => $config['field'],
                 'message' => $config['errorMessage']

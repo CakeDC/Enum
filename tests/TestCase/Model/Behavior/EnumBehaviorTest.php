@@ -12,12 +12,19 @@ class ArticlesTable extends Table
     const STATUS_DRAFT = 'Drafted';
     const STATUS_ARCHIVE = 'Archived';
 
+    const NATURE_OF_BUSINESS_RENTALS = 'Rentals';
+    const NATURE_OF_BUSINESS_TOURS = 'Tours';
+
     public function initialize(array $config)
     {
         $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
             'priority' => ['errorMessage' => 'Invalid priority'],
             'status' => ['strategy' => 'const'],
             'category' => ['strategy' => 'config'],
+            'nature_of_business' => [
+                'strategy' => 'const',
+                'prefix' => 'NATURE_OF_BUSINESS'
+            ],
         ]]);
     }
 }
@@ -78,6 +85,12 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'category',
                     'errorMessage' => 'The provided value is invalid'
                 ],
+                'nature_of_business' => [
+                    'strategy' => 'const',
+                    'prefix' => 'NATURE_OF_BUSINESS',
+                    'field' => 'nature_of_business',
+                    'errorMessage' => 'The provided value is invalid'
+                ],
             ],
         ];
 
@@ -88,6 +101,7 @@ class EnumBehaviorTest extends TestCase
                         'priority' => ['errorMessage' => 'Invalid priority'],
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
                         'category' => ['strategy' => 'config', 'prefix' => 'ARTICLE_CATEGORY'],
+                        'nature_of_business' => ['strategy' => 'const', 'prefix' => 'NATURE_OF_BUSINESS'],
                     ],
                 ],
                 $expected
@@ -98,6 +112,7 @@ class EnumBehaviorTest extends TestCase
                         'priority' => ['errorMessage' => 'Invalid priority'],
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
                         'category' => ['strategy' => 'config', 'prefix' => 'ARTICLE_CATEGORY'],
+                        'nature_of_business' => ['strategy' => 'const', 'prefix' => 'NATURE_OF_BUSINESS'],
                     ],
                 ],
                 $expected
@@ -143,6 +158,13 @@ class EnumBehaviorTest extends TestCase
                     'Open Source Software',
                 ]
             ],
+            [
+                'nature_of_business',
+                [
+                    'NATURE_OF_BUSINESS_RENTALS' => 'Rentals',
+                    'NATURE_OF_BUSINESS_TOURS' => 'Tours',
+                ]
+            ],
         ];
     }
 
@@ -163,6 +185,7 @@ class EnumBehaviorTest extends TestCase
                     'priority' => 'PRIORITY_URGENT',
                     'status' => 'STATUS_DRAFT',
                     'category' => 2,
+                    'nature_of_business' => 'NATURE_OF_BUSINESS_TOURS',
                 ],
                 [
                     'category' => ['isValidCategory' => 'The provided value is invalid'],
@@ -173,10 +196,12 @@ class EnumBehaviorTest extends TestCase
                     'priority' => 'Urgent',
                     'status' => 'Drafted',
                     'category' => 1,
+                    'nature_of_business' => 'Invalid value',
                 ],
                 [
                     'priority' => ['isValidPriority' => 'Invalid priority'],
                     'status' => ['isValidStatus' => 'The provided value is invalid'],
+                    'nature_of_business' => ['isValidNatureOfBusiness' => 'The provided value is invalid'],
                 ]
             ]
         ];
