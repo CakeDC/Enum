@@ -38,7 +38,7 @@ Requirements
 Documentation
 -------------
 
-For documentation, as well as tutorials, see the [Docs](Docs/Home.md) directory of this repository.
+_COMING SOON_
 
 Roadmap
 ------
