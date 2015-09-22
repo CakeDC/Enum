@@ -1,4 +1,5 @@
-# Enum
+CakeDC Enum Plugin
+==================
 
 [![Build Status](https://img.shields.io/travis/CakeDC/Enum/master.svg?style=flat-square)](https://travis-ci.org/CakeDC/Enum)
 [![Coverage](https://img.shields.io/coveralls/CakeDC/Enum/master.svg?style=flat-square)](https://coveralls.io/r/CakeDC/Enum)
@@ -7,7 +8,8 @@
 
 {{@TODO description}}
 
-## Install
+Install
+-------
 
 Using [Composer][composer]:
 
@@ -27,31 +29,43 @@ or by manually adding statement shown below to `bootstrap.php`:
 Plugin::load('CakeDC/Enum');
 ```
 
-## Usage
+Requirements
+------------
 
-{{@TODO documentation}}
+* CakePHP 3.0+
+* PHP 5.4.16+
 
-## Patches & Features
+Documentation
+-------------
 
-* Fork
-* Mod, fix
-* Test - this is important, so it's not unintentionally broken
-* Commit - do not mess with license, todo, version, etc. (if you do change any, bump them into commits of
-their own that I can ignore when I pull)
-* Pull request - bonus point for topic branches
+For documentation, as well as tutorials, see the [Docs](Docs/Home.md) directory of this repository.
 
-To ensure your PRs are considered for upstream, you MUST follow the [CakePHP coding standards][standards].
+Roadmap
+------
 
-## Bugs & Feedback
+* 3.0.0 Migration to CakePHP 3.x
+* 3.0.1 General improvements
+  * Unit test coverage improvements
+  * Refactor UsersTable to Behavior
+  * Add google authentication
+  * Add captcha
+  * Link social accounts in profile
 
-http://github.com/cakedc/enum/issues
+Support
+-------
 
-## License
+For bugs and feature requests, please use the [issues](https://github.com/CakeDC/users/issues) section of this repository.
 
-Copyright (c) 2015, [CakeDC][cakedc] and licensed under [The MIT License][mit].
+Commercial support is also available, [contact us](http://cakedc.com/contact) for more information.
 
-[cakephp]:http://cakephp.org
-[composer]:http://getcomposer.org
-[mit]:http://www.opensource.org/licenses/mit-license.php
-[cakedc]:http://cakedc.com
-[standards]:http://book.cakephp.org/3.0/en/contributing/cakephp-coding-conventions.html
+Contributing
+------------
+
+This repository follows the [CakeDC Plugin Standard](http://cakedc.com/plugin-standard). If you'd like to contribute new features, enhancements or bug fixes to the plugin, please read our [Contribution Guidelines](http://cakedc.com/contribution-guidelines) for detailed instructions.
+
+License
+-------
+
+Copyright 2015 Cake Development Corporation (CakeDC). All rights reserved.
+
+Licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) License. Redistributions of the source code included in this repository must retain the copyright notice found in each file.

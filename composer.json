@@ -9,18 +9,9 @@
     ],
     "homepage": "https://github.com/cakedc/enum",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Jad Bitar",
-            "homepage": "http://jadb.io",
-            "role": "Author"
-        }
-    ],
     "support": {
         "issues": "https://github.com/cakedc/enum/issues",
         "source": "https://github.com/cakedc/enum"
-    },
-    "require": {
     },
     "require-dev": {
         "cakephp/cakephp": "~3.0",

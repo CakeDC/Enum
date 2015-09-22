@@ -1,6 +1,18 @@
 <?php
+
+/**
+ * Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2010 - 2015, Cake Development Corporation (http://cakedc.com)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
 namespace CakeDC\Enum\Model\Behavior;
 
+use BadMethodCallException;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Cake\ORM\RulesChecker;
@@ -8,7 +20,6 @@ use Cake\Utility\Inflector;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
 use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
-use BadMethodCallException;
 
 class EnumBehavior extends Behavior
 {
