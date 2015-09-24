@@ -6,7 +6,7 @@ CakeDC Enum Plugin
 [![Total Downloads](https://img.shields.io/packagist/dt/cakedc/enum.svg?style=flat-square)](https://packagist.org/packages/cakedc/enum)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
-{{@TODO description}}
+Enumeration list for [CakePHP 3](http://cakephp.org).
 
 Install
 -------
