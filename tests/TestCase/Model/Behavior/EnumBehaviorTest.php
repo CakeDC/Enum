@@ -61,7 +61,7 @@ class EnumBehaviorTest extends TestCase
         ]);
 
         $this->Articles = TableRegistry::get('CakeDC/Enum.Articles', [
-            'className' => ArticlesTable::class,
+            'className' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ArticlesTable',
             'table' => 'enum_articles'
         ]);
     }
