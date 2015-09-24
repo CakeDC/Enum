@@ -13,13 +13,13 @@
 namespace CakeDC\Enum\Model\Behavior;
 
 use BadMethodCallException;
+use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
+use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
+use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Inflector;
-use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
-use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
-use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 
 class EnumBehavior extends Behavior
 {
@@ -87,7 +87,7 @@ class EnumBehavior extends Behavior
     /**
      * Getter/setter for strategies.
      *
-     * @param string $alias
+     * @param string $alias Strategy's alias.
      * @param mixed $strategy Strategy name from the class map or some strategy instance.
      * @return \CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException
@@ -141,7 +141,7 @@ class EnumBehavior extends Behavior
                 $config['strategy'] = $defaultStrategy;
             }
 
-            $lists[$alias] =  $this->strategy($alias, $config['strategy'])
+            $lists[$alias] = $this->strategy($alias, $config['strategy'])
                 ->initialize($config)
                 ->config();
         }
@@ -184,8 +184,8 @@ class EnumBehavior extends Behavior
     /**
      * Universal validation rule for lists.
      *
-     * @param string $method
-     * @param array $args
+     * @param string $method Method name.
+     * @param array $args Method's arguments.
      * @return bool
      * @throws \BadMethodCallException
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
@@ -197,7 +197,7 @@ class EnumBehavior extends Behavior
         }
 
         $alias = Inflector::underscore(str_replace('isValid', '', $method));
-        list($entity,) = $args;
+        list($entity, ) = $args;
 
         if (!$config = $this->config('lists.' . $alias)) {
             throw new MissingEnumConfigurationException([$alias]);

@@ -12,9 +12,9 @@
 
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior\Strategy;
 
+use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
-use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
 
 class ArticlesTable extends Table
 {

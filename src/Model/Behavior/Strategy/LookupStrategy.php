@@ -35,6 +35,8 @@ class LookupStrategy extends AbstractStrategy
 
     /**
      * {@inheritdoc}
+     *
+     * @return array
      */
     public function listPrefixes()
     {
@@ -49,6 +51,9 @@ class LookupStrategy extends AbstractStrategy
 
     /**
      * {@inheritdoc}
+     *
+     * @param array $config (unused in this case).
+     * @return array
      */
     public function enum(array $config = [])
     {
@@ -72,6 +77,8 @@ class LookupStrategy extends AbstractStrategy
 
     /**
      * {@inheritdoc}
+     *
+     * @return $this
      */
     public function initialize($config)
     {

@@ -12,10 +12,10 @@
 
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior\Strategy;
 
+use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
 use Cake\Core\Configure;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
-use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
 
 class ConfigStrategyTest extends TestCase
 {

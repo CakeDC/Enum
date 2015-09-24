@@ -12,10 +12,10 @@
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
+use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyPrefixException;
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
-use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyPrefixException;
 
 abstract class AbstractStrategy implements StrategyInterface
 {
@@ -57,6 +57,9 @@ abstract class AbstractStrategy implements StrategyInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param mixed $config Strategy's configuration.
+     * @return $this
      */
     public function initialize($config)
     {
@@ -83,6 +86,9 @@ abstract class AbstractStrategy implements StrategyInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param string $prefix Prefix' alias.
+     * @return bool
      */
     public function hasPrefix($prefix)
     {

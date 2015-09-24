@@ -12,10 +12,10 @@
 
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior\Strategy;
 
+use CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy;
 
 class LookupStrategyTest extends TestCase
 {

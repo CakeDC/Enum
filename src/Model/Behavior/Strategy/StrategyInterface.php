@@ -27,7 +27,7 @@ interface StrategyInterface
     public function listPrefixes();
 
     /**
-     * @param array $config
+     * @param mixed $config Strategy's configuration.
      * @return array
      */
     public function enum(array $config = []);

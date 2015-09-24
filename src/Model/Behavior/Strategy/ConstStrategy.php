@@ -18,6 +18,8 @@ class ConstStrategy extends AbstractStrategy
 {
     /**
      * {@inheritdoc}
+     *
+     * @return array
      */
     public function listPrefixes()
     {
@@ -34,13 +36,16 @@ class ConstStrategy extends AbstractStrategy
 
         unset($matrix['VALIDATOR']); // one of cake's own constants.
 
-        return  array_keys(array_filter($matrix, function ($v) {
+        return array_keys(array_filter($matrix, function ($v) {
             return $v >= 2;
         }));
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array $config List of callable filters to limit items generated from list.
+     * @return array
      */
     public function enum(array $config = [])
     {

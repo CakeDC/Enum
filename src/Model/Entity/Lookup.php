@@ -16,6 +16,12 @@ use Cake\ORM\Entity;
 
 class Lookup extends Entity
 {
+
+    /**
+     * Virtual field to get `prefix_name` notation.
+     *
+     * @return string
+     */
     protected function _getGroup()
     {
         return implode('_', [

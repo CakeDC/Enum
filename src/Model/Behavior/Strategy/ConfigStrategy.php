@@ -20,6 +20,8 @@ class ConfigStrategy extends AbstractStrategy
 
     /**
      * {@inheritdoc}
+     *
+     * @return array
      */
     public function listPrefixes()
     {
@@ -33,6 +35,9 @@ class ConfigStrategy extends AbstractStrategy
 
     /**
      * {@inheritdoc}
+     *
+     * @param array $config (unused in this case).
+     * @return array
      */
     public function enum(array $config = [])
     {
@@ -45,6 +50,9 @@ class ConfigStrategy extends AbstractStrategy
 
     /**
      * {@inheritdoc}
+     *
+     * @param array $config Strategy's configuration.
+     * @return $this
      */
     public function initialize($config)
     {

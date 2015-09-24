@@ -17,6 +17,11 @@ use Cake\ORM\Table;
 class LookupsTable extends Table
 {
 
+    /**
+     * {@inheritdoc}
+     *
+     * @param array $config Table's configuration.
+     */
     public function initialize(array $config)
     {
         $this->table('enum_lookups');
