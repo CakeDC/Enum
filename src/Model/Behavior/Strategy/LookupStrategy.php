@@ -24,6 +24,9 @@ class LookupStrategy extends AbstractStrategy
 
     /**
      * {@inheritdoc}
+     *
+     * @param string $alias Strategy's alias.
+     * @param \Cake\ORM\Table $table Table object.
      */
     public function __construct($alias, Table $table)
     {
@@ -78,6 +81,7 @@ class LookupStrategy extends AbstractStrategy
     /**
      * {@inheritdoc}
      *
+     * @param array $config Strategy's configuration.
      * @return $this
      */
     public function initialize($config)

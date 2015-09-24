@@ -76,6 +76,7 @@ class EnumBehavior extends Behavior
     /**
      * Initializes the behavior.
      *
+     * @param array $config Strategy's configuration.
      * @return void
      */
     public function initialize(array $config)
