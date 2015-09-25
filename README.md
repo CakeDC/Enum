@@ -40,21 +40,10 @@ Documentation
 
 _COMING SOON_
 
-Roadmap
-------
-
-* 3.0.0 Migration to CakePHP 3.x
-* 3.0.1 General improvements
-  * Unit test coverage improvements
-  * Refactor UsersTable to Behavior
-  * Add google authentication
-  * Add captcha
-  * Link social accounts in profile
-
 Support
 -------
 
-For bugs and feature requests, please use the [issues](https://github.com/CakeDC/users/issues) section of this repository.
+For bugs and feature requests, please use the [issues](https://github.com/CakeDC/Enum/issues) section of this repository.
 
 Commercial support is also available, [contact us](http://cakedc.com/contact) for more information.
 
