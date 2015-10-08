@@ -26,6 +26,8 @@ class ArticlesTable extends Table
     const NATURE_OF_BUSINESS_RENTALS = 'Rentals';
     const NATURE_OF_BUSINESS_TOURS = 'Tours';
 
+    const NORULES_FOO = 'Foo';
+
     public function initialize(array $config)
     {
         $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
@@ -35,6 +37,11 @@ class ArticlesTable extends Table
             'nature_of_business' => [
                 'strategy' => 'const',
                 'prefix' => 'NATURE_OF_BUSINESS'
+            ],
+            'norules' => [
+                'strategy' => 'const',
+                'prefix' => 'NORULES',
+                'applicationRules' => false
             ],
         ]]);
     }
@@ -176,6 +183,12 @@ class EnumBehaviorTest extends TestCase
                     'NATURE_OF_BUSINESS_TOURS' => 'Tours',
                 ]
             ],
+            [
+                'norules',
+                [
+                    'NORULES_FOO' => 'Foo',
+                ]
+            ],
         ];
     }
 
@@ -197,6 +210,7 @@ class EnumBehaviorTest extends TestCase
                     'status' => 'STATUS_DRAFT',
                     'category' => 2,
                     'nature_of_business' => 'NATURE_OF_BUSINESS_TOURS',
+                    'norules' => 'invalid'
                 ],
                 [
                     'category' => ['isValidCategory' => 'The provided value is invalid'],
@@ -208,6 +222,7 @@ class EnumBehaviorTest extends TestCase
                     'status' => 'Drafted',
                     'category' => 1,
                     'nature_of_business' => 'Invalid value',
+                    'norules' => 'invalid'
                 ],
                 [
                     'priority' => ['isValidPriority' => 'Invalid priority'],

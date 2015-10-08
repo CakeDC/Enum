@@ -19,6 +19,7 @@ use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Cake\ORM\RulesChecker;
+use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 
 class EnumBehavior extends Behavior
@@ -41,6 +42,7 @@ class EnumBehavior extends Behavior
      *           'prefix' => 'PRIORITY',
      *           'field' => 'priority',
      *           'errorMessage' => 'Invalid priority',
+     *           'applicationRules' => true
      *       ],
      *   ];
      *   ```
@@ -173,6 +175,10 @@ class EnumBehavior extends Behavior
     public function buildRules(Event $event, RulesChecker $rules)
     {
         foreach ($this->config('lists') as $alias => $config) {
+            if (Hash::get($config, 'applicationRules') === false) {
+                continue;
+            }
+
             $ruleName = 'isValid' . Inflector::camelize($alias);
             $rules->add([$this, $ruleName], $ruleName, [
                 'errorField' => $config['field'],
