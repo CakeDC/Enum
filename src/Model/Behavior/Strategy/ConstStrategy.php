@@ -19,6 +19,13 @@ class ConstStrategy extends AbstractStrategy
 {
 
     /**
+     * Constants list
+     *
+     * @var array
+     */
+    protected $_constants;
+
+    /**
      * {@inheritdoc}
      *
      * @param string $alias Strategy's alias.
@@ -38,13 +45,8 @@ class ConstStrategy extends AbstractStrategy
      */
     public function enum(array $config = [])
     {
-        $prefix = $this->config('prefix');
         $constants = $this->_getConstants();
-        $constantsKeys = array_keys($constants);
-
-        $keys = array_filter($constantsKeys, function ($v) use ($prefix) {
-            return strpos($v, $prefix) === 0;
-        });
+        $keys = array_keys($constants);
 
         foreach ($config as $callable) {
             if (is_callable($callable)) {
@@ -66,6 +68,19 @@ class ConstStrategy extends AbstractStrategy
      */
     protected function _getConstants()
     {
-        return (new ReflectionClass(get_class($this->_table)))->getConstants();
+        if (isset($this->_constants)) {
+            return $constants;
+        }
+
+        $constants = (new ReflectionClass(get_class($this->_table)))->getConstants();
+        $constantsKeys = array_keys($constants);
+
+        $prefix = $this->config('prefix');
+        $keys = array_filter($constantsKeys, function ($v) use ($prefix) {
+            return strpos($v, $prefix) === 0;
+        });
+
+        $this->_constants = array_intersect_key($constants, array_flip($keys));
+        return $this->_constants;
     }
 }
