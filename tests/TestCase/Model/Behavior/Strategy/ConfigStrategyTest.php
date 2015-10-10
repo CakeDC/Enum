@@ -25,7 +25,7 @@ class ConfigStrategyTest extends TestCase
     {
         parent::setUp();
         Configure::write(ConfigStrategy::KEY, [
-            'status' => [
+            'STATUS' => [
                 'Published',
                 'Drafted',
                 'Archived'
