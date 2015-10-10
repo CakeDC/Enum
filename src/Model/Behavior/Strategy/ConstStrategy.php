@@ -72,15 +72,17 @@ class ConstStrategy extends AbstractStrategy
             return $constants;
         }
 
-        $constants = (new ReflectionClass(get_class($this->_table)))->getConstants();
-        $constantsKeys = array_keys($constants);
-
         $prefix = $this->config('prefix');
-        $keys = array_filter($constantsKeys, function ($v) use ($prefix) {
-            return strpos($v, $prefix) === 0;
-        });
+        $length = strlen($prefix) + 1;
+        $classConstants = (new ReflectionClass(get_class($this->_table)))->getConstants();
+        $constants = [];
 
-        $this->_constants = array_intersect_key($constants, array_flip($keys));
-        return $this->_constants;
+        foreach ($classConstants as $key => $value) {
+            if (strpos($key, $prefix) === 0) {
+                $constants[substr($key, $length)] = $value;
+            }
+        }
+
+        return $this->_constants = $constants;
     }
 }

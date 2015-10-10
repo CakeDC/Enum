@@ -156,9 +156,9 @@ class EnumBehaviorTest extends TestCase
             [
                 'status',
                 [
-                    'STATUS_PUBLIC' => 'Published',
-                    'STATUS_DRAFT' => 'Drafted',
-                    'STATUS_ARCHIVE' => 'Archived',
+                    'PUBLIC' => 'Published',
+                    'DRAFT' => 'Drafted',
+                    'ARCHIVE' => 'Archived',
                 ]
             ],
             [
@@ -171,20 +171,20 @@ class EnumBehaviorTest extends TestCase
             [
                 'node_type',
                 [
-                    'NODE_TYPE_PAGE' => 'Page',
-                    'NODE_TYPE_BLOG' => 'Blog',
+                    'PAGE' => 'Page',
+                    'BLOG' => 'Blog',
                 ]
             ],
             [
                 'node_group',
                 [
-                    'NODE_GROUP_ACTIVE' => 'Active',
+                    'ACTIVE' => 'Active',
                 ]
             ],
             [
                 'norules',
                 [
-                    'NORULES_FOO' => 'Foo',
+                    'FOO' => 'Foo',
                 ]
             ],
         ];
@@ -205,10 +205,10 @@ class EnumBehaviorTest extends TestCase
             [
                 [
                     'priority' => 'PRIORITY_URGENT',
-                    'status' => 'STATUS_DRAFT',
+                    'status' => 'DRAFT',
                     'category' => 2,
-                    'node_type' => 'NODE_TYPE_BLOG',
-                    'node_group' => 'NODE_GROUP_ACTIVE',
+                    'node_type' => 'BLOG',
+                    'node_group' => 'ACTIVE',
                     'norules' => 'invalid',
                 ],
                 [
@@ -221,7 +221,7 @@ class EnumBehaviorTest extends TestCase
                     'status' => 'Drafted',
                     'category' => 1,
                     'node_type' => 'Invalid value',
-                    'node_group' => 'NODE_GROUP_ACTIVE',
+                    'node_group' => 'ACTIVE',
                     'norules' => 'invalid'
                 ],
                 [

@@ -47,9 +47,9 @@ class ConstStrategyTest extends TestCase
     {
         $result = $this->Strategy->enum();
         $expected = [
-            'STATUS_PUBLIC' => 'Published',
-            'STATUS_DRAFT' => 'Drafted',
-            'STATUS_ARCHIVE' => 'Archived',
+            'PUBLIC' => 'Published',
+            'DRAFT' => 'Drafted',
+            'ARCHIVE' => 'Archived',
         ];
         $this->assertEquals($expected, $result);
     }
