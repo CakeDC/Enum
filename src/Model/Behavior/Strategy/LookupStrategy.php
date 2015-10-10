@@ -31,7 +31,6 @@ class LookupStrategy extends AbstractStrategy
     public function __construct($alias, Table $table)
     {
         parent::__construct($alias, $table);
-        $this->_defaultConfig['prefix'] = strtoupper($alias);
         $this->modelClass = 'CakeDC/Enum.Lookups';
         $this->modelFactory('Table', ['Cake\ORM\TableRegistry', 'get']);
     }

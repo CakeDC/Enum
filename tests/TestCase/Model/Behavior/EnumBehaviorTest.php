@@ -31,18 +31,11 @@ class ArticlesTable extends Table
     public function initialize(array $config)
     {
         $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
-            'priority' => ['errorMessage' => 'Invalid priority'],
-            'status' => ['strategy' => 'const'],
+            'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
+            'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
             'category' => ['strategy' => 'config'],
-            'nature_of_business' => [
-                'strategy' => 'const',
-                'prefix' => 'NATURE_OF_BUSINESS'
-            ],
-            'norules' => [
-                'strategy' => 'const',
-                'prefix' => 'NORULES',
-                'applicationRules' => false
-            ],
+            'nature_of_business' => ['strategy' => 'const'],
+            'norules' => ['strategy' => 'const', 'applicationRules' => false],
         ]]);
     }
 }
@@ -61,7 +54,7 @@ class EnumBehaviorTest extends TestCase
         parent::setUp();
 
         Configure::write('CakeDC/Enum', [
-            'ARTICLE_CATEGORY' => [
+            'ENUM_ARTICLE_CATEGORY' => [
                 'CakePHP',
                 'Open Source Software',
             ]
@@ -116,21 +109,10 @@ class EnumBehaviorTest extends TestCase
             [
                 [
                     'lists' => [
-                        'priority' => ['errorMessage' => 'Invalid priority'],
+                        'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
                         'category' => ['strategy' => 'config', 'prefix' => 'ARTICLE_CATEGORY'],
-                        'nature_of_business' => ['strategy' => 'const', 'prefix' => 'NATURE_OF_BUSINESS'],
-                    ],
-                ],
-                $expected
-            ],
-            [
-                [
-                    'lists' => [
-                        'priority' => ['errorMessage' => 'Invalid priority'],
-                        'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
-                        'category' => ['strategy' => 'config', 'prefix' => 'ARTICLE_CATEGORY'],
-                        'nature_of_business' => ['strategy' => 'const', 'prefix' => 'NATURE_OF_BUSINESS'],
+                        'nature_of_business' => ['strategy' => 'const'],
                     ],
                 ],
                 $expected

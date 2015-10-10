@@ -12,10 +12,23 @@
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
+use Cake\ORM\Table;
 use ReflectionClass;
 
 class ConstStrategy extends AbstractStrategy
 {
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param string $alias Strategy's alias.
+     * @param \Cake\ORM\Table $table Table object.
+     */
+    public function __construct($alias, Table $table)
+    {
+        parent::__construct($alias, $table);
+        $this->_defaultConfig['prefix'] = strtoupper($alias);
+    }
 
     /**
      * {@inheritdoc}
