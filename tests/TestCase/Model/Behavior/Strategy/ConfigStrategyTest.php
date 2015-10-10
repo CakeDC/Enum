@@ -32,6 +32,7 @@ class ConfigStrategyTest extends TestCase
             ],
         ]);
         $this->Strategy = new ConfigStrategy('status', new Table());
+        $this->Strategy->initialize(['prefix' => 'STATUS']);
     }
 
     public function tearDown()
@@ -40,16 +41,8 @@ class ConfigStrategyTest extends TestCase
         unset($this->Strategy);
     }
 
-    public function testListPrefixes()
-    {
-        $result = $this->Strategy->listPrefixes();
-        $expected = ['STATUS'];
-        $this->assertEquals($expected, $result);
-    }
-
     public function testEnum()
     {
-        $this->Strategy->config('prefix', 'STATUS');
         $result = $this->Strategy->enum();
         $expected = [
             'Published',

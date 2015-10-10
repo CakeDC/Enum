@@ -16,17 +16,6 @@ interface StrategyInterface
 {
 
     /**
-     * @param string $prefix Prefix.
-     * @return bool
-     */
-    public function hasPrefix($prefix);
-
-    /**
-     * @return array
-     */
-    public function listPrefixes();
-
-    /**
      * @param mixed $config Strategy's configuration.
      * @return array
      */

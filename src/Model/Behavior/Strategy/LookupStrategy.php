@@ -39,22 +39,6 @@ class LookupStrategy extends AbstractStrategy
     /**
      * {@inheritdoc}
      *
-     * @return array
-     */
-    public function listPrefixes()
-    {
-        if (empty($this->_prefixes)) {
-            $this->_prefixes = array_keys($this->loadModel()->find('list', [
-                'keyField' => 'prefix',
-            ])->toArray());
-        }
-
-        return $this->_prefixes;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
      * @param array $config (unused in this case).
      * @return array
      */

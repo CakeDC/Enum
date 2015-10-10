@@ -16,22 +16,8 @@ use Cake\Core\Configure;
 
 class ConfigStrategy extends AbstractStrategy
 {
+
     const KEY = 'CakeDC/Enum';
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return array
-     */
-    public function listPrefixes()
-    {
-        if (!$lists = Configure::read(self::KEY)) {
-            return [];
-        }
-
-        $prefixes = array_keys($lists);
-        return array_map('strtoupper', $prefixes);
-    }
 
     /**
      * {@inheritdoc}

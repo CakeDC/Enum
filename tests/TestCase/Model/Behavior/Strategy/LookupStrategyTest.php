@@ -27,29 +27,13 @@ class LookupStrategyTest extends TestCase
     {
         parent::setUp();
         $this->Strategy = new LookupStrategy('priority', new Table());
+        $this->Strategy->initialize(['prefix' => 'PRIORITY']);
     }
 
     public function tearDown()
     {
         parent::tearDown();
         unset($this->Strategy);
-    }
-
-    public function testHasPrefix()
-    {
-        $this->assertTrue($this->Strategy->hasPrefix('priority'));
-        $this->assertTrue($this->Strategy->hasPrefix('article_category'));
-        $this->assertFalse($this->Strategy->hasPrefix('status'));
-    }
-
-    public function testListPrefixes()
-    {
-        $result = $this->Strategy->listPrefixes();
-        $expected = [
-            'PRIORITY',
-            'ARTICLE_CATEGORY'
-        ];
-        $this->assertEquals($expected, $result);
     }
 
     public function testEnum()

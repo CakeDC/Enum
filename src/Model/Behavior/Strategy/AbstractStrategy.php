@@ -30,13 +30,6 @@ abstract class AbstractStrategy implements StrategyInterface
     protected $_defaultConfig = [];
 
     /**
-     * List of defined group prefixes.
-     *
-     * @var array
-     */
-    protected $_prefixes = [];
-
-    /**
      * Target table.
      *
      * @var \Cake\ORM\Table
@@ -85,31 +78,14 @@ abstract class AbstractStrategy implements StrategyInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param string $prefix Prefix' alias.
-     * @return bool
-     */
-    public function hasPrefix($prefix)
-    {
-        return in_array(strtoupper($prefix), $this->listPrefixes());
-    }
-
-    /**
      * Generates default prefix for strategy.
      *
      * @return string
      */
     protected function _generatePrefix()
     {
-        $prefix = Inflector::underscore(Inflector::singularize($this->_table->alias()));
+        $prefix = Inflector::underscore(Inflector::singularize($this->_table->table()));
         $prefix .= '_' . $this->_alias;
-        if (!$this->hasPrefix($prefix)) {
-            if (!$this->hasPrefix($this->_alias)) {
-                throw new MissingEnumStrategyPrefixException([$this->_alias]);
-            }
-            $prefix = $this->_alias;
-        }
 
         return strtoupper($prefix);
     }

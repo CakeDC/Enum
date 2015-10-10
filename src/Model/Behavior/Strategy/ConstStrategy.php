@@ -16,30 +16,6 @@ use ReflectionClass;
 
 class ConstStrategy extends AbstractStrategy
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @return array
-     */
-    public function listPrefixes()
-    {
-        $constants = array_keys($this->_getConstants());
-        $matrix = [];
-
-        foreach ($constants as $constant) {
-            $parts = explode('_', $constant);
-            foreach ($parts as $part) {
-                $matrix += [$part => 0];
-                $matrix[$part]++;
-            }
-        }
-
-        unset($matrix['VALIDATOR']); // one of cake's own constants.
-
-        return array_keys(array_filter($matrix, function ($v) {
-            return $v >= 2;
-        }));
-    }
 
     /**
      * {@inheritdoc}
