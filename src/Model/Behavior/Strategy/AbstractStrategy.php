@@ -84,7 +84,7 @@ abstract class AbstractStrategy implements StrategyInterface
      */
     protected function _generatePrefix()
     {
-        $prefix = Inflector::underscore(Inflector::singularize($this->_table->table()));
+        $prefix = Inflector::underscore(Inflector::singularize($this->_table->alias()));
         $prefix .= '_' . $this->_alias;
 
         return strtoupper($prefix);

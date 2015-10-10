@@ -34,7 +34,7 @@ class ArticlesTable extends Table
     {
         $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
             'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
-            'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
+            'status' => ['strategy' => 'const'],
             'category' => ['strategy' => 'config'],
             'node_type' => ['strategy' => 'const'],
             'node_group' => ['strategy' => 'const'],
@@ -57,7 +57,7 @@ class EnumBehaviorTest extends TestCase
         parent::setUp();
 
         Configure::write('CakeDC/Enum', [
-            'ENUM_ARTICLE_CATEGORY' => [
+            'ARTICLE_CATEGORY' => [
                 'CakePHP',
                 'Open Source Software',
             ]
@@ -120,7 +120,7 @@ class EnumBehaviorTest extends TestCase
                     'lists' => [
                         'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
-                        'category' => ['strategy' => 'config', 'prefix' => 'ARTICLE_CATEGORY'],
+                        'category' => ['strategy' => 'config'],
                         'node_type' => ['strategy' => 'const'],
                         'node_group' => ['strategy' => 'const'],
                     ],
