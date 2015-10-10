@@ -45,7 +45,7 @@ class LookupStrategy extends AbstractStrategy
     {
         $query = $this->loadModel()
             ->find('list', [
-                'keyField' => 'group',
+                'keyField' => 'name',
                 'valueField' => 'label',
             ])
             ->where([

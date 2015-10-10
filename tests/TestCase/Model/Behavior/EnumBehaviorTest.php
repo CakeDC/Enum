@@ -148,9 +148,9 @@ class EnumBehaviorTest extends TestCase
             [
                 'priority',
                 [
-                    'PRIORITY_URGENT' => 'Urgent',
-                    'PRIORITY_HIGH' => 'High',
-                    'PRIORITY_NORMAL' => 'Normal',
+                    'URGENT' => 'Urgent',
+                    'HIGH' => 'High',
+                    'NORMAL' => 'Normal',
                 ]
             ],
             [
@@ -204,7 +204,7 @@ class EnumBehaviorTest extends TestCase
         return [
             [
                 [
-                    'priority' => 'PRIORITY_URGENT',
+                    'priority' => 'URGENT',
                     'status' => 'DRAFT',
                     'category' => 2,
                     'node_type' => 'BLOG',

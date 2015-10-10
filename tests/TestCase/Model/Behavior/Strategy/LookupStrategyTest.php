@@ -40,9 +40,9 @@ class LookupStrategyTest extends TestCase
     {
         $result = $this->Strategy->enum();
         $expected = [
-            'PRIORITY_URGENT' => 'Urgent',
-            'PRIORITY_HIGH' => 'High',
-            'PRIORITY_NORMAL' => 'Normal',
+            'URGENT' => 'Urgent',
+            'HIGH' => 'High',
+            'NORMAL' => 'Normal',
         ];
         $this->assertEquals($expected, $result);
     }
