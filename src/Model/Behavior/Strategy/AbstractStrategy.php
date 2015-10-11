@@ -60,7 +60,8 @@ abstract class AbstractStrategy implements StrategyInterface
             $config = ['prefix' => $config];
         }
 
-        if (empty($config['prefix']) && empty($this->config('prefix'))) {
+        $prefix = $this->config('prefix');
+        if (empty($config['prefix']) && empty($prefix)) {
             $config['prefix'] = $this->_generatePrefix();
         }
 
