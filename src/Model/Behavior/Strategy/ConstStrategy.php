@@ -12,33 +12,29 @@
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
+use Cake\ORM\Table;
 use ReflectionClass;
 
 class ConstStrategy extends AbstractStrategy
 {
+
+    /**
+     * Constants list
+     *
+     * @var array
+     */
+    protected $_constants;
+
     /**
      * {@inheritdoc}
      *
-     * @return array
+     * @param string $alias Strategy's alias.
+     * @param \Cake\ORM\Table $table Table object.
      */
-    public function listPrefixes()
+    public function __construct($alias, Table $table)
     {
-        $constants = array_keys($this->_getConstants());
-        $matrix = [];
-
-        foreach ($constants as $constant) {
-            $parts = explode('_', $constant);
-            foreach ($parts as $part) {
-                $matrix += [$part => 0];
-                $matrix[$part]++;
-            }
-        }
-
-        unset($matrix['VALIDATOR']); // one of cake's own constants.
-
-        return array_keys(array_filter($matrix, function ($v) {
-            return $v >= 2;
-        }));
+        parent::__construct($alias, $table);
+        $this->_defaultConfig['prefix'] = strtoupper($alias);
     }
 
     /**
@@ -49,13 +45,8 @@ class ConstStrategy extends AbstractStrategy
      */
     public function enum(array $config = [])
     {
-        $prefix = $this->config('prefix');
         $constants = $this->_getConstants();
-        $constantsKeys = array_keys($constants);
-
-        $keys = array_filter($constantsKeys, function ($v) use ($prefix) {
-            return strpos($v, $prefix) === 0;
-        });
+        $keys = array_keys($constants);
 
         foreach ($config as $callable) {
             if (is_callable($callable)) {
@@ -77,6 +68,21 @@ class ConstStrategy extends AbstractStrategy
      */
     protected function _getConstants()
     {
-        return (new ReflectionClass(get_class($this->_table)))->getConstants();
+        if (isset($this->_constants)) {
+            return $constants;
+        }
+
+        $prefix = $this->config('prefix');
+        $length = strlen($prefix) + 1;
+        $classConstants = (new ReflectionClass(get_class($this->_table)))->getConstants();
+        $constants = [];
+
+        foreach ($classConstants as $key => $value) {
+            if (strpos($key, $prefix) === 0) {
+                $constants[substr($key, $length)] = $value;
+            }
+        }
+
+        return $this->_constants = $constants;
     }
 }

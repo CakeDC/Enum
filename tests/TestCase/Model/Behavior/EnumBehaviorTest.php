@@ -23,26 +23,22 @@ class ArticlesTable extends Table
     const STATUS_DRAFT = 'Drafted';
     const STATUS_ARCHIVE = 'Archived';
 
-    const NATURE_OF_BUSINESS_RENTALS = 'Rentals';
-    const NATURE_OF_BUSINESS_TOURS = 'Tours';
+    const NODE_TYPE_PAGE = 'Page';
+    const NODE_TYPE_BLOG = 'Blog';
+
+    const NODE_GROUP_ACTIVE = 'Active';
 
     const NORULES_FOO = 'Foo';
 
     public function initialize(array $config)
     {
         $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
-            'priority' => ['errorMessage' => 'Invalid priority'],
+            'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
             'status' => ['strategy' => 'const'],
             'category' => ['strategy' => 'config'],
-            'nature_of_business' => [
-                'strategy' => 'const',
-                'prefix' => 'NATURE_OF_BUSINESS'
-            ],
-            'norules' => [
-                'strategy' => 'const',
-                'prefix' => 'NORULES',
-                'applicationRules' => false
-            ],
+            'node_type' => ['strategy' => 'const'],
+            'node_group' => ['strategy' => 'const'],
+            'norules' => ['strategy' => 'const', 'applicationRules' => false],
         ]]);
     }
 }
@@ -103,10 +99,16 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'category',
                     'errorMessage' => 'The provided value is invalid'
                 ],
-                'nature_of_business' => [
+                'node_type' => [
                     'strategy' => 'const',
-                    'prefix' => 'NATURE_OF_BUSINESS',
-                    'field' => 'nature_of_business',
+                    'prefix' => 'NODE_TYPE',
+                    'field' => 'node_type',
+                    'errorMessage' => 'The provided value is invalid'
+                ],
+                'node_group' => [
+                    'strategy' => 'const',
+                    'prefix' => 'NODE_GROUP',
+                    'field' => 'node_group',
                     'errorMessage' => 'The provided value is invalid'
                 ],
             ],
@@ -116,21 +118,11 @@ class EnumBehaviorTest extends TestCase
             [
                 [
                     'lists' => [
-                        'priority' => ['errorMessage' => 'Invalid priority'],
+                        'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
-                        'category' => ['strategy' => 'config', 'prefix' => 'ARTICLE_CATEGORY'],
-                        'nature_of_business' => ['strategy' => 'const', 'prefix' => 'NATURE_OF_BUSINESS'],
-                    ],
-                ],
-                $expected
-            ],
-            [
-                [
-                    'lists' => [
-                        'priority' => ['errorMessage' => 'Invalid priority'],
-                        'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
-                        'category' => ['strategy' => 'config', 'prefix' => 'ARTICLE_CATEGORY'],
-                        'nature_of_business' => ['strategy' => 'const', 'prefix' => 'NATURE_OF_BUSINESS'],
+                        'category' => ['strategy' => 'config'],
+                        'node_type' => ['strategy' => 'const'],
+                        'node_group' => ['strategy' => 'const'],
                     ],
                 ],
                 $expected
@@ -156,17 +148,17 @@ class EnumBehaviorTest extends TestCase
             [
                 'priority',
                 [
-                    'PRIORITY_URGENT' => 'Urgent',
-                    'PRIORITY_HIGH' => 'High',
-                    'PRIORITY_NORMAL' => 'Normal',
+                    'URGENT' => 'Urgent',
+                    'HIGH' => 'High',
+                    'NORMAL' => 'Normal',
                 ]
             ],
             [
                 'status',
                 [
-                    'STATUS_PUBLIC' => 'Published',
-                    'STATUS_DRAFT' => 'Drafted',
-                    'STATUS_ARCHIVE' => 'Archived',
+                    'PUBLIC' => 'Published',
+                    'DRAFT' => 'Drafted',
+                    'ARCHIVE' => 'Archived',
                 ]
             ],
             [
@@ -177,16 +169,22 @@ class EnumBehaviorTest extends TestCase
                 ]
             ],
             [
-                'nature_of_business',
+                'node_type',
                 [
-                    'NATURE_OF_BUSINESS_RENTALS' => 'Rentals',
-                    'NATURE_OF_BUSINESS_TOURS' => 'Tours',
+                    'PAGE' => 'Page',
+                    'BLOG' => 'Blog',
+                ]
+            ],
+            [
+                'node_group',
+                [
+                    'ACTIVE' => 'Active',
                 ]
             ],
             [
                 'norules',
                 [
-                    'NORULES_FOO' => 'Foo',
+                    'FOO' => 'Foo',
                 ]
             ],
         ];
@@ -206,11 +204,12 @@ class EnumBehaviorTest extends TestCase
         return [
             [
                 [
-                    'priority' => 'PRIORITY_URGENT',
-                    'status' => 'STATUS_DRAFT',
+                    'priority' => 'URGENT',
+                    'status' => 'DRAFT',
                     'category' => 2,
-                    'nature_of_business' => 'NATURE_OF_BUSINESS_TOURS',
-                    'norules' => 'invalid'
+                    'node_type' => 'BLOG',
+                    'node_group' => 'ACTIVE',
+                    'norules' => 'invalid',
                 ],
                 [
                     'category' => ['isValidCategory' => 'The provided value is invalid'],
@@ -221,13 +220,14 @@ class EnumBehaviorTest extends TestCase
                     'priority' => 'Urgent',
                     'status' => 'Drafted',
                     'category' => 1,
-                    'nature_of_business' => 'Invalid value',
+                    'node_type' => 'Invalid value',
+                    'node_group' => 'ACTIVE',
                     'norules' => 'invalid'
                 ],
                 [
                     'priority' => ['isValidPriority' => 'Invalid priority'],
                     'status' => ['isValidStatus' => 'The provided value is invalid'],
-                    'nature_of_business' => ['isValidNatureOfBusiness' => 'The provided value is invalid'],
+                    'node_type' => ['isValidNodeType' => 'The provided value is invalid'],
                 ]
             ]
         ];

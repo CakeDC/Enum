@@ -31,25 +31,8 @@ class LookupStrategy extends AbstractStrategy
     public function __construct($alias, Table $table)
     {
         parent::__construct($alias, $table);
-        $this->_defaultConfig['prefix'] = strtoupper($alias);
         $this->modelClass = 'CakeDC/Enum.Lookups';
         $this->modelFactory('Table', ['Cake\ORM\TableRegistry', 'get']);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return array
-     */
-    public function listPrefixes()
-    {
-        if (empty($this->_prefixes)) {
-            $this->_prefixes = array_keys($this->loadModel()->find('list', [
-                'keyField' => 'prefix',
-            ])->toArray());
-        }
-
-        return $this->_prefixes;
     }
 
     /**
@@ -62,7 +45,7 @@ class LookupStrategy extends AbstractStrategy
     {
         $query = $this->loadModel()
             ->find('list', [
-                'keyField' => 'group',
+                'keyField' => 'name',
                 'valueField' => 'label',
             ])
             ->where([
