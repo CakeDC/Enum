@@ -26,12 +26,10 @@ class ArticlesFixture extends TestFixture
         'status' => ['type' => 'integer'],
         'article_category' => ['type' => 'integer'],
         '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
-        '_options' => ['engine' => 'InnoDB', 'collation' => 'utf8_general_ci'],
     ];
 
     public $records = [
         [
-            'id' => 1,
             'title' => 'Dummy article',
             'body' => '',
             'priority' => 'HIGH',
