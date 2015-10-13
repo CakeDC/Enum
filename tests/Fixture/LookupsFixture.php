@@ -23,35 +23,31 @@ class LookupsFixture extends TestFixture
         'label' => ['type' => 'string'],
         'prefix' => ['type' => 'string'],
         'name' => ['type' => 'string'],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
     ];
 
     public $records = [
         [
-            'id' => 1,
             'label' => 'Urgent',
             'prefix' => 'PRIORITY',
             'name' => 'URGENT',
         ],
         [
-            'id' => 2,
             'label' => 'High',
             'prefix' => 'PRIORITY',
             'name' => 'HIGH',
         ],
         [
-            'id' => 3,
             'label' => 'Normal',
             'prefix' => 'PRIORITY',
             'name' => 'NORMAL',
         ],
         [
-            'id' => 4,
             'label' => 'CakePHP',
             'prefix' => 'ARTICLE_CATEGORY',
             'name' => 'CAKEPHP',
         ],
         [
-            'id' => 5,
             'label' => 'Open Source Software',
             'prefix' => 'ARTICLE_CATEGORY',
             'name' => 'OSS',
