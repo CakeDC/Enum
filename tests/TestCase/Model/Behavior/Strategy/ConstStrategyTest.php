@@ -52,5 +52,8 @@ class ConstStrategyTest extends TestCase
             'ARCHIVE' => 'Archived',
         ];
         $this->assertEquals($expected, $result);
+
+        // Cached list
+        $this->assertEquals($expected, $this->Strategy->enum());
     }
 }

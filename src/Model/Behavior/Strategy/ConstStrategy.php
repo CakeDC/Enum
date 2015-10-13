@@ -69,7 +69,7 @@ class ConstStrategy extends AbstractStrategy
     protected function _getConstants()
     {
         if (isset($this->_constants)) {
-            return $constants;
+            return $this->_constants;
         }
 
         $prefix = $this->config('prefix');
