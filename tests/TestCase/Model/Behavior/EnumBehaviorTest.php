@@ -37,7 +37,7 @@ class ArticlesTable extends Table
             'status' => ['strategy' => 'const'],
             'category' => ['strategy' => 'config'],
             'node_type' => ['strategy' => 'const'],
-            'node_group' => ['strategy' => 'const'],
+            'node_group' => ['strategy' => 'const', 'lowercase' => true],
             'norules' => ['strategy' => 'const', 'applicationRules' => false],
         ]]);
     }
@@ -91,7 +91,8 @@ class EnumBehaviorTest extends TestCase
                     'strategy' => 'const',
                     'prefix' => 'STATUS',
                     'field' => 'status',
-                    'errorMessage' => 'The provided value is invalid'
+                    'errorMessage' => 'The provided value is invalid',
+                    'lowercase' => false,
                 ],
                 'category' => [
                     'strategy' => 'config',
@@ -103,13 +104,15 @@ class EnumBehaviorTest extends TestCase
                     'strategy' => 'const',
                     'prefix' => 'NODE_TYPE',
                     'field' => 'node_type',
-                    'errorMessage' => 'The provided value is invalid'
+                    'errorMessage' => 'The provided value is invalid',
+                    'lowercase' => false
                 ],
                 'node_group' => [
                     'strategy' => 'const',
                     'prefix' => 'NODE_GROUP',
                     'field' => 'node_group',
-                    'errorMessage' => 'The provided value is invalid'
+                    'errorMessage' => 'The provided value is invalid',
+                    'lowercase' => true
                 ],
             ],
         ];
@@ -122,7 +125,7 @@ class EnumBehaviorTest extends TestCase
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
                         'category' => ['strategy' => 'config'],
                         'node_type' => ['strategy' => 'const'],
-                        'node_group' => ['strategy' => 'const'],
+                        'node_group' => ['strategy' => 'const', 'lowercase' => true],
                     ],
                 ],
                 $expected
@@ -178,7 +181,7 @@ class EnumBehaviorTest extends TestCase
             [
                 'node_group',
                 [
-                    'ACTIVE' => 'Active',
+                    'active' => 'Active',
                 ]
             ],
             [
@@ -208,7 +211,7 @@ class EnumBehaviorTest extends TestCase
                     'status' => 'DRAFT',
                     'category' => 2,
                     'node_type' => 'BLOG',
-                    'node_group' => 'ACTIVE',
+                    'node_group' => 'active',
                     'norules' => 'invalid',
                 ],
                 [
@@ -221,7 +224,7 @@ class EnumBehaviorTest extends TestCase
                     'status' => 'Drafted',
                     'category' => 1,
                     'node_type' => 'Invalid value',
-                    'node_group' => 'ACTIVE',
+                    'node_group' => 'active',
                     'norules' => 'invalid'
                 ],
                 [
