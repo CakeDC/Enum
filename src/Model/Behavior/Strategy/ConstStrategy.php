@@ -35,6 +35,7 @@ class ConstStrategy extends AbstractStrategy
     {
         parent::__construct($alias, $table);
         $this->_defaultConfig['prefix'] = strtoupper($alias);
+        $this->_defaultConfig['lowercase'] = false;
     }
 
     /**
@@ -73,13 +74,18 @@ class ConstStrategy extends AbstractStrategy
         }
 
         $prefix = $this->config('prefix');
+        $lowercase = $this->config('lowercase');
         $length = strlen($prefix) + 1;
         $classConstants = (new ReflectionClass(get_class($this->_table)))->getConstants();
         $constants = [];
 
         foreach ($classConstants as $key => $value) {
             if (strpos($key, $prefix) === 0) {
-                $constants[substr($key, $length)] = $value;
+                $listKey = substr($key, $length);
+                if ($lowercase) {
+                    $listKey = strtolower($listKey);
+                }
+                $constants[$listKey] = $value;
             }
         }
 

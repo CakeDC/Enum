@@ -34,7 +34,7 @@ class ConstStrategyTest extends TestCase
     {
         parent::setUp();
         $this->Strategy = new ConstStrategy('status', new ArticlesTable());
-        $this->Strategy->initialize(['prefix' => 'STATUS']);
+        $this->Strategy->initialize(['prefix' => 'STATUS', 'lowercase' => true]);
     }
 
     public function tearDown()
@@ -47,9 +47,9 @@ class ConstStrategyTest extends TestCase
     {
         $result = $this->Strategy->enum();
         $expected = [
-            'PUBLIC' => 'Published',
-            'DRAFT' => 'Drafted',
-            'ARCHIVE' => 'Archived',
+            'public' => 'Published',
+            'draft' => 'Drafted',
+            'archive' => 'Archived',
         ];
         $this->assertEquals($expected, $result);
 
