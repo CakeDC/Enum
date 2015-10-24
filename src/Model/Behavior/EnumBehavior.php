@@ -153,18 +153,31 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * @param string $alias Defined list's alias/name.
+     * @param string|array|null $alias Defined list's alias/name.
      * @return array
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
      */
-    public function enum($alias)
+    public function enum($alias = null)
     {
-        $config = $this->config('lists.' . $alias);
-        if (empty($config)) {
-            throw new MissingEnumConfigurationException([$alias]);
+        if (is_string($alias)) {
+            $config = $this->config('lists.' . $alias);
+            if (empty($config)) {
+                throw new MissingEnumConfigurationException([$alias]);
+            }
+
+            return $this->strategy($alias, $config['strategy'])->enum($config);
         }
 
-        return $this->strategy($alias, $config['strategy'])->enum($config);
+        $lists = $this->config('lists');
+        if (!empty($alias)) {
+            $lists = array_intersect_key($lists, array_flip($alias));
+        }
+
+        $return = [];
+        foreach ($lists as $alias => $config) {
+            $return[$alias] = $this->strategy($alias, $config['strategy'])->enum($config);
+        }
+        return $return;
     }
 
     /**
