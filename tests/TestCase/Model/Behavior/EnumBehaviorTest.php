@@ -259,4 +259,54 @@ class EnumBehaviorTest extends TestCase
 
         $result = $this->Articles->get(1);
     }
+
+    public function testEnumMultipleAlias()
+    {
+        $result = $this->Articles->enum();
+        $expected = [
+            'priority' => [
+                'URGENT' => 'Urgent',
+                'HIGH' => 'High',
+                'NORMAL' => 'Normal',
+            ],
+            'status' => [
+                'PUBLIC' => 'Published',
+                'DRAFT' => 'Drafted',
+                'ARCHIVE' => 'Archived',
+            ],
+            'category' => [
+                'CakePHP',
+                'Open Source Software',
+            ],
+            'node_type' => [
+                'PAGE' => 'Page',
+                'BLOG' => 'Blog',
+            ],
+            'node_group' => [
+                'active' => 'Active',
+            ],
+            'norules' => [
+                'FOO' => 'Foo',
+            ],
+        ];
+        $this->assertEquals($expected, $result);
+
+        $result = $this->Articles->enum([]);
+        $this->assertEquals($expected, $result);
+
+        $result = $this->Articles->enum(['priority', 'status']);
+        $expected = [
+            'priority' => [
+                'URGENT' => 'Urgent',
+                'HIGH' => 'High',
+                'NORMAL' => 'Normal',
+            ],
+            'status' => [
+                'PUBLIC' => 'Published',
+                'DRAFT' => 'Drafted',
+                'ARCHIVE' => 'Archived',
+            ],
+        ];
+        $this->assertEquals($expected, $result);
+    }
 }
