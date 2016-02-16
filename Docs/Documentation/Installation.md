@@ -21,6 +21,10 @@ Load the Plugin
 
 Ensure the Enum Plugin is loaded in your config/bootstrap.php file
 
+```php
+Plugin::load('Enum');
 ```
-Plugin::load('CakeDC/Enum');
+or
+```php
+Plugin::loadAll();
 ```

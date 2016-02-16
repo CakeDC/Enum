@@ -1,7 +1,6 @@
 Home
 ====
 
-
 Requirements
 ------------
 
