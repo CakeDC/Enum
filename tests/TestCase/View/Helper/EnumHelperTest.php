@@ -12,10 +12,10 @@
 
 namespace CakeDC\Enum\Test\TestCase\View\Helper;
 
-use Cake\TestSuite\TestCase;
-use Cake\View\View;
 use CakeDC\Enum\View\Helper\EnumHelper;
 use Cake\ORM\Table;
+use Cake\TestSuite\TestCase;
+use Cake\View\View;
 
 class ArticlesTable extends Table
 {
@@ -105,4 +105,5 @@ class EnumHelperTest extends TestCase
     {
         $this->helper->input('field', 'Articles', ['alias' => 'priority']);
     }
+
 }

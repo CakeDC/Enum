@@ -1,8 +1,8 @@
 <?php
 namespace CakeDC\Enum\View\Helper;
 
-use Cake\View\Helper;
 use Cake\ORM\TableRegistry;
+use Cake\View\Helper;
 
 /**
  * Enumeration List Helper.
@@ -23,7 +23,7 @@ class EnumHelper extends Helper
      * Get Enumeration list
      *
      * @param string $fieldName This should be "modelname.fieldname"
-     * @param string $tableName if fieldName contain "modelname", 
+     * @param string $tableName if fieldName contain "modelname",
      *   it not need to be passed.
      * @param array $options Each type of input takes different options,
      *   here should be passed the prefix and the strategy
@@ -44,7 +44,7 @@ class EnumHelper extends Helper
         }
         $strategy = $options['alias'];
         unset($options['alias']);
-        $Table = $this->_tableInstance($tableName);
+        $Table = $this->tableInstance($tableName);
         $result = $Table->enum($strategy);
         $options['options'] = $result;
         return $this->Form->input($fieldName, $options);
@@ -56,20 +56,18 @@ class EnumHelper extends Helper
      * @param string $tableName if fieldName contain "modelname",
      *   it not need to be passed.
      * @throws RuntimeException
-     * @return Object
+     * @return object
      */
-    private function _tableInstance($tableName)
+    private function tableInstance($tableName)
     {
         $tableName = ucfirst($tableName);
 
-        if (empty($this->getClassName())) {
+        if (empty($this->_className)) {
             $class = TableRegistry::get($tableName);
         } else {
-            $class = TableRegistry::get($tableName,
-                [
-                    'className' => $this->getClassName()
-                ]
-            );
+            $class = TableRegistry::get($tableName, [
+                'className' => $this->getClassName()
+            ]);
         }
 
         return $class;
