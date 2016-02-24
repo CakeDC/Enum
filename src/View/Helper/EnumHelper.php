@@ -44,7 +44,7 @@ class EnumHelper extends Helper
         }
         $strategy = $options['alias'];
         unset($options['alias']);
-        $Table = $this->tableInstance($tableName);
+        $Table = $this->__tableInstance($tableName);
         $result = $Table->enum($strategy);
         $options['options'] = $result;
         return $this->Form->input($fieldName, $options);
@@ -58,7 +58,7 @@ class EnumHelper extends Helper
      * @throws RuntimeException
      * @return object
      */
-    private function tableInstance($tableName)
+    private function __tableInstance($tableName)
     {
         $tableName = ucfirst($tableName);
 

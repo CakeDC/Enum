@@ -105,5 +105,4 @@ class EnumHelperTest extends TestCase
     {
         $this->helper->input('field', 'Articles', ['alias' => 'priority']);
     }
-
 }
