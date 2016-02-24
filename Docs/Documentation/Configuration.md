@@ -4,7 +4,7 @@ Configuration
 Behavior, Model and Helper Configuration
 --------------------------------
 
-Firstly you need to add this in you table class ```$this->addBehavior('CakeDC/Enum.Enum');``` to load the behavior, after that you need to set the configurations, you can choose one or more to use in the same table class. When you get this done, you need to load the helper in your view class using ```$this->loadHelper('CakeDC/Enum.Enum');```
+Firstly you need to add this in your table class ```$this->addBehavior('CakeDC/Enum.Enum');``` to load the behavior, after that you need to set the configurations, you can choose one or more to use in the same table class. When you get this done, you need to load the helper in your view class using ```$this->loadHelper('CakeDC/Enum.Enum');```
 
 Supported Types of Enum
 --------------------------------
@@ -35,7 +35,7 @@ In the lookups configuration you don't need to set the strategy, because lookups
 
 ###Const Configuration
 
-In the this strategy, it will catch all variables constant, in this case you need to have in you table the const defined so ```const STATUS_SOMETHING = "Example" ```, here you can choose if you want value is lowercase using this ``` 'lowercase' => true ``` by default it use as it was defined.
+In this strategy, it will catch all variables constant, in this case you need to have in your table the const defined so ```const STATUS_SOMETHING = "Example" ```, here you can choose if you want value is lowercase using this ``` 'lowercase' => true ``` by default it use as it was defined.
 
 ```php
     $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [

@@ -56,7 +56,7 @@ or
 
 ###Const Example
 
-Here you need to create some constants variables in you table class and configure you behavior to get them for example: 
+Here you need to create some constants variables in your table class and configure your behavior to get them for example: 
 
 ```php
     class ArticlesTable extends Table
@@ -91,7 +91,7 @@ or
 
 ###Config Example
 
-Here you need to create some constants variables in you table class and configure you behavior to get them for example: 
+Here you need to create some constants variables in you table class and configure your behavior to get them for example: 
 
 ```php
     Configure::write(ConfigStrategy::KEY, [ // or 'CakeDC/Enum' as key
