@@ -13,8 +13,3 @@ Documentation
 * [Installation](Documentation/Installation.md)
 * [Configuration](Documentation/Configuration.md)
 * [Examples](Documentation/Examples.md)
-
-Tutorials
----------
-
-* [Quick Start](Tutorials/Quick-Start.md)
