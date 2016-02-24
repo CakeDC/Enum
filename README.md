@@ -32,13 +32,13 @@ Plugin::load('CakeDC/Enum');
 Requirements
 ------------
 
-* CakePHP 3.1+
-* PHP 5.4.16+ Note CakePHP 3.2 requires PHP 5.5 so 5.4 compatibility would be dropped sooner than later...
+* CakePHP 3.0+
+* PHP 5.4.16+
 
 Documentation
 -------------
 
-For documentation, as well as tutorials, see the [Docs](Docs/Home.md) directory of this repository.
+_COMING SOON_
 
 Support
 -------
