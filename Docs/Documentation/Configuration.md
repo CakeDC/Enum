@@ -10,12 +10,12 @@ Supported Types of Enum
 --------------------------------
 
 * **Lookups:** This type of configuration, you'll need to create a migration to populate the enum table, so every time it'll to do a find to get your options
-* **Const:** Useful when you have some defined const in your table class, so it'll get all consts based on the prefix that you'll set in the configs of the behavior
+* **Const:** This is useful when you have some defined const in your table class, so it'll get all consts based on the prefix that you'll set in the configs of the behavior
 * **Config:** Here you'll write a configuration with the ```Configure``` class using **"CakeDC/Enum"** as key.
 
 Behavior Configuration
 -----------------------
-You always need to set the alias and the prefix, so this is essential to the plugin work. In use case we will show three alias: 
+You always need to set the alias and the prefix, So this is essential for the plugin to work. In use case we will show three alias: 
 
 * **priority**
 * **status**
