@@ -75,8 +75,9 @@ class ConstStrategy extends AbstractStrategy
 
         $prefix = $this->config('prefix');
         $lowercase = $this->config('lowercase');
+        $className = $this->config('className') ?: get_class($this->_table);
         $length = strlen($prefix) + 1;
-        $classConstants = (new ReflectionClass(get_class($this->_table)))->getConstants();
+        $classConstants = (new ReflectionClass($className))->getConstants();
         $constants = [];
 
         foreach ($classConstants as $key => $value) {
