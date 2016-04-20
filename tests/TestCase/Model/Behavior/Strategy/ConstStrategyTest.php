@@ -53,7 +53,7 @@ class ConstStrategyTest extends TestCase
         $this->StrategyEntity->initialize([
             'prefix' => 'STATUS',
             'lowercase' => true,
-            'className' => 'CakeDC\\Enum\\Test\\TestCase\\Model\\Behavior\\Strategy\\Article'
+            'className' => 'CakeDC\\Enum\\Test\\TestCase\\Model\\Behavior\\Strategy\\Article',
         ]);
     }
 
