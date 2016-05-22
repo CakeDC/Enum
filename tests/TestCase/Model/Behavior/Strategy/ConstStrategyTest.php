@@ -13,6 +13,7 @@
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior\Strategy;
 
 use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
+use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
 
@@ -26,26 +27,46 @@ class ArticlesTable extends Table
     const STATUS_ARCHIVE = 'Archived';
 }
 
+class Article extends Entity
+{
+
+    const EXTRA_VALUE = 'Extra';
+
+    const STATUS_PUBLIC = 'Published';
+    const STATUS_DRAFT = 'Drafted';
+    const STATUS_ARCHIVE = 'Archived';
+}
+
 class ConstStrategyTest extends TestCase
 {
-    public $Strategy;
+    public $StrategyTable;
+
+    public $StrategyEntity;
 
     public function setUp()
     {
         parent::setUp();
-        $this->Strategy = new ConstStrategy('status', new ArticlesTable());
-        $this->Strategy->initialize(['prefix' => 'STATUS', 'lowercase' => true]);
+        $this->StrategyTable = new ConstStrategy('status', new ArticlesTable());
+        $this->StrategyTable->initialize(['prefix' => 'STATUS', 'lowercase' => true]);
+
+        $this->StrategyEntity = new ConstStrategy('status', new ArticlesTable());
+        $this->StrategyEntity->initialize([
+            'prefix' => 'STATUS',
+            'lowercase' => true,
+            'className' => 'CakeDC\\Enum\\Test\\TestCase\\Model\\Behavior\\Strategy\\Article',
+        ]);
     }
 
     public function tearDown()
     {
         parent::tearDown();
-        unset($this->Strategy);
+        unset($this->StrategyTable);
+        unset($this->StrategyEntity);
     }
 
-    public function testEnum()
+    public function testEnumTable()
     {
-        $result = $this->Strategy->enum();
+        $result = $this->StrategyTable->enum();
         $expected = [
             'public' => 'Published',
             'draft' => 'Drafted',
@@ -54,6 +75,20 @@ class ConstStrategyTest extends TestCase
         $this->assertEquals($expected, $result);
 
         // Cached list
-        $this->assertEquals($expected, $this->Strategy->enum());
+        $this->assertEquals($expected, $this->StrategyTable->enum());
+    }
+
+    public function testEnumEntity()
+    {
+        $result = $this->StrategyEntity->enum();
+        $expected = [
+            'public' => 'Published',
+            'draft' => 'Drafted',
+            'archive' => 'Archived',
+        ];
+        $this->assertEquals($expected, $result);
+
+        // Cached list
+        $this->assertEquals($expected, $this->StrategyEntity->enum());
     }
 }
