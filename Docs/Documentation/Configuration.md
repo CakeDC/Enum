@@ -32,7 +32,7 @@ $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
 
 ### Const Configuration
 
-In this strategy, it will catch all variables constant, in this case you need to have in your table the const defined so ```const STATUS_SOMETHING = "Example" ```, here you can choose if you want value is lowercase using this ``` 'lowercase' => true ``` by default it use as it was defined.
+In this strategy, it will catch all variables constant, in this case you need to have in your table the const defined so ```const STATUS_SOMETHING = "Example" ```, here you can choose if you want value is lowercase using this ``` 'lowercase' => true ``` by default it use as it was defined. Use `className` to configure the specific class where the constants are placed.
 
 ```php
 $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
