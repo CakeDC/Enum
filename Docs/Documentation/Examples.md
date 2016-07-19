@@ -47,7 +47,7 @@ For select lists, you can send a list of enums to the view from your controller:
 $this->set('priorities', $this->Articles->enum('priority'));
 ```
 
-If you use the a plural variable name, you don't need to do anything special in the view:
+If you use the plural variable name, you don't need to do anything in special in the view:
 
 ```php
 <?= $this->Form->input('priorities'); ?>
@@ -87,6 +87,26 @@ If you use the a plural variable name, you don't need to do anything special in 
 ```php
 <?= $this->Form->input('statuses'); ?>
 ```
+
+You can change the default class and choose a new class to put your constaint variables like that:
+
+```php
+class ArticlesTable extends Table
+{
+    public function initialize(array $config)
+    {
+        $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
+            'status' => [
+                'strategy' => 'const',
+                'prefix' => 'STATUS',
+                'className' => 'App\\Model\\Entity\\Article'
+            ]
+        ]]);
+    }
+}
+```
+
+so, your constaints need to be in the Article entity class.
 
 ## Config Example
 
