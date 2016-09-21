@@ -1,6 +1,6 @@
 {
     "name": "cakedc/enum",
-    "description": "Enumeration list for CakePHP 3",
+    "description": "Enumeration list Plugin for CakePHP 3",
     "type": "cakephp-plugin",
     "keywords": [
         "cakephp",
