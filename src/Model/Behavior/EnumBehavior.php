@@ -177,6 +177,7 @@ class EnumBehavior extends Behavior
         foreach ($lists as $alias => $config) {
             $return[$alias] = $this->strategy($alias, $config['strategy'])->enum($config);
         }
+
         return $return;
     }
 
@@ -198,6 +199,7 @@ class EnumBehavior extends Behavior
                 'message' => $config['errorMessage']
             ]);
         }
+
         return $rules;
     }
 
