@@ -54,6 +54,7 @@ class EnumBehavior extends Behavior
         'implementedMethods' => [
             'enum' => 'enum',
         ],
+        'classMap' => [],
         'lists' => [],
     ];
 
@@ -125,6 +126,9 @@ class EnumBehavior extends Behavior
      */
     protected function _normalizeConfig()
     {
+        $classMap = $this->config('classMap');
+        $this->_classMap = array_merge($this->_classMap, $classMap);
+
         $lists = $this->config('lists');
         $defaultStrategy = $this->config('defaultStrategy');
 

@@ -12,6 +12,7 @@
 
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior;
 
+use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 use Cake\Core\Configure;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -40,6 +41,17 @@ class ArticlesTable extends Table
             'node_group' => ['strategy' => 'const', 'lowercase' => true],
             'norules' => ['strategy' => 'const', 'applicationRules' => false],
         ]]);
+    }
+}
+
+class ThirdPartyStrategy extends AbstractStrategy
+{
+    public function enum(array $config = [])
+    {
+        return [
+            1 => 'PHP',
+            2 => 'CSS'
+        ];
     }
 }
 
@@ -115,6 +127,7 @@ class EnumBehaviorTest extends TestCase
                     'lowercase' => true
                 ],
             ],
+            'classMap' => []
         ];
 
         return [
@@ -307,6 +320,36 @@ class EnumBehaviorTest extends TestCase
                 'ARCHIVE' => 'Archived',
             ],
         ];
+        $this->assertEquals($expected, $result);
+    }
+
+    public function provideThirdPartyStrategy()
+    {
+        return [
+            [
+                [
+                    'classMap' => ['third_party' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ThirdPartyStrategy'],
+                    'lists' => [
+                        'article_category' => ['strategy' => 'third_party']
+                    ]
+                ],
+                [
+                    1 => 'PHP',
+                    2 => 'CSS'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @dataProvider provideThirdPartyStrategy
+     */
+    public function testThirdPartyStrategy(array $config, array $expected)
+    {
+        TableRegistry::clear();
+        $Articles = TableRegistry::get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
+        $Articles->addBehavior('CakeDC/Enum.Enum', $config);
+        $result = $Articles->enum('article_category');
         $this->assertEquals($expected, $result);
     }
 }
