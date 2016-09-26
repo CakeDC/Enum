@@ -12,7 +12,7 @@ Firstly you need to add this in your table class ```$this->addBehavior('CakeDC/E
 
 ## Behavior Configuration
 
-You always need to set the alias and the prefix, So this is essential for the plugin to work. In use case we will show three alias: 
+You always need to set the alias and the prefix, So this is essential for the plugin to work. In use case we will show three alias:
 
 * **priority**
 * **status**
@@ -25,7 +25,7 @@ In the lookups configuration you don't need to set the strategy, because lookups
 ```php
 $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
     'priority' => [
-        'prefix' => 'PRIORITY'  
+        'prefix' => 'PRIORITY'
     ],
 ]]);
 ```
@@ -45,7 +45,7 @@ $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
 
 ### Config Configuration
 
-This strategy you need to write in the configuration class the values using **"CakeDC/Enum"** as key for example: 
+This strategy you need to write in the configuration class the values using **"CakeDC/Enum"** as key for example:
 
 ```php
 Configure::write('CakeDC/Enum', [
@@ -55,7 +55,7 @@ Configure::write('CakeDC/Enum', [
     ]
 ]);
 ```
-Then you can set the behavior configuration so: 
+Then you can set the behavior configuration so:
 
 ```php
 $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
@@ -64,4 +64,21 @@ $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
         'prefix' => 'category',
     ],
 ]]);
+```
+
+### Third-Party Strategy Configuration
+
+If you want to use a third-party strategy will class map setting the class name as follows:
+
+```php
+$this->addBehavior('CakeDC/Enum.Enum', [
+    'classMap' => [
+        'property' => 'Other\Enum\Model\Behavior\Strategy\PropertyStrategy'
+    ],
+    'lists' => [
+        'category' => [
+            'strategy' => 'property'
+        ],
+    ]
+]);
 ```
