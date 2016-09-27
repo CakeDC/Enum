@@ -104,7 +104,6 @@ class EnumBehavior extends Behavior
         $this->_strategies[$alias] = $strategy;
 
         if ($strategy instanceof AbstractStrategy) {
-
             return $strategy;
         }
 
