@@ -104,6 +104,7 @@ class EnumBehavior extends Behavior
         $this->_strategies[$alias] = $strategy;
 
         if ($strategy instanceof AbstractStrategy) {
+
             return $strategy;
         }
 
@@ -177,6 +178,7 @@ class EnumBehavior extends Behavior
         foreach ($lists as $alias => $config) {
             $return[$alias] = $this->strategy($alias, $config['strategy'])->enum($config);
         }
+
         return $return;
     }
 
@@ -198,6 +200,7 @@ class EnumBehavior extends Behavior
                 'message' => $config['errorMessage']
             ]);
         }
+
         return $rules;
     }
 
