@@ -12,7 +12,7 @@ Firstly you need to add this in your table class ```$this->addBehavior('CakeDC/E
 
 ## Behavior Configuration
 
-You always need to set the alias and the prefix, So this is essential for the plugin to work. In use case we will show three alias:
+You always need to set the alias and the prefix, as this is essential for the plugin to work. These options are explained below:
 
 * **priority**
 * **status**
@@ -32,7 +32,7 @@ $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
 
 ### Const Configuration
 
-In this strategy, it will catch all variables constant, in this case you need to have in your table the const defined so ```const STATUS_SOMETHING = "Example" ```, here you can choose if you want value is lowercase using this ``` 'lowercase' => true ``` by default it use as it was defined. Use `className` to configure the specific class where the constants are placed.
+In this strategy, it will catch all variables by constant, in this case you need to have in your table the const defined so ```const STATUS_SOMETHING = "Example" ```, here you can choose if you want value is lowercase using this ``` 'lowercase' => true ``` by default it use as it was defined. Use `className` to configure the specific class where the constants are placed.
 
 ```php
 $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
@@ -45,7 +45,7 @@ $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
 
 ### Config Configuration
 
-This strategy you need to write in the configuration class the values using **"CakeDC/Enum"** as key for example:
+Using this strategy you'll need to add the values to key **"CakeDC/Enum"** in the global Configure class, for example:
 
 ```php
 Configure::write('CakeDC/Enum', [
@@ -55,7 +55,7 @@ Configure::write('CakeDC/Enum', [
     ]
 ]);
 ```
-Then you can set the behavior configuration so:
+Then you can configure the behaviour configuration like so:
 
 ```php
 $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
@@ -68,7 +68,7 @@ $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
 
 ### Third-Party Strategy Configuration
 
-If you want to use a third-party strategy use the `classMap` config param, for example:
+You can also use your own strategy to prepare the enums. Example using a third-party strategy via `classMap` config param:
 
 ```php
 $this->addBehavior('CakeDC/Enum.Enum', [
