@@ -68,7 +68,7 @@ $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
 
 ### Third-Party Strategy Configuration
 
-If you want to use a third-party strategy will class map setting the class name as follows:
+If you want to use a third-party strategy use the `classMap` config param, for example:
 
 ```php
 $this->addBehavior('CakeDC/Enum.Enum', [
