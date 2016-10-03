@@ -11,10 +11,10 @@ Enumeration list for [CakePHP 3](http://cakephp.org).
 Install
 -------
 
-Using [Composer][composer]:
+Using [Composer](https://getcomposer.org/):
 
 ```
-composer require cakedc/enum:dev-master
+composer require cakedc/enum
 ```
 
 You then need to load the plugin. You can use the shell command:
