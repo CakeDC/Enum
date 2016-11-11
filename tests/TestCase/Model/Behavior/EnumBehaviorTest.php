@@ -91,6 +91,8 @@ class EnumBehaviorTest extends TestCase
     {
         $expected = [
             'defaultStrategy' => 'lookup',
+            'translate' => false,
+            'translationDomain' => 'default',
             'implementedMethods' => ['enum' => 'enum'],
             'lists' => [
                 'priority' => [
@@ -321,6 +323,14 @@ class EnumBehaviorTest extends TestCase
             ],
         ];
         $this->assertEquals($expected, $result);
+    }
+
+    public function testTranslatedValues()
+    {
+        $this->Articles->behaviors()->Enum->config('translate', true);
+        $result = $this->Articles->enum('node_group');
+
+        $this->assertEquals(['active' => 'Translated Active'], $result);
     }
 
     public function provideThirdPartyStrategy()

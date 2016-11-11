@@ -10,6 +10,9 @@
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+use Aura\Intl\Package;
+use Cake\I18n\I18n;
+
 $findRoot = function ($root) {
     do {
         $lastRoot = $root;
@@ -32,3 +35,11 @@ if (file_exists($root . '/config/bootstrap.php')) {
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
 \Cake\Core\Plugin::load('CakeDC/Enum', ['path' => dirname(dirname(__FILE__)) . DS]);
+
+I18n::config('default', function ($name, $locale) {
+    $package = new Package('default');
+    $messages = ['Active' => 'Translated Active'];
+    $package->setMessages($messages);
+
+    return $package;
+});

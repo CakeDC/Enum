@@ -28,6 +28,10 @@ class EnumBehavior extends Behavior
      * Default configuration.
      *
      * - `defaultStrategy`: the default strategy to use.
+     * - `translate`: Whether values of lists returned by enum() method should
+     *   be translated. Defaults to `false`.
+     * - `translationDomain`: Domain to use when translating list value.
+    *    Defaults to "default".
      * - `implementedMethods`: custom table methods made accessible by this behavior.
      * - `lists`: the defined enumeration lists. Lists can use different strategies,
      *   use prefixes to differentiate them (defaults to the uppercased list name) and
@@ -51,6 +55,8 @@ class EnumBehavior extends Behavior
      */
     protected $_defaultConfig = [
         'defaultStrategy' => 'lookup',
+        'translate' => false,
+        'translationDomain' => 'default',
         'implementedMethods' => [
             'enum' => 'enum',
         ],
@@ -169,7 +175,11 @@ class EnumBehavior extends Behavior
                 throw new MissingEnumConfigurationException([$alias]);
             }
 
-            return $this->strategy($alias, $config['strategy'])->enum($config);
+            $return = $this->strategy($alias, $config['strategy'])->enum($config);
+            if ($this->config('translate')) {
+                $return = $this->_translate($return);
+            }
+            return $return;
         }
 
         $lists = $this->config('lists');
@@ -180,9 +190,27 @@ class EnumBehavior extends Behavior
         $return = [];
         foreach ($lists as $alias => $config) {
             $return[$alias] = $this->strategy($alias, $config['strategy'])->enum($config);
+            if ($this->config('translate')) {
+                $return[$alias] = $this->_translate($return[$alias]);
+            }
         }
 
         return $return;
+    }
+
+    /**
+     * Translate list values.
+     *
+     * @param array $list List.
+     * @return array
+     */
+    protected function _translate(array $list)
+    {
+        $domain = $this->config('translationDomain');
+
+        return array_map(function ($value) use ($domain) {
+            return __d($domain, $value);
+        }, $list);
     }
 
     /**
