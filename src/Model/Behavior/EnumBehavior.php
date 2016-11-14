@@ -31,7 +31,7 @@ class EnumBehavior extends Behavior
      * - `translate`: Whether values of lists returned by enum() method should
      *   be translated. Defaults to `false`.
      * - `translationDomain`: Domain to use when translating list value.
-    *    Defaults to "default".
+     *   Defaults to "default".
      * - `implementedMethods`: custom table methods made accessible by this behavior.
      * - `lists`: the defined enumeration lists. Lists can use different strategies,
      *   use prefixes to differentiate them (defaults to the uppercased list name) and
@@ -179,6 +179,7 @@ class EnumBehavior extends Behavior
             if ($this->config('translate')) {
                 $return = $this->_translate($return);
             }
+
             return $return;
         }
 
