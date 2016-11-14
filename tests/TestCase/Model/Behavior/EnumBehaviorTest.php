@@ -331,6 +331,14 @@ class EnumBehaviorTest extends TestCase
         $result = $this->Articles->enum('node_group');
 
         $this->assertEquals(['active' => 'Translated Active'], $result);
+
+        $result = $this->Articles->enum(['node_group', 'norules']);
+
+        $expected = [
+            'node_group' => ['active' => 'Translated Active'],
+            'norules' => ['FOO' => 'translated foo']
+        ];
+        $this->assertEquals($expected, $result);
     }
 
     public function provideThirdPartyStrategy()

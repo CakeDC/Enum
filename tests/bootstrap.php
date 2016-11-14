@@ -38,7 +38,10 @@ require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
 I18n::config('default', function ($name, $locale) {
     $package = new Package('default');
-    $messages = ['Active' => 'Translated Active'];
+    $messages = [
+        'Active' => 'Translated Active',
+        'Foo' => 'translated foo'
+    ];
     $package->setMessages($messages);
 
     return $package;
