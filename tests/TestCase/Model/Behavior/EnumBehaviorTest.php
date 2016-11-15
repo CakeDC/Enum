@@ -91,6 +91,8 @@ class EnumBehaviorTest extends TestCase
     {
         $expected = [
             'defaultStrategy' => 'lookup',
+            'translate' => false,
+            'translationDomain' => 'default',
             'implementedMethods' => ['enum' => 'enum'],
             'lists' => [
                 'priority' => [
@@ -319,6 +321,22 @@ class EnumBehaviorTest extends TestCase
                 'DRAFT' => 'Drafted',
                 'ARCHIVE' => 'Archived',
             ],
+        ];
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testTranslatedValues()
+    {
+        $this->Articles->behaviors()->Enum->config('translate', true);
+        $result = $this->Articles->enum('node_group');
+
+        $this->assertEquals(['active' => 'Translated Active'], $result);
+
+        $result = $this->Articles->enum(['node_group', 'norules']);
+
+        $expected = [
+            'node_group' => ['active' => 'Translated Active'],
+            'norules' => ['FOO' => 'translated foo']
         ];
         $this->assertEquals($expected, $result);
     }
