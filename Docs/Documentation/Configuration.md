@@ -2,7 +2,7 @@
 
 ## Behavior, Model and Helper Configuration
 
-Firstly you need to add this in your table class ```$this->addBehavior('CakeDC/Enum.Enum');``` to load the behavior, after that you need to set the configurations, you can choose one or more to use in the same table class. When you get this done, you need to load the helper in your view class using ```$this->loadHelper('CakeDC/Enum.Enum');```
+Firstly you need to add this in your table class ```$this->addBehavior('CakeDC/Enum.Enum');``` to load the behavior, after that you need to set the configurations, you can choose one or more to use in the same table class.
 
 ## Supported Types of Enum
 
