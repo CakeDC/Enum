@@ -32,6 +32,9 @@ class EnumBehavior extends Behavior
      *   be translated. Defaults to `false`.
      * - `translationDomain`: Domain to use when translating list value.
      *   Defaults to "default".
+     * - `nested`: (bool) If `true` the array returned by enum() method will be of form
+     *   `[['value' => 'v1', 'text' => 't1'], ['value' => 'v2', 'text' => 't2']`
+     *   instead of default `['v1' => 't1', 'v2' => 't2']`.
      * - `implementedMethods`: custom table methods made accessible by this behavior.
      * - `lists`: the defined enumeration lists. Lists can use different strategies,
      *   use prefixes to differentiate them (defaults to the uppercased list name) and
@@ -175,12 +178,7 @@ class EnumBehavior extends Behavior
                 throw new MissingEnumConfigurationException([$alias]);
             }
 
-            $return = $this->strategy($alias, $config['strategy'])->enum($config);
-            if ($this->config('translate')) {
-                $return = $this->_translate($return);
-            }
-
-            return $return;
+            return $this->_enumList($alias, $config);
         }
 
         $lists = $this->config('lists');
@@ -190,10 +188,33 @@ class EnumBehavior extends Behavior
 
         $return = [];
         foreach ($lists as $alias => $config) {
-            $return[$alias] = $this->strategy($alias, $config['strategy'])->enum($config);
-            if ($this->config('translate')) {
-                $return[$alias] = $this->_translate($return[$alias]);
-            }
+            $return[$alias] = $this->_enumList($alias, $config);
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param string $alias List alias.
+     * @param array $config Config
+     * @return array
+     */
+    protected function _enumList($alias, array $config)
+    {
+        $return = $this->strategy($alias, $config['strategy'])->enum($config);
+        if ($this->config('translate')) {
+            $return = $this->_translate($return);
+        }
+
+        if ($this->config('nested')) {
+            array_walk(
+                $return,
+                function (&$item, $val) {
+                    $item = ['value' => $val, 'text' => $item];
+                }
+            );
+
+            $return = array_values($return);
         }
 
         return $return;
