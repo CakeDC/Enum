@@ -2,7 +2,7 @@ CakeDC Enum Plugin
 ==================
 
 [![Build Status](https://img.shields.io/travis/CakeDC/Enum/master.svg?style=flat-square)](https://travis-ci.org/CakeDC/Enum)
-[![Coverage](https://img.shields.io/coveralls/CakeDC/Enum/master.svg?style=flat-square)](https://coveralls.io/r/CakeDC/Enum)
+[![Coverage](https://img.shields.io/codecov/c/github/CakeDC/Enum.svg?style=flat-square)](https://codecov.io/github/CakeDC/Enum)
 [![Total Downloads](https://img.shields.io/packagist/dt/cakedc/enum.svg?style=flat-square)](https://packagist.org/packages/cakedc/enum)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 
