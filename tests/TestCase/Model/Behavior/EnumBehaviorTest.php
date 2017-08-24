@@ -262,6 +262,18 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
+    public function testEnumNested()
+    {
+        $this->Articles->behaviors()->Enum->config('nested', true);
+        $result = $this->Articles->enum('priority');
+        $expected = [
+            ['value' => 'URGENT', 'text' => 'Urgent'],
+            ['value' => 'HIGH', 'text' => 'High'],
+            ['value' => 'NORMAL', 'text' => 'Normal'],
+        ];
+        $this->assertEquals($expected, $result);
+    }
+
     public function testAssociationsCreated()
     {
         $result = $this->Articles->associations()->keys();
