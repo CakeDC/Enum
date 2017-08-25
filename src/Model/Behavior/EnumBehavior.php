@@ -49,7 +49,10 @@ class EnumBehavior extends Behavior
      *           'prefix' => 'PRIORITY',
      *           'field' => 'priority',
      *           'errorMessage' => 'Invalid priority',
-     *           'applicationRules' => true
+     *           // Create application rule to ensure only valid enum value can be saved.
+     *           'applicationRules' => true,
+     *           // Allow saving field without any enum value.
+     *           'allowEmpty' => false
      *       ],
      *   ];
      *   ```
@@ -277,6 +280,10 @@ class EnumBehavior extends Behavior
 
         if (!$config = $this->config('lists.' . $alias)) {
             throw new MissingEnumConfigurationException([$alias]);
+        }
+
+        if (!$entity->has($config['field']) && Hash::get($config, 'allowEmpty') === true) {
+            return true;
         }
 
         return array_key_exists($entity->{$config['field']}, $this->enum($alias));
