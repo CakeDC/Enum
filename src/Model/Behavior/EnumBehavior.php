@@ -15,7 +15,7 @@ namespace CakeDC\Enum\Model\Behavior;
 use BadMethodCallException;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
-use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
+use CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Cake\ORM\RulesChecker;
@@ -116,7 +116,7 @@ class EnumBehavior extends Behavior
 
         $this->_strategies[$alias] = $strategy;
 
-        if ($strategy instanceof AbstractStrategy) {
+        if ($strategy instanceof StrategyInterface) {
             return $strategy;
         }
 
