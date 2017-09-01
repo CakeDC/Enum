@@ -31,6 +31,8 @@ class ArticlesTable extends Table
 
     const NORULES_FOO = 'Foo';
 
+    const OPTIONAL_BAR = 'Bar';
+
     public function initialize(array $config)
     {
         $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
@@ -40,6 +42,7 @@ class ArticlesTable extends Table
             'node_type' => ['strategy' => 'const'],
             'node_group' => ['strategy' => 'const', 'lowercase' => true],
             'norules' => ['strategy' => 'const', 'applicationRules' => false],
+            'optional' => ['strategy' => 'const', 'lowercase' => true, 'allowEmpty' => true],
         ]]);
     }
 }
@@ -128,6 +131,13 @@ class EnumBehaviorTest extends TestCase
                     'errorMessage' => 'The provided value is invalid',
                     'lowercase' => true
                 ],
+                'optional' => [
+                    'strategy' => 'const',
+                    'prefix' => 'OPTIONAL',
+                    'field' => 'optional',
+                    'errorMessage' => 'The provided value is invalid',
+                    'lowercase' => true
+                ],
             ],
             'classMap' => []
         ];
@@ -141,6 +151,7 @@ class EnumBehaviorTest extends TestCase
                         'category' => ['strategy' => 'config'],
                         'node_type' => ['strategy' => 'const'],
                         'node_group' => ['strategy' => 'const', 'lowercase' => true],
+                        'optional' => ['strategy' => 'const', 'lowercase' => true],
                     ],
                 ],
                 $expected
@@ -228,6 +239,7 @@ class EnumBehaviorTest extends TestCase
                     'node_type' => 'BLOG',
                     'node_group' => 'active',
                     'norules' => 'invalid',
+                    'optional' => 'bar',
                 ],
                 [
                     'category' => ['isValidCategory' => 'The provided value is invalid'],
@@ -240,7 +252,7 @@ class EnumBehaviorTest extends TestCase
                     'category' => 1,
                     'node_type' => 'Invalid value',
                     'node_group' => 'active',
-                    'norules' => 'invalid'
+                    'norules' => 'invalid',
                 ],
                 [
                     'priority' => ['isValidPriority' => 'Invalid priority'],
@@ -314,6 +326,9 @@ class EnumBehaviorTest extends TestCase
             ],
             'norules' => [
                 'FOO' => 'Foo',
+            ],
+            'optional' => [
+                'bar' => 'Bar',
             ],
         ];
         $this->assertEquals($expected, $result);
