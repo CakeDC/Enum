@@ -10,7 +10,6 @@ Firstly you need to create a migration to populate the database for you create t
 public function change()
 {
     $LookupsTable = \Cake\ORM\TableRegistry::get('CakeDC/Enum.Lookups');
-    $lookups = $LookupsTable->newEntity();
 
     $lookups = $LookupsTable->newEntity();
     $lookups->name = 'URGENT ';
@@ -18,6 +17,7 @@ public function change()
     $lookups->prefix = 'PRIORITY';
     $LookupsTable->save($lookups);
 
+    $lookups = $LookupsTable->newEntity();
     $lookups->name = 'HIGH ';
     $lookups->label = 'High';
     $lookups->prefix = 'PRIORITY';
