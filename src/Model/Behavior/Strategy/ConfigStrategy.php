@@ -27,6 +27,6 @@ class ConfigStrategy extends AbstractStrategy
      */
     public function enum(array $config = [])
     {
-        return (array)Configure::read(self::KEY . '.' . $this->config('prefix'));
+        return (array)Configure::read(self::KEY . '.' . $this->getConfig('prefix'));
     }
 }
