@@ -71,12 +71,11 @@ class EnumBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        Configure::write('CakeDC/Enum', [
-            'ARTICLE_CATEGORY' => [
+        Configure::write('CakeDC/Enum.ARTICLE_CATEGORY', [
                 'CakePHP',
                 'Open Source Software',
             ]
-        ]);
+        );
 
         $this->Articles = TableRegistry::get('CakeDC/Enum.Articles', [
             'className' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ArticlesTable',
