@@ -2,7 +2,7 @@
 
 ## Lookups Example
 
-Firstly you need to create a migration to populate the database for you create the migration you need to run this command: 
+Firstly you need to create a migration to populate the database for you create the migration you need to run this command:
 
 ``` bin/cake migration create MyCustomMigration ``` and in the change method you need to create the entries, for example:
 
@@ -31,12 +31,12 @@ public function change()
 }
 ```
 
-After that you need to set the configuration in the behavior load, for example: 
+After that you need to set the configuration in the behavior load, for example:
 
 ```php
 $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
     'priority' => [
-        'prefix' => 'PRIORITY'  
+        'prefix' => 'PRIORITY'
     ],
 ]]);
 ```
@@ -55,7 +55,7 @@ If you use the plural variable name, you don't need to do anything in special in
 
 ## Const Example
 
-Here you need to create some constants variables in your table class and configure your behavior to get them for example: 
+Here you need to create some constants variables in your table class and configure your behavior to get them for example:
 
 ```php
 class ArticlesTable extends Table
@@ -110,15 +110,13 @@ so, your constaints need to be in the Article entity class.
 
 ## Config Example
 
-Here you need to create some constants variables in you table class and configure your behavior to get them for example: 
+Here you need to create some constants variables in you table class and configure your behavior to get them for example:
 
 ```php
-Configure::write(ConfigStrategy::KEY, [ // or 'CakeDC/Enum' as key
-    'category' => [
-        'Published',
-        'Drafted',
-        'Archived'
-    ],
+Configure::write(ConfigStrategy::KEY . 'category', [ // or 'CakeDC/Enum.category' as key
+    'Published',
+    'Drafted',
+    'Archived'
 ]);
 ```
 
