@@ -48,11 +48,9 @@ $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
 Using this strategy you'll need to add the values to key **"CakeDC/Enum"** in the global Configure class, for example:
 
 ```php
-Configure::write('CakeDC/Enum', [
-    'category' => [
-        'CakePHP',
-        'Open Source Software',
-    ]
+Configure::write('CakeDC/Enum.category', [
+    'CakePHP',
+    'Open Source Software',
 ]);
 ```
 Then you can configure the behaviour configuration like so:

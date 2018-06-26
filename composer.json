@@ -14,7 +14,7 @@
         "source": "https://github.com/cakedc/enum"
     },
     "require-dev": {
-        "cakephp/cakephp": "~3.0",
+        "cakephp/cakephp": "^3.6.0",
         "cakephp/cakephp-codesniffer": "2.*",
         "phpunit/phpunit": "<6.0"
     },

@@ -138,11 +138,11 @@ class EnumBehavior extends Behavior
      */
     protected function _normalizeConfig()
     {
-        $classMap = $this->config('classMap');
+        $classMap = $this->getConfig('classMap');
         $this->_classMap = array_merge($this->_classMap, $classMap);
 
-        $lists = $this->config('lists');
-        $defaultStrategy = $this->config('defaultStrategy');
+        $lists = $this->getConfig('lists');
+        $defaultStrategy = $this->getConfig('defaultStrategy');
 
         foreach ($lists as $alias => $config) {
             if (is_numeric($alias)) {
@@ -162,10 +162,10 @@ class EnumBehavior extends Behavior
 
             $lists[$alias] = $this->strategy($alias, $config['strategy'])
                 ->initialize($config)
-                ->config();
+                ->getConfig();
         }
 
-        $this->config('lists', $lists, false);
+        $this->setConfig('lists', $lists, false);
     }
 
     /**
@@ -176,7 +176,7 @@ class EnumBehavior extends Behavior
     public function enum($alias = null)
     {
         if (is_string($alias)) {
-            $config = $this->config('lists.' . $alias);
+            $config = $this->getConfig('lists.' . $alias);
             if (empty($config)) {
                 throw new MissingEnumConfigurationException([$alias]);
             }
@@ -184,7 +184,7 @@ class EnumBehavior extends Behavior
             return $this->_enumList($alias, $config);
         }
 
-        $lists = $this->config('lists');
+        $lists = $this->getConfig('lists');
         if (!empty($alias)) {
             $lists = array_intersect_key($lists, array_flip($alias));
         }
@@ -205,11 +205,11 @@ class EnumBehavior extends Behavior
     protected function _enumList($alias, array $config)
     {
         $return = $this->strategy($alias, $config['strategy'])->enum($config);
-        if ($this->config('translate')) {
+        if ($this->getConfig('translate')) {
             $return = $this->_translate($return);
         }
 
-        if ($this->config('nested')) {
+        if ($this->getConfig('nested')) {
             array_walk(
                 $return,
                 function (&$item, $val) {
@@ -231,7 +231,7 @@ class EnumBehavior extends Behavior
      */
     protected function _translate(array $list)
     {
-        $domain = $this->config('translationDomain');
+        $domain = $this->getConfig('translationDomain');
 
         return array_map(function ($value) use ($domain) {
             return __d($domain, $value);
@@ -245,7 +245,7 @@ class EnumBehavior extends Behavior
      */
     public function buildRules(Event $event, RulesChecker $rules)
     {
-        foreach ($this->config('lists') as $alias => $config) {
+        foreach ($this->getConfig('lists') as $alias => $config) {
             if (Hash::get($config, 'applicationRules') === false) {
                 continue;
             }
@@ -278,7 +278,7 @@ class EnumBehavior extends Behavior
         $alias = Inflector::underscore(str_replace('isValid', '', $method));
         list($entity, ) = $args;
 
-        if (!$config = $this->config('lists.' . $alias)) {
+        if (!$config = $this->getConfig('lists.' . $alias)) {
             throw new MissingEnumConfigurationException([$alias]);
         }
 

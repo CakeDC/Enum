@@ -49,7 +49,7 @@ class LookupStrategy extends AbstractStrategy
                 'valueField' => 'label',
             ])
             ->where([
-                'prefix' => $this->config('prefix'),
+                'prefix' => $this->getConfig('prefix'),
             ]);
 
         foreach ($config as $method => $args) {
@@ -69,7 +69,7 @@ class LookupStrategy extends AbstractStrategy
      */
     public function initialize($config)
     {
-        $config = parent::initialize($config)->config();
+        $config = parent::initialize($config)->getConfig();
         $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
 
         $this->_table->belongsTo($assocName, [

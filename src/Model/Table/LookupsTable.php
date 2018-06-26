@@ -25,7 +25,7 @@ class LookupsTable extends Table
      */
     public function initialize(array $config)
     {
-        $this->table('enum_lookups');
-        $this->displayField('label');
+        $this->setTable('enum_lookups');
+        $this->setDisplayField('label');
     }
 }

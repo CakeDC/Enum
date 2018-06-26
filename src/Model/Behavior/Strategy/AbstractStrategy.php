@@ -60,7 +60,7 @@ abstract class AbstractStrategy implements StrategyInterface
             $config = ['prefix' => $config];
         }
 
-        $prefix = $this->config('prefix');
+        $prefix = $this->getConfig('prefix');
         if (empty($config['prefix']) && empty($prefix)) {
             $config['prefix'] = $this->_generatePrefix();
         }
@@ -73,7 +73,7 @@ abstract class AbstractStrategy implements StrategyInterface
             $config['errorMessage'] = __d('cake', 'The provided value is invalid');
         }
 
-        $this->config($config);
+        $this->setConfig($config);
 
         return $this;
     }
@@ -85,7 +85,7 @@ abstract class AbstractStrategy implements StrategyInterface
      */
     protected function _generatePrefix()
     {
-        $prefix = Inflector::underscore(Inflector::singularize($this->_table->alias()));
+        $prefix = Inflector::underscore(Inflector::singularize($this->_table->getAlias()));
         $prefix .= '_' . $this->_alias;
 
         return strtoupper($prefix);
