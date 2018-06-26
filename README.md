@@ -8,6 +8,16 @@ CakeDC Enum Plugin
 
 Enumeration list for [CakePHP 3](http://cakephp.org).
 
+Versions and branches
+---------------------
+
+| CakePHP         | CakeDC Enum Plugin                                         |  Tag  | Notes    |
+| :-------------: | :------------------------:                                 | :--:  | :----    |
+| ^3.6            | [master](https://github.com/cakedc/enum/tree/master)       | 1.4.0 | stable   |
+| ^3.6            | [develop](https://github.com/cakedc/enum/tree/develop)     | -     | unstable |
+| 3.1 - 3.5       |                                                            | 1.3.0 | stable   |
+
+
 Install
 -------
 
