@@ -166,7 +166,7 @@ class EnumBehaviorTest extends TestCase
         TableRegistry::clear();
         $Articles = TableRegistry::get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
         $Articles->addBehavior('CakeDC/Enum.Enum', $config);
-        $result = $Articles->behaviors()->Enum->config();
+        $result = $Articles->behaviors()->Enum->getConfig();
         $this->assertEquals($expected, $result);
     }
 
@@ -269,13 +269,13 @@ class EnumBehaviorTest extends TestCase
     {
         $article = new \Cake\ORM\Entity($data);
         $this->Articles->save($article);
-        $result = $article->errors();
+        $result = $article->getErrors();
         $this->assertEquals($expected, $result);
     }
 
     public function testEnumNested()
     {
-        $this->Articles->behaviors()->Enum->config('nested', true);
+        $this->Articles->behaviors()->Enum->setConfig('nested', true);
         $result = $this->Articles->enum('priority');
         $expected = [
             ['value' => 'URGENT', 'text' => 'Urgent'],
@@ -292,7 +292,7 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
 
         foreach ($result as $assoc) {
-            $this->assertInstanceOf('\Cake\ORM\Association\BelongsTo', $this->Articles->association($assoc));
+            $this->assertInstanceOf('\Cake\ORM\Association\BelongsTo', $this->Articles->getAssociation($assoc));
         }
 
         $result = $this->Articles->get(1);
@@ -353,7 +353,7 @@ class EnumBehaviorTest extends TestCase
 
     public function testTranslatedValues()
     {
-        $this->Articles->behaviors()->Enum->config('translate', true);
+        $this->Articles->behaviors()->Enum->setConfig('translate', true);
         $result = $this->Articles->enum('node_group');
 
         $this->assertEquals(['active' => 'Translated Active'], $result);
