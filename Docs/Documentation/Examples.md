@@ -4,7 +4,7 @@
 
 Firstly you need to create a migration to populate the database for you create the migration you need to run this command:
 
-``` bin/cake migration create MyCustomMigration ``` and in the change method you need to create the entries, for example:
+``` bin/cake migrations create MyCustomMigration ``` and in the change method you need to create the entries, for example:
 
 ```php
 public function change()
