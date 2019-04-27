@@ -34,8 +34,7 @@ if (file_exists($root . '/config/bootstrap.php')) {
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
-\Cake\Core\Plugin::load('CakeDC/Enum', ['path' => dirname(dirname(__FILE__)) . DS]);
-
+\Cake\Core\Plugin::getCollection()->add(new \CakeDC\Enum\Plugin(['path' => dirname(dirname(__FILE__)) . DS]));
 I18n::config('default', function ($name, $locale) {
     $package = new Package('default');
     $messages = [

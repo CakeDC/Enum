@@ -61,8 +61,8 @@ class ThirdPartyStrategy extends AbstractStrategy
 class EnumBehaviorTest extends TestCase
 {
     public $fixtures = [
-        'plugin.CakeDC/Enum.articles',
-        'plugin.CakeDC/Enum.lookups',
+        'plugin.CakeDC/Enum.Articles',
+        'plugin.CakeDC/Enum.Lookups',
     ];
 
     protected $Articles;
@@ -74,8 +74,7 @@ class EnumBehaviorTest extends TestCase
         Configure::write('CakeDC/Enum.ARTICLE_CATEGORY', [
                 'CakePHP',
                 'Open Source Software',
-            ]
-        );
+            ]);
 
         $this->Articles = TableRegistry::get('CakeDC/Enum.Articles', [
             'className' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ArticlesTable',

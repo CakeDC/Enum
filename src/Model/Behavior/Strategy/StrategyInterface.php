@@ -16,7 +16,7 @@ interface StrategyInterface
 {
 
     /**
-     * @param mixed $config Strategy's configuration.
+     * @param array $config Strategy's configuration.
      * @return array
      */
     public function enum(array $config = []);
@@ -25,14 +25,13 @@ interface StrategyInterface
      * @param array $config Configuration.
      * @return \CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface
      */
-    public function initialize($config);
+    public function initialize(array $config);
 
     /**
      * @param string|array|null $key The key to get/set, or a complete array of configs.
-     * @param mixed|null $value The value to set.
-     * @param bool $merge Whether to recursively merge or overwrite existing config, defaults to true.
+     * @param mixed|null $default The value to set.
      * @return mixed Config value being read, or the object itself on write operations.
      * @throws \Cake\Core\Exception\Exception When trying to set a key that is invalid.
      */
-    public function config($key = null, $value = null, $merge = true);
+    public function getConfig($key = null, $default = null);
 }

@@ -37,6 +37,13 @@ abstract class AbstractStrategy implements StrategyInterface
     protected $_table;
 
     /**
+     * Table alias.
+     *
+     * @var string
+     */
+    protected $_alias;
+
+    /**
      * Constructor.
      *
      * @param string $alias Alias assigned to the strategy in the behavior.
@@ -51,15 +58,10 @@ abstract class AbstractStrategy implements StrategyInterface
     /**
      * {@inheritdoc}
      *
-     * @param mixed $config Strategy's configuration.
      * @return $this
      */
-    public function initialize($config)
+    public function initialize(array $config)
     {
-        if (is_string($config)) {
-            $config = ['prefix' => $config];
-        }
-
         $prefix = $this->getConfig('prefix');
         if (empty($config['prefix']) && empty($prefix)) {
             $config['prefix'] = $this->_generatePrefix();

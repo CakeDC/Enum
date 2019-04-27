@@ -120,11 +120,12 @@ class EnumBehavior extends Behavior
             return $strategy;
         }
 
+        $class = null;
         if (isset($this->_classMap[$strategy])) {
             $class = $this->_classMap[$strategy];
         }
 
-        if (!class_exists($class)) {
+        if ($class === null || !class_exists($class)) {
             throw new MissingEnumStrategyException([$class]);
         }
 

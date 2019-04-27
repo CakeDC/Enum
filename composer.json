@@ -13,10 +13,12 @@
         "issues": "https://github.com/cakedc/enum/issues",
         "source": "https://github.com/cakedc/enum"
     },
+    "require": {
+        "cakephp/cakephp": "^3.7"
+    },
     "require-dev": {
-        "cakephp/cakephp": "^3.6.0",
-        "cakephp/cakephp-codesniffer": "2.*",
-        "phpunit/phpunit": "<6.0"
+        "cakephp/cakephp-codesniffer": "dev-master",
+        "phpunit/phpunit": "^6"
     },
     "autoload": {
         "psr-4": {
@@ -27,5 +29,19 @@
         "psr-4": {
             "CakeDC\\Enum\\Test\\": "tests"
         }
+    },
+    "scripts": {
+        "check": [
+            "@cs-check",
+            "@test",
+            "@stan"
+        ],
+        "cs-check": "phpcs -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "cs-fix": "phpcbf --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        "test": "phpunit --stderr",
+        "stan": "phpstan analyse src/ && psalm --show-info=false",
+        "psalm": "psalm --show-info=false",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.11 vimeo/psalm:^3.0 && mv composer.backup composer.json", 
+        "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
     }
 }

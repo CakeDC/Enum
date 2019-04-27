@@ -13,6 +13,7 @@
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
 use Cake\Datasource\ModelAwareTrait;
+use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
@@ -20,6 +21,7 @@ use Cake\Utility\Inflector;
 class LookupStrategy extends AbstractStrategy
 {
 
+    use LocatorAwareTrait;
     use ModelAwareTrait;
 
     /**
@@ -32,7 +34,7 @@ class LookupStrategy extends AbstractStrategy
     {
         parent::__construct($alias, $table);
         $this->modelClass = 'CakeDC/Enum.Lookups';
-        $this->modelFactory('Table', ['Cake\ORM\TableRegistry', 'get']);
+        $this->modelFactory('Table', [$this->getTableLocator(), 'get']);
     }
 
     /**
@@ -67,7 +69,7 @@ class LookupStrategy extends AbstractStrategy
      * @param array $config Strategy's configuration.
      * @return $this
      */
-    public function initialize($config)
+    public function initialize(array $config)
     {
         $config = parent::initialize($config)->getConfig();
         $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
