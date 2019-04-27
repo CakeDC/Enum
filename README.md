@@ -13,8 +13,9 @@ Versions and branches
 
 | CakePHP         | CakeDC Enum Plugin                                         |  Tag  | Notes    |
 | :-------------: | :------------------------:                                 | :--:  | :----    |
-| ^3.6            | [master](https://github.com/cakedc/enum/tree/master)       | 1.4.0 | stable   |
-| ^3.6            | [develop](https://github.com/cakedc/enum/tree/develop)     | -     | unstable |
+| ^3.7            | [master](https://github.com/cakedc/enum/tree/master)       | 1.5.0 | stable   |
+| ^3.7            | [develop](https://github.com/cakedc/enum/tree/develop)     | -     | unstable |
+| ^3.6            | [master](https://github.com/cakedc/enum/tree/1.4.0)       | 1.4.0 | stable   |
 | 3.1 - 3.5       |                                                            | 1.3.0 | stable   |
 
 
