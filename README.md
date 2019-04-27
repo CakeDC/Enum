@@ -25,7 +25,7 @@ Install
 Using [Composer](http://getcomposer.org):
 
 ```
-composer require cakedc/enum:~1.0
+composer require cakedc/enum:1.5.0
 ```
 
 You then need to load the plugin. You can use the shell command:
@@ -43,8 +43,8 @@ Plugin::load('CakeDC/Enum');
 Requirements
 ------------
 
-* CakePHP 3.1+
-* PHP 5.4.16+ Note CakePHP 3.2 requires PHP 5.5 so 5.4 compatibility would be dropped sooner than later...
+* CakePHP 3.7+
+* PHP 5.6+
 
 Documentation
 -------------
@@ -66,6 +66,6 @@ This repository follows the [CakeDC Plugin Standard](http://cakedc.com/plugin-st
 License
 -------
 
-Copyright 2015 - 2018 Cake Development Corporation (CakeDC). All rights reserved.
+Copyright 2015 - 2019 Cake Development Corporation (CakeDC). All rights reserved.
 
 Licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) License. Redistributions of the source code included in this repository must retain the copyright notice found in each file.
