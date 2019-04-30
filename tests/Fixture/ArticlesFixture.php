@@ -34,7 +34,7 @@ class ArticlesFixture extends TestFixture
             'body' => '',
             'priority' => 'HIGH',
             'status' => 'PUBLIC',
-            'article_category' => 6
+            'article_category' => 6,
         ],
     ];
 }

@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /**
  * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
@@ -12,28 +12,28 @@
 
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior;
 
-use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 use Cake\Core\Configure;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 
 class ArticlesTable extends Table
 {
-    const STATUS_PUBLIC = 'Published';
-    const STATUS_DRAFT = 'Drafted';
-    const STATUS_ARCHIVE = 'Archived';
+    public const STATUS_PUBLIC = 'Published';
+    public const STATUS_DRAFT = 'Drafted';
+    public const STATUS_ARCHIVE = 'Archived';
 
-    const NODE_TYPE_PAGE = 'Page';
-    const NODE_TYPE_BLOG = 'Blog';
+    public const NODE_TYPE_PAGE = 'Page';
+    public const NODE_TYPE_BLOG = 'Blog';
 
-    const NODE_GROUP_ACTIVE = 'Active';
+    public const NODE_GROUP_ACTIVE = 'Active';
 
-    const NORULES_FOO = 'Foo';
+    public const NORULES_FOO = 'Foo';
 
-    const OPTIONAL_BAR = 'Bar';
+    public const OPTIONAL_BAR = 'Bar';
 
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
             'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
@@ -49,11 +49,11 @@ class ArticlesTable extends Table
 
 class ThirdPartyStrategy extends AbstractStrategy
 {
-    public function enum(array $config = [])
+    public function enum(array $config = []): array
     {
         return [
             1 => 'PHP',
-            2 => 'CSS'
+            2 => 'CSS',
         ];
     }
 }
@@ -78,7 +78,7 @@ class EnumBehaviorTest extends TestCase
 
         $this->Articles = TableRegistry::get('CakeDC/Enum.Articles', [
             'className' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ArticlesTable',
-            'table' => 'enum_articles'
+            'table' => 'enum_articles',
         ]);
     }
 
@@ -100,7 +100,7 @@ class EnumBehaviorTest extends TestCase
                     'strategy' => 'lookup',
                     'prefix' => 'PRIORITY',
                     'field' => 'priority',
-                    'errorMessage' => 'Invalid priority'
+                    'errorMessage' => 'Invalid priority',
                 ],
                 'status' => [
                     'strategy' => 'const',
@@ -113,31 +113,31 @@ class EnumBehaviorTest extends TestCase
                     'strategy' => 'config',
                     'prefix' => 'ARTICLE_CATEGORY',
                     'field' => 'category',
-                    'errorMessage' => 'The provided value is invalid'
+                    'errorMessage' => 'The provided value is invalid',
                 ],
                 'node_type' => [
                     'strategy' => 'const',
                     'prefix' => 'NODE_TYPE',
                     'field' => 'node_type',
                     'errorMessage' => 'The provided value is invalid',
-                    'lowercase' => false
+                    'lowercase' => false,
                 ],
                 'node_group' => [
                     'strategy' => 'const',
                     'prefix' => 'NODE_GROUP',
                     'field' => 'node_group',
                     'errorMessage' => 'The provided value is invalid',
-                    'lowercase' => true
+                    'lowercase' => true,
                 ],
                 'optional' => [
                     'strategy' => 'const',
                     'prefix' => 'OPTIONAL',
                     'field' => 'optional',
                     'errorMessage' => 'The provided value is invalid',
-                    'lowercase' => true
+                    'lowercase' => true,
                 ],
             ],
-            'classMap' => []
+            'classMap' => [],
         ];
 
         return [
@@ -152,7 +152,7 @@ class EnumBehaviorTest extends TestCase
                         'optional' => ['strategy' => 'const', 'lowercase' => true],
                     ],
                 ],
-                $expected
+                $expected,
             ],
         ];
     }
@@ -178,7 +178,7 @@ class EnumBehaviorTest extends TestCase
                     'URGENT' => 'Urgent',
                     'HIGH' => 'High',
                     'NORMAL' => 'Normal',
-                ]
+                ],
             ],
             [
                 'status',
@@ -186,33 +186,33 @@ class EnumBehaviorTest extends TestCase
                     'PUBLIC' => 'Published',
                     'DRAFT' => 'Drafted',
                     'ARCHIVE' => 'Archived',
-                ]
+                ],
             ],
             [
                 'category',
                 [
                     'CakePHP',
                     'Open Source Software',
-                ]
+                ],
             ],
             [
                 'node_type',
                 [
                     'PAGE' => 'Page',
                     'BLOG' => 'Blog',
-                ]
+                ],
             ],
             [
                 'node_group',
                 [
                     'active' => 'Active',
-                ]
+                ],
             ],
             [
                 'norules',
                 [
                     'FOO' => 'Foo',
-                ]
+                ],
             ],
         ];
     }
@@ -241,7 +241,7 @@ class EnumBehaviorTest extends TestCase
                 ],
                 [
                     'category' => ['isValidCategory' => 'The provided value is invalid'],
-                ]
+                ],
             ],
             [
                 [
@@ -256,8 +256,8 @@ class EnumBehaviorTest extends TestCase
                     'priority' => ['isValidPriority' => 'Invalid priority'],
                     'status' => ['isValidStatus' => 'The provided value is invalid'],
                     'node_type' => ['isValidNodeType' => 'The provided value is invalid'],
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -361,7 +361,7 @@ class EnumBehaviorTest extends TestCase
 
         $expected = [
             'node_group' => ['active' => 'Translated Active'],
-            'norules' => ['FOO' => 'translated foo']
+            'norules' => ['FOO' => 'translated foo'],
         ];
         $this->assertEquals($expected, $result);
     }
@@ -373,14 +373,14 @@ class EnumBehaviorTest extends TestCase
                 [
                     'classMap' => ['third_party' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ThirdPartyStrategy'],
                     'lists' => [
-                        'article_category' => ['strategy' => 'third_party']
-                    ]
+                        'article_category' => ['strategy' => 'third_party'],
+                    ],
                 ],
                 [
                     1 => 'PHP',
-                    2 => 'CSS'
-                ]
-            ]
+                    2 => 'CSS',
+                ],
+            ],
         ];
     }
 

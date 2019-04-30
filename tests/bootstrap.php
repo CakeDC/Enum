@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /**
  * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
@@ -39,7 +39,7 @@ I18n::config('default', function ($name, $locale) {
     $package = new Package('default');
     $messages = [
         'Active' => 'Translated Active',
-        'Foo' => 'translated foo'
+        'Foo' => 'translated foo',
     ];
     $package->setMessages($messages);
 

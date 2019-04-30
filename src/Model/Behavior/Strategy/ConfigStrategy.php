@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /**
  * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
@@ -16,8 +16,7 @@ use Cake\Core\Configure;
 
 class ConfigStrategy extends AbstractStrategy
 {
-
-    const KEY = 'CakeDC/Enum';
+    public const KEY = 'CakeDC/Enum';
 
     /**
      * {@inheritdoc}
@@ -25,7 +24,7 @@ class ConfigStrategy extends AbstractStrategy
      * @param array $config (unused in this case).
      * @return array
      */
-    public function enum(array $config = [])
+    public function enum(array $config = []): array
     {
         return (array)Configure::read(self::KEY . '.' . $this->getConfig('prefix'));
     }

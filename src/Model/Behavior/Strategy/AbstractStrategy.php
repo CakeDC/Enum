@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /**
  * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
@@ -12,14 +12,12 @@
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
-use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyPrefixException;
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 
 abstract class AbstractStrategy implements StrategyInterface
 {
-
     use InstanceConfigTrait;
 
     /**
@@ -49,7 +47,7 @@ abstract class AbstractStrategy implements StrategyInterface
      * @param string $alias Alias assigned to the strategy in the behavior.
      * @param \Cake\ORM\Table $table Target table.
      */
-    public function __construct($alias, Table $table)
+    public function __construct(string $alias, Table $table)
     {
         $this->_alias = $alias;
         $this->_table = $table;
@@ -58,9 +56,9 @@ abstract class AbstractStrategy implements StrategyInterface
     /**
      * {@inheritdoc}
      *
-     * @return $this
+     * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         $prefix = $this->getConfig('prefix');
         if (empty($config['prefix']) && empty($prefix)) {
@@ -76,8 +74,6 @@ abstract class AbstractStrategy implements StrategyInterface
         }
 
         $this->setConfig($config);
-
-        return $this;
     }
 
     /**
@@ -85,7 +81,7 @@ abstract class AbstractStrategy implements StrategyInterface
      *
      * @return string
      */
-    protected function _generatePrefix()
+    protected function _generatePrefix(): string
     {
         $prefix = Inflector::underscore(Inflector::singularize($this->_table->getAlias()));
         $prefix .= '_' . $this->_alias;

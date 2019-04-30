@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /**
  * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
@@ -12,29 +12,27 @@
 
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior\Strategy;
 
-use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
+use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
 
 class ArticlesTable extends Table
 {
+    public const EXTRA_VALUE = 'Extra';
 
-    const EXTRA_VALUE = 'Extra';
-
-    const STATUS_PUBLIC = 'Published';
-    const STATUS_DRAFT = 'Drafted';
-    const STATUS_ARCHIVE = 'Archived';
+    public const STATUS_PUBLIC = 'Published';
+    public const STATUS_DRAFT = 'Drafted';
+    public const STATUS_ARCHIVE = 'Archived';
 }
 
 class Article extends Entity
 {
+    public const EXTRA_VALUE = 'Extra';
 
-    const EXTRA_VALUE = 'Extra';
-
-    const STATUS_PUBLIC = 'Published';
-    const STATUS_DRAFT = 'Drafted';
-    const STATUS_ARCHIVE = 'Archived';
+    public const STATUS_PUBLIC = 'Published';
+    public const STATUS_DRAFT = 'Drafted';
+    public const STATUS_ARCHIVE = 'Archived';
 }
 
 class ConstStrategyTest extends TestCase
