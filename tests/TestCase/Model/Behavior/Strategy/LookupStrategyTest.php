@@ -22,14 +22,14 @@ class LookupStrategyTest extends TestCase
         'plugin.CakeDC/Enum.Lookups',
     ];
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->Strategy = new LookupStrategy('priority', new Table());
         $this->Strategy->initialize(['prefix' => 'PRIORITY']);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         unset($this->Strategy);

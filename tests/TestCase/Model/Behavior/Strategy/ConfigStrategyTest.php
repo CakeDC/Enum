@@ -21,7 +21,7 @@ class ConfigStrategyTest extends TestCase
 {
     public $Strategy;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Configure::write(ConfigStrategy::KEY, [
@@ -35,7 +35,7 @@ class ConfigStrategyTest extends TestCase
         $this->Strategy->initialize(['prefix' => 'STATUS']);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         unset($this->Strategy);

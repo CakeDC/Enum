@@ -67,7 +67,7 @@ class EnumBehaviorTest extends TestCase
 
     protected $Articles;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -82,7 +82,7 @@ class EnumBehaviorTest extends TestCase
         ]);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         TableRegistry::clear();

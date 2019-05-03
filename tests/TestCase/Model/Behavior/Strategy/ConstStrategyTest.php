@@ -41,7 +41,7 @@ class ConstStrategyTest extends TestCase
 
     public $StrategyEntity;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->StrategyTable = new ConstStrategy('status', new ArticlesTable());
@@ -55,7 +55,7 @@ class ConstStrategyTest extends TestCase
         ]);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         unset($this->StrategyTable);
