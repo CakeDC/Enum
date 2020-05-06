@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /**
  * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
@@ -18,6 +19,7 @@ use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 
+// @codingStandardsIgnoreStart
 class ArticlesTable extends Table
 {
     public const STATUS_PUBLIC = 'Published';
@@ -59,6 +61,7 @@ class ThirdPartyStrategy extends AbstractStrategy
 }
 
 class EnumBehaviorTest extends TestCase
+// @codingStandardsIgnoreEnd
 {
     public $fixtures = [
         'plugin.CakeDC/Enum.Articles',

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /**
  * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
@@ -17,6 +18,7 @@ use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
 use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
 
+// @codingStandardsIgnoreStart
 class ArticlesTable extends Table
 {
     public const EXTRA_VALUE = 'Extra';
@@ -34,8 +36,8 @@ class Article extends Entity
     public const STATUS_DRAFT = 'Drafted';
     public const STATUS_ARCHIVE = 'Archived';
 }
-
 class ConstStrategyTest extends TestCase
+// @codingStandardsIgnoreEnd
 {
     public $StrategyTable;
 

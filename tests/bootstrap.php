@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /**
  * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
