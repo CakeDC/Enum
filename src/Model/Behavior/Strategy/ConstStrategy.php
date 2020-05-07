@@ -1,12 +1,13 @@
 <?php
+declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -17,7 +18,6 @@ use ReflectionClass;
 
 class ConstStrategy extends AbstractStrategy
 {
-
     /**
      * Constants list
      *
@@ -31,7 +31,7 @@ class ConstStrategy extends AbstractStrategy
      * @param string $alias Strategy's alias.
      * @param \Cake\ORM\Table $table Table object.
      */
-    public function __construct($alias, Table $table)
+    public function __construct(string $alias, Table $table)
     {
         parent::__construct($alias, $table);
         $this->_defaultConfig['prefix'] = strtoupper($alias);
@@ -44,7 +44,7 @@ class ConstStrategy extends AbstractStrategy
      * @param array $config List of callable filters to limit items generated from list.
      * @return array
      */
-    public function enum(array $config = [])
+    public function enum(array $config = []): array
     {
         $constants = $this->_getConstants();
         $keys = array_keys($constants);
@@ -67,7 +67,7 @@ class ConstStrategy extends AbstractStrategy
      *
      * @return array
      */
-    protected function _getConstants()
+    protected function _getConstants(): array
     {
         if (isset($this->_constants)) {
             return $this->_constants;

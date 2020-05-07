@@ -1,41 +1,42 @@
 <?php
+declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior\Strategy;
 
-use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
 use Cake\Core\Configure;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
+use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
 
 class ConfigStrategyTest extends TestCase
 {
     public $Strategy;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Configure::write(ConfigStrategy::KEY, [
             'STATUS' => [
                 'Published',
                 'Drafted',
-                'Archived'
+                'Archived',
             ],
         ]);
         $this->Strategy = new ConfigStrategy('status', new Table());
         $this->Strategy->initialize(['prefix' => 'STATUS']);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
         unset($this->Strategy);

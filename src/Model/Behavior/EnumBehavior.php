@@ -1,26 +1,27 @@
 <?php
+declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Enum\Model\Behavior;
 
 use BadMethodCallException;
-use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
-use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
-use CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface;
 use Cake\Event\Event;
 use Cake\ORM\Behavior;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
+use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
+use CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface;
 
 class EnumBehavior extends Behavior
 {
@@ -94,7 +95,7 @@ class EnumBehavior extends Behavior
      * @param array $config Strategy's configuration.
      * @return void
      */
-    public function initialize(array $config)
+    public function initialize(array $config): void
     {
         parent::initialize($config);
         $this->_normalizeConfig();
@@ -108,7 +109,7 @@ class EnumBehavior extends Behavior
      * @return \CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException
      */
-    public function strategy($alias, $strategy)
+    public function strategy(string $alias, $strategy): \CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface
     {
         if (!empty($this->_strategies[$alias])) {
             return $this->_strategies[$alias];
@@ -120,11 +121,12 @@ class EnumBehavior extends Behavior
             return $strategy;
         }
 
+        $class = null;
         if (isset($this->_classMap[$strategy])) {
             $class = $this->_classMap[$strategy];
         }
 
-        if (!class_exists($class)) {
+        if ($class === null || !class_exists($class)) {
             throw new MissingEnumStrategyException([$class]);
         }
 
@@ -136,7 +138,7 @@ class EnumBehavior extends Behavior
      *
      * @return void
      */
-    protected function _normalizeConfig()
+    protected function _normalizeConfig(): void
     {
         $classMap = $this->getConfig('classMap');
         $this->_classMap = array_merge($this->_classMap, $classMap);
@@ -160,9 +162,9 @@ class EnumBehavior extends Behavior
                 $config['strategy'] = $defaultStrategy;
             }
 
-            $lists[$alias] = $this->strategy($alias, $config['strategy'])
-                ->initialize($config)
-                ->getConfig();
+            $strategy = $this->strategy($alias, $config['strategy']);
+            $strategy->initialize($config);
+            $lists[$alias] = $strategy->getConfig();
         }
 
         $this->setConfig('lists', $lists, false);
@@ -173,7 +175,7 @@ class EnumBehavior extends Behavior
      * @return array
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
      */
-    public function enum($alias = null)
+    public function enum($alias = null): array
     {
         if (is_string($alias)) {
             $config = $this->getConfig('lists.' . $alias);
@@ -202,7 +204,7 @@ class EnumBehavior extends Behavior
      * @param array $config Config
      * @return array
      */
-    protected function _enumList($alias, array $config)
+    protected function _enumList(string $alias, array $config): array
     {
         $return = $this->strategy($alias, $config['strategy'])->enum($config);
         if ($this->getConfig('translate')) {
@@ -229,7 +231,7 @@ class EnumBehavior extends Behavior
      * @param array $list List.
      * @return array
      */
-    protected function _translate(array $list)
+    protected function _translate(array $list): array
     {
         $domain = $this->getConfig('translationDomain');
 
@@ -243,7 +245,7 @@ class EnumBehavior extends Behavior
      * @param \Cake\ORM\RulesChecker $rules Rules checker.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(Event $event, RulesChecker $rules)
+    public function buildRules(Event $event, RulesChecker $rules): \Cake\ORM\RulesChecker
     {
         foreach ($this->getConfig('lists') as $alias => $config) {
             if (Hash::get($config, 'applicationRules') === false) {
@@ -253,7 +255,7 @@ class EnumBehavior extends Behavior
             $ruleName = 'isValid' . Inflector::camelize($alias);
             $rules->add([$this, $ruleName], $ruleName, [
                 'errorField' => $config['field'],
-                'message' => $config['errorMessage']
+                'message' => $config['errorMessage'],
             ]);
         }
 
@@ -269,16 +271,17 @@ class EnumBehavior extends Behavior
      * @throws \BadMethodCallException
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
      */
-    public function __call($method, $args)
+    public function __call(string $method, array $args): bool
     {
         if (strpos($method, 'isValid') !== 0) {
             throw new BadMethodCallException(sprintf('Call to undefined method (%s)', $method));
         }
 
         $alias = Inflector::underscore(str_replace('isValid', '', $method));
-        list($entity, ) = $args;
+        [$entity, ] = $args;
 
-        if (!$config = $this->getConfig('lists.' . $alias)) {
+        $config = $this->getConfig('lists.' . $alias);
+        if ($config === null) {
             throw new MissingEnumConfigurationException([$alias]);
         }
 

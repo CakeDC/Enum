@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1556394500">
+  <project timestamp="1556394500">
+    <package name="CakeDC\Enum\Model\Behavior">
+      <file name="E:\projects\cakedc\plugins\Enum\src/Model/Behavior/EnumBehavior.php">
+        <class name="CakeDC\Enum\Model\Behavior\EnumBehavior" namespace="CakeDC\Enum\Model\Behavior">
+          <metrics complexity="31" methods="10" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="73" coveredstatements="63" elements="83" coveredelements="69"/>
+        </class>
+        <line num="97" type="method" name="initialize" visibility="public" complexity="1" crap="1" count="14"/>
+        <line num="99" type="stmt" count="14"/>
+        <line num="100" type="stmt" count="14"/>
+        <line num="101" type="stmt" count="14"/>
+        <line num="111" type="method" name="strategy" visibility="public" complexity="6" crap="6.22" count="14"/>
+        <line num="113" type="stmt" count="14"/>
+        <line num="114" type="stmt" count="12"/>
+        <line num="117" type="stmt" count="14"/>
+        <line num="119" type="stmt" count="14"/>
+        <line num="120" type="stmt" count="0"/>
+        <line num="123" type="stmt" count="14"/>
+        <line num="124" type="stmt" count="14"/>
+        <line num="125" type="stmt" count="14"/>
+        <line num="128" type="stmt" count="14"/>
+        <line num="129" type="stmt" count="0"/>
+        <line num="132" type="stmt" count="14"/>
+        <line num="140" type="method" name="_normalizeConfig" visibility="protected" complexity="5" crap="5.46" count="14"/>
+        <line num="142" type="stmt" count="14"/>
+        <line num="143" type="stmt" count="14"/>
+        <line num="145" type="stmt" count="14"/>
+        <line num="146" type="stmt" count="14"/>
+        <line num="148" type="stmt" count="14"/>
+        <line num="149" type="stmt" count="14"/>
+        <line num="150" type="stmt" count="0"/>
+        <line num="151" type="stmt" count="0"/>
+        <line num="152" type="stmt" count="0"/>
+        <line num="153" type="stmt" count="0"/>
+        <line num="156" type="stmt" count="14"/>
+        <line num="157" type="stmt" count="0"/>
+        <line num="160" type="stmt" count="14"/>
+        <line num="161" type="stmt" count="14"/>
+        <line num="164" type="stmt" count="14"/>
+        <line num="165" type="stmt" count="14"/>
+        <line num="166" type="stmt" count="14"/>
+        <line num="169" type="stmt" count="14"/>
+        <line num="170" type="stmt" count="14"/>
+        <line num="177" type="method" name="enum" visibility="public" complexity="5" crap="5.01" count="12"/>
+        <line num="179" type="stmt" count="12"/>
+        <line num="180" type="stmt" count="11"/>
+        <line num="181" type="stmt" count="11"/>
+        <line num="182" type="stmt" count="0"/>
+        <line num="185" type="stmt" count="11"/>
+        <line num="188" type="stmt" count="2"/>
+        <line num="189" type="stmt" count="2"/>
+        <line num="190" type="stmt" count="2"/>
+        <line num="193" type="stmt" count="2"/>
+        <line num="194" type="stmt" count="2"/>
+        <line num="195" type="stmt" count="2"/>
+        <line num="198" type="stmt" count="2"/>
+        <line num="206" type="method" name="_enumList" visibility="protected" complexity="3" crap="3" count="12"/>
+        <line num="208" type="stmt" count="12"/>
+        <line num="209" type="stmt" count="12"/>
+        <line num="210" type="stmt" count="1"/>
+        <line num="213" type="stmt" count="12"/>
+        <line num="214" type="stmt" count="1"/>
+        <line num="215" type="stmt" count="1"/>
+        <line num="216" type="method" name="anonymousFunction:216#934" complexity="1" crap="1" count="1"/>
+        <line num="217" type="stmt" count="1"/>
+        <line num="218" type="stmt" count="1"/>
+        <line num="221" type="stmt" count="1"/>
+        <line num="224" type="stmt" count="12"/>
+        <line num="233" type="method" name="_translate" visibility="protected" complexity="1" crap="1" count="1"/>
+        <line num="235" type="stmt" count="1"/>
+        <line num="237" type="method" name="anonymousFunction:237#1021" complexity="1" crap="1" count="1"/>
+        <line num="238" type="stmt" count="1"/>
+        <line num="239" type="stmt" count="1"/>
+        <line num="247" type="method" name="buildRules" visibility="public" complexity="3" crap="3" count="2"/>
+        <line num="249" type="stmt" count="2"/>
+        <line num="250" type="stmt" count="2"/>
+        <line num="251" type="stmt" count="2"/>
+        <line num="254" type="stmt" count="2"/>
+        <line num="255" type="stmt" count="2"/>
+        <line num="256" type="stmt" count="2"/>
+        <line num="257" type="stmt" count="2"/>
+        <line num="261" type="stmt" count="2"/>
+        <line num="273" type="method" name="__call" visibility="public" complexity="5" crap="5.27" count="2"/>
+        <line num="275" type="stmt" count="2"/>
+        <line num="276" type="stmt" count="0"/>
+        <line num="279" type="stmt" count="2"/>
+        <line num="280" type="stmt" count="2"/>
+        <line num="282" type="stmt" count="2"/>
+        <line num="283" type="stmt" count="0"/>
+        <line num="286" type="stmt" count="2"/>
+        <line num="287" type="stmt" count="1"/>
+        <line num="290" type="stmt" count="2"/>
+        <metrics loc="292" ncloc="189" classes="1" methods="10" coveredmethods="6" conditionals="0" coveredconditionals="0" statements="75" coveredstatements="65" elements="85" coveredelements="71"/>
+      </file>
+    </package>
+    <package name="CakeDC\Enum\Model\Behavior\Exception">
+      <file name="E:\projects\cakedc\plugins\Enum\src/Model/Behavior/Exception/MissingEnumConfigurationException.php">
+        <class name="CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException" namespace="CakeDC\Enum\Model\Behavior\Exception">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="20" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="E:\projects\cakedc\plugins\Enum\src/Model/Behavior/Exception/MissingEnumStrategyException.php">
+        <class name="CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException" namespace="CakeDC\Enum\Model\Behavior\Exception">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="20" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="E:\projects\cakedc\plugins\Enum\src/Model/Behavior/Exception/MissingEnumStrategyPrefixException.php">
+        <class name="CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyPrefixException" namespace="CakeDC\Enum\Model\Behavior\Exception">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="20" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+    </package>
+    <package name="CakeDC\Enum\Model\Behavior\Strategy">
+      <file name="E:\projects\cakedc\plugins\Enum\src/Model/Behavior/Strategy/AbstractStrategy.php">
+        <class name="CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy" namespace="CakeDC\Enum\Model\Behavior\Strategy">
+          <metrics complexity="7" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="18" coveredelements="18"/>
+        </class>
+        <line num="52" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="18"/>
+        <line num="54" type="stmt" count="18"/>
+        <line num="55" type="stmt" count="18"/>
+        <line num="56" type="stmt" count="18"/>
+        <line num="63" type="method" name="initialize" visibility="public" complexity="5" crap="5" count="18"/>
+        <line num="65" type="stmt" count="18"/>
+        <line num="66" type="stmt" count="18"/>
+        <line num="67" type="stmt" count="14"/>
+        <line num="70" type="stmt" count="18"/>
+        <line num="71" type="stmt" count="18"/>
+        <line num="74" type="stmt" count="18"/>
+        <line num="75" type="stmt" count="18"/>
+        <line num="78" type="stmt" count="18"/>
+        <line num="80" type="stmt" count="18"/>
+        <line num="88" type="method" name="_generatePrefix" visibility="protected" complexity="1" crap="1" count="14"/>
+        <line num="90" type="stmt" count="14"/>
+        <line num="91" type="stmt" count="14"/>
+        <line num="93" type="stmt" count="14"/>
+        <metrics loc="95" ncloc="55" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="15" coveredstatements="15" elements="18" coveredelements="18"/>
+      </file>
+      <file name="E:\projects\cakedc\plugins\Enum\src/Model/Behavior/Strategy/ConfigStrategy.php">
+        <class name="CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy" namespace="CakeDC\Enum\Model\Behavior\Strategy">
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
+        </class>
+        <line num="28" type="method" name="enum" visibility="public" complexity="1" crap="1" count="5"/>
+        <line num="30" type="stmt" count="5"/>
+        <metrics loc="32" ncloc="17" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="1" coveredstatements="1" elements="2" coveredelements="2"/>
+      </file>
+      <file name="E:\projects\cakedc\plugins\Enum\src/Model/Behavior/Strategy/ConstStrategy.php">
+        <class name="CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy" namespace="CakeDC\Enum\Model\Behavior\Strategy">
+          <metrics complexity="11" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="26" coveredstatements="26" elements="30" coveredelements="30"/>
+        </class>
+        <line num="34" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="16"/>
+        <line num="36" type="stmt" count="16"/>
+        <line num="37" type="stmt" count="16"/>
+        <line num="38" type="stmt" count="16"/>
+        <line num="39" type="stmt" count="16"/>
+        <line num="47" type="method" name="enum" visibility="public" complexity="3" crap="3" count="10"/>
+        <line num="49" type="stmt" count="10"/>
+        <line num="50" type="stmt" count="10"/>
+        <line num="52" type="stmt" count="10"/>
+        <line num="53" type="stmt" count="8"/>
+        <line num="54" type="stmt" count="8"/>
+        <line num="58" type="method" name="anonymousFunction:58#193" complexity="1" crap="1" count="10"/>
+        <line num="59" type="stmt" count="10"/>
+        <line num="60" type="stmt" count="10"/>
+        <line num="62" type="stmt" count="10"/>
+        <line num="70" type="method" name="_getConstants" visibility="protected" complexity="6" crap="6" count="10"/>
+        <line num="72" type="stmt" count="10"/>
+        <line num="73" type="stmt" count="4"/>
+        <line num="76" type="stmt" count="10"/>
+        <line num="77" type="stmt" count="10"/>
+        <line num="78" type="stmt" count="10"/>
+        <line num="79" type="stmt" count="10"/>
+        <line num="80" type="stmt" count="10"/>
+        <line num="81" type="stmt" count="10"/>
+        <line num="83" type="stmt" count="10"/>
+        <line num="84" type="stmt" count="10"/>
+        <line num="85" type="stmt" count="10"/>
+        <line num="86" type="stmt" count="10"/>
+        <line num="87" type="stmt" count="7"/>
+        <line num="89" type="stmt" count="10"/>
+        <line num="93" type="stmt" count="10"/>
+        <metrics loc="95" ncloc="64" classes="1" methods="4" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="27" elements="31" coveredelements="31"/>
+      </file>
+      <file name="E:\projects\cakedc\plugins\Enum\src/Model/Behavior/Strategy/LookupStrategy.php">
+        <class name="CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy" namespace="CakeDC\Enum\Model\Behavior\Strategy">
+          <metrics complexity="5" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="21" elements="24" coveredelements="24"/>
+        </class>
+        <line num="33" type="method" name="__construct" visibility="public" complexity="1" crap="1" count="15"/>
+        <line num="35" type="stmt" count="15"/>
+        <line num="36" type="stmt" count="15"/>
+        <line num="37" type="stmt" count="15"/>
+        <line num="38" type="stmt" count="15"/>
+        <line num="46" type="method" name="enum" visibility="public" complexity="3" crap="3" count="6"/>
+        <line num="48" type="stmt" count="6"/>
+        <line num="49" type="stmt" count="6"/>
+        <line num="50" type="stmt" count="6"/>
+        <line num="53" type="stmt" count="6"/>
+        <line num="54" type="stmt" count="6"/>
+        <line num="57" type="stmt" count="6"/>
+        <line num="58" type="stmt" count="5"/>
+        <line num="59" type="stmt" count="5"/>
+        <line num="63" type="stmt" count="6"/>
+        <line num="72" type="method" name="initialize" visibility="public" complexity="1" crap="1" count="15"/>
+        <line num="74" type="stmt" count="15"/>
+        <line num="75" type="stmt" count="15"/>
+        <line num="77" type="stmt" count="15"/>
+        <line num="78" type="stmt" count="15"/>
+        <line num="79" type="stmt" count="15"/>
+        <line num="80" type="stmt" count="15"/>
+        <line num="81" type="stmt" count="15"/>
+        <line num="84" type="stmt" count="15"/>
+        <metrics loc="86" ncloc="59" classes="1" methods="3" coveredmethods="3" conditionals="0" coveredconditionals="0" statements="21" coveredstatements="21" elements="24" coveredelements="24"/>
+      </file>
+    </package>
+    <file name="E:\projects\cakedc\plugins\Enum\src/Model/Behavior/Strategy/StrategyInterface.php">
+      <metrics loc="37" ncloc="14" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <package name="CakeDC\Enum\Model\Table">
+      <file name="E:\projects\cakedc\plugins\Enum\src/Model/Table/LookupsTable.php">
+        <class name="CakeDC\Enum\Model\Table\LookupsTable" namespace="CakeDC\Enum\Model\Table">
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+        </class>
+        <line num="26" type="method" name="initialize" visibility="public" complexity="1" crap="1" count="6"/>
+        <line num="28" type="stmt" count="6"/>
+        <line num="29" type="stmt" count="6"/>
+        <line num="30" type="stmt" count="6"/>
+        <metrics loc="31" ncloc="16" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="4" coveredelements="4"/>
+      </file>
+    </package>
+    <package name="CakeDC\Enum">
+      <file name="E:\projects\cakedc\plugins\Enum\src/Plugin.php">
+        <class name="CakeDC\Enum\Plugin" namespace="CakeDC\Enum">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="25" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+    </package>
+    <metrics files="11" loc="753" ncloc="458" classes="6" methods="22" coveredmethods="18" conditionals="0" coveredconditionals="0" statements="142" coveredstatements="132" elements="164" coveredelements="150"/>
+  </project>
+</coverage>
