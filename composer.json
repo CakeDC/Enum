@@ -45,7 +45,7 @@
         "test": "phpunit --stderr",
         "stan": "phpstan analyse src/ && psalm --show-info=false",
         "psalm": "psalm --show-info=false",
-        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.11 vimeo/psalm:^3.0 && mv composer.backup composer.json",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12.7 psalm/phar:~3.8.0 && mv composer.backup composer.json",
         "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.4.11 && mv composer.backup composer.json",
         "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
     }
