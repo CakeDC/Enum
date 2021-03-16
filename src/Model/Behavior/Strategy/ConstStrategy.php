@@ -105,10 +105,6 @@ class ConstStrategy extends AbstractStrategy
     public function beforeFind(\Cake\Event\EventInterface $event, \Cake\ORM\Query $query, \ArrayObject $options)
     {
         $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
-        if (!in_array($assocName, array_keys($query->getContain()))) {
-            return;
-        }
-
         if ($this->_table->hasAssociation($assocName)) {
             throw new InvalidAliasListException([$this->_alias, $this->_table->getAlias(), $assocName]);
         }
