@@ -17,6 +17,7 @@ namespace CakeDC\Enum\Model\Behavior\Strategy;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use CakeDC\Enum\Model\Behavior\Exception\InvalidAliasListException;
 use ReflectionClass;
 
 class ConstStrategy extends AbstractStrategy
@@ -108,6 +109,10 @@ class ConstStrategy extends AbstractStrategy
         if (!in_array($assocName, array_keys($query->getContain()))) {
             return ;
         } 
+
+        if ($this->_table->hasAssociation($assocName)) {
+            throw new InvalidAliasListException([$this->_alias, $this->_table->getAlias(), $assocName]);
+        }
 
         $contain = array_filter($query->getContain(), function($value) use ($assocName) {
             return $value !== $assocName;
