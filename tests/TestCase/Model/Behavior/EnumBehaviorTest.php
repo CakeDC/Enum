@@ -290,7 +290,7 @@ class EnumBehaviorTest extends TestCase
     public function testAssociationsCreated()
     {
         $result = $this->Articles->associations()->keys();
-        $expected = ['priorities'];
+        $expected = ['Priorities'];
         $this->assertEquals($expected, $result);
 
         foreach ($result as $assoc) {
