@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 /**
@@ -107,19 +106,19 @@ class ConstStrategy extends AbstractStrategy
     {
         $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
         if (!in_array($assocName, array_keys($query->getContain()))) {
-            return ;
-        } 
+            return;
+        }
 
         if ($this->_table->hasAssociation($assocName)) {
             throw new InvalidAliasListException([$this->_alias, $this->_table->getAlias(), $assocName]);
         }
 
-        $contain = array_filter($query->getContain(), function($value) use ($assocName) {
+        $contain = array_filter($query->getContain(), function ($value) use ($assocName) {
             return $value !== $assocName;
         }, ARRAY_FILTER_USE_KEY);
 
         $query->clearContain()->contain($contain);
-    
+
         $query->formatResults(function (\Cake\Collection\CollectionInterface $results) {
             return $results->map(function ($row) {
                 if (is_string($row)) {
@@ -132,15 +131,16 @@ class ConstStrategy extends AbstractStrategy
                 $value = new \Cake\ORM\Entity([
                     'label' => Hash::get($this->_getConstants(), $constant, $constant),
                     'prefix' => $this->getConfig('prefix'),
-                    'value' => $constant
+                    'value' => $constant,
                 ], ['markClean' => true, 'markNew' => false]);
 
                 if (is_array($row)) {
                     $row[$field] = $value->toArray();
-                    return $row; 
+
+                    return $row;
                 }
 
-                $row->set($field, $value);                
+                $row->set($field, $value);
                 $row->setDirty($field, false);
 
                 return $row;
