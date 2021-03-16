@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -14,6 +15,8 @@ declare(strict_types=1);
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
+use Cake\Utility\Inflector;
 use ReflectionClass;
 
 class ConstStrategy extends AbstractStrategy
@@ -91,5 +94,52 @@ class ConstStrategy extends AbstractStrategy
         }
 
         return $this->_constants = $constants;
+    }
+
+    /**
+     * @param \Cake\Event\EventInterface $event The beforeFind event that was fired.
+     * @param \Cake\ORM\Query $query Query
+     * @param \ArrayObject $options The options for the query
+     * @return void
+     */
+    public function beforeFind(\Cake\Event\EventInterface $event, \Cake\ORM\Query $query, \ArrayObject $options)
+    {
+        $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
+        if (!in_array($assocName, array_keys($query->getContain()))) {
+            return ;
+        } 
+
+        $contain = array_filter($query->getContain(), function($value) use ($assocName) {
+            return $value !== $assocName;
+        }, ARRAY_FILTER_USE_KEY);
+
+        $query->clearContain()->contain($contain);
+    
+        $query->formatResults(function (\Cake\Collection\CollectionInterface $results) {
+            return $results->map(function ($row) {
+                if (is_string($row)) {
+                    return $row;
+                }
+
+                $constant = Hash::get($row, $this->getConfig('field'));
+
+                $field = Inflector::singularize(Inflector::underscore($this->_alias));
+                $value = new \Cake\ORM\Entity([
+                    'label' => Hash::get($this->_getConstants(), $constant, $constant),
+                    'prefix' => $this->getConfig('prefix'),
+                    'value' => $constant
+                ], ['markClean' => true, 'markNew' => false]);
+
+                if (is_array($row)) {
+                    $row[$field] = $value->toArray();
+                    return $row; 
+                }
+
+                $row->set($field, $value);                
+                $row->setDirty($field, false);
+
+                return $row;
+            });
+        });
     }
 }
