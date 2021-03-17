@@ -1,25 +1,24 @@
 <?php
+declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
-use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyPrefixException;
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 
 abstract class AbstractStrategy implements StrategyInterface
 {
-
     use InstanceConfigTrait;
 
     /**
@@ -37,12 +36,19 @@ abstract class AbstractStrategy implements StrategyInterface
     protected $_table;
 
     /**
+     * Table alias.
+     *
+     * @var string
+     */
+    protected $_alias;
+
+    /**
      * Constructor.
      *
      * @param string $alias Alias assigned to the strategy in the behavior.
      * @param \Cake\ORM\Table $table Target table.
      */
-    public function __construct($alias, Table $table)
+    public function __construct(string $alias, Table $table)
     {
         $this->_alias = $alias;
         $this->_table = $table;
@@ -51,15 +57,10 @@ abstract class AbstractStrategy implements StrategyInterface
     /**
      * {@inheritdoc}
      *
-     * @param mixed $config Strategy's configuration.
-     * @return $this
+     * @return void
      */
-    public function initialize($config)
+    public function initialize(array $config): void
     {
-        if (is_string($config)) {
-            $config = ['prefix' => $config];
-        }
-
         $prefix = $this->getConfig('prefix');
         if (empty($config['prefix']) && empty($prefix)) {
             $config['prefix'] = $this->_generatePrefix();
@@ -74,8 +75,6 @@ abstract class AbstractStrategy implements StrategyInterface
         }
 
         $this->setConfig($config);
-
-        return $this;
     }
 
     /**
@@ -83,7 +82,7 @@ abstract class AbstractStrategy implements StrategyInterface
      *
      * @return string
      */
-    protected function _generatePrefix()
+    protected function _generatePrefix(): string
     {
         $prefix = Inflector::underscore(Inflector::singularize($this->_table->getAlias()));
         $prefix .= '_' . $this->_alias;

@@ -11,11 +11,16 @@ declare(strict_types=1);
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Enum\Model\Behavior\Exception;
+namespace CakeDC\Enum;
 
-use Cake\Core\Exception\Exception;
+use Cake\Core\BasePlugin;
 
-class MissingEnumConfigurationException extends Exception
+class Plugin extends BasePlugin
 {
-    protected $_templateMessage = 'Missing enum configuration (%s)';
+    /**
+     * Plugin name.
+     *
+     * @var string
+     */
+    protected $name = 'BootstrapUI';
 }

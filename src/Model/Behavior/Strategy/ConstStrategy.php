@@ -1,23 +1,26 @@
 <?php
+declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2018, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
 use Cake\ORM\Table;
+use Cake\Utility\Hash;
+use Cake\Utility\Inflector;
+use CakeDC\Enum\Model\Behavior\Exception\InvalidAliasListException;
 use ReflectionClass;
 
 class ConstStrategy extends AbstractStrategy
 {
-
     /**
      * Constants list
      *
@@ -31,7 +34,7 @@ class ConstStrategy extends AbstractStrategy
      * @param string $alias Strategy's alias.
      * @param \Cake\ORM\Table $table Table object.
      */
-    public function __construct($alias, Table $table)
+    public function __construct(string $alias, Table $table)
     {
         parent::__construct($alias, $table);
         $this->_defaultConfig['prefix'] = strtoupper($alias);
@@ -44,7 +47,7 @@ class ConstStrategy extends AbstractStrategy
      * @param array $config List of callable filters to limit items generated from list.
      * @return array
      */
-    public function enum(array $config = [])
+    public function enum(array $config = []): array
     {
         $constants = $this->_getConstants();
         $keys = array_keys($constants);
@@ -67,7 +70,7 @@ class ConstStrategy extends AbstractStrategy
      *
      * @return array
      */
-    protected function _getConstants()
+    protected function _getConstants(): array
     {
         if (isset($this->_constants)) {
             return $this->_constants;
@@ -91,5 +94,53 @@ class ConstStrategy extends AbstractStrategy
         }
 
         return $this->_constants = $constants;
+    }
+
+    /**
+     * @param \Cake\Event\EventInterface $event The beforeFind event that was fired.
+     * @param \Cake\ORM\Query $query Query
+     * @param \ArrayObject $options The options for the query
+     * @return void
+     */
+    public function beforeFind(\Cake\Event\EventInterface $event, \Cake\ORM\Query $query, \ArrayObject $options)
+    {
+        $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
+        if ($this->_table->hasAssociation($assocName)) {
+            throw new InvalidAliasListException([$this->_alias, $this->_table->getAlias(), $assocName]);
+        }
+
+        $contain = array_filter($query->getContain(), function ($value) use ($assocName) {
+            return $value !== $assocName;
+        }, ARRAY_FILTER_USE_KEY);
+
+        $query->clearContain()->contain($contain);
+
+        $query->formatResults(function (\Cake\Collection\CollectionInterface $results) {
+            return $results->map(function ($row) {
+                if (is_string($row)) {
+                    return $row;
+                }
+
+                $constant = Hash::get($row, $this->getConfig('field'));
+
+                $field = Inflector::singularize(Inflector::underscore($this->_alias));
+                $value = new \Cake\ORM\Entity([
+                    'label' => Hash::get($this->_getConstants(), $constant, $constant),
+                    'prefix' => $this->getConfig('prefix'),
+                    'value' => $constant,
+                ], ['markClean' => true, 'markNew' => false]);
+
+                if (is_array($row)) {
+                    $row[$field] = $value->toArray();
+
+                    return $row;
+                }
+
+                $row->set($field, $value);
+                $row->setDirty($field, false);
+
+                return $row;
+            });
+        });
     }
 }
