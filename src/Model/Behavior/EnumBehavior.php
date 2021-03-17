@@ -291,4 +291,20 @@ class EnumBehavior extends Behavior
 
         return array_key_exists($entity->{$config['field']}, $this->enum($alias));
     }
+
+    /**
+     * @param \Cake\Event\EventInterface $event The beforeFind event that was fired.
+     * @param \Cake\ORM\Query $query Query
+     * @param \ArrayObject $options The options for the query
+     * @return void
+     */
+    public function beforeFind(\Cake\Event\EventInterface $event, \Cake\ORM\Query $query, \ArrayObject $options)
+    {
+        foreach ($this->getConfig('lists') as $alias => $config) {
+            $strategy = $this->strategy($alias, $config['strategy']);
+            if (method_exists($strategy, 'beforeFind')) {
+                $strategy->beforeFind($event, $query, $options);
+            }
+        }
+    }
 }
