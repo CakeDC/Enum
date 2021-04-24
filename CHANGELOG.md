@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* 2.0.0 CakePHP 4.x support
+
 * 1.2.0
   * Documentation improved
   * Allow saving entity with no value for enum field
