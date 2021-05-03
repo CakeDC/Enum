@@ -117,7 +117,7 @@ class ConstStrategy extends AbstractStrategy
 
         $query->formatResults(function (\Cake\Collection\CollectionInterface $results) {
             return $results->map(function ($row) {
-                if (is_string($row)) {
+                if (is_string($row) || !$row) {
                     return $row;
                 }
 
