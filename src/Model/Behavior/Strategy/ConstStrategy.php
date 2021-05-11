@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
+use Cake\Collection\Collection;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -115,7 +116,10 @@ class ConstStrategy extends AbstractStrategy
 
         $query->clearContain()->contain($contain);
 
-        $query->formatResults(function (\Cake\Collection\CollectionInterface $results) {
+        $query->formatResults(function ($results) {
+            if (is_array($results)) {
+                $results = new Collection($results);
+            }
             return $results->map(function ($row) {
                 if (is_string($row) || !$row) {
                     return $row;
