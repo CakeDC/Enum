@@ -73,6 +73,9 @@ abstract class AbstractStrategy implements StrategyInterface
         if (empty($config['errorMessage'])) {
             $config['errorMessage'] = __d('cake', 'The provided value is invalid');
         }
+        if (!isset($config['callBeforeFind'])) {
+            $config['callBeforeFind'] = true;
+        }
 
         $this->setConfig($config);
     }
