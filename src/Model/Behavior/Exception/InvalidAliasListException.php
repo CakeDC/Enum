@@ -15,7 +15,7 @@ namespace CakeDC\Enum\Model\Behavior\Exception;
 
 use Cake\Core\Exception\Exception;
 
-class MissingEnumStrategyPrefixException extends Exception
+class InvalidAliasListException extends Exception
 {
-    protected $_messageTemplate = 'Missing prefix for strategy (%s)';
+    protected $_messageTemplate = 'Invalid alias %s. %s defined association %s.';
 }
