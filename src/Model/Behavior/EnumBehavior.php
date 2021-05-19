@@ -302,7 +302,7 @@ class EnumBehavior extends Behavior
     {
         foreach ($this->getConfig('lists') as $alias => $config) {
             $strategy = $this->strategy($alias, $config['strategy']);
-            if (method_exists($strategy, 'beforeFind')) {
+            if (method_exists($strategy, 'beforeFind') && $strategy->getConfig('callBeforeFind')) {
                 $strategy->beforeFind($event, $query, $options);
             }
         }

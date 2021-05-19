@@ -26,6 +26,10 @@ class ArticlesTable extends Table
     public const STATUS_DRAFT = 'Drafted';
     public const STATUS_ARCHIVE = 'Archived';
 
+    public const NO_CHECK_PUBLIC = 'Published';
+    public const NO_CHECK_DRAFT = 'Drafted';
+    public const NO_CHECK_ARCHIVE = 'Archived';
+
     public const NODE_TYPE_PAGE = 'Page';
     public const NODE_TYPE_BLOG = 'Blog';
 
@@ -37,15 +41,18 @@ class ArticlesTable extends Table
 
     public function initialize(array $config): void
     {
-        $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
-            'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
-            'status' => ['strategy' => 'const'],
-            'category' => ['strategy' => 'config'],
-            'node_type' => ['strategy' => 'const'],
-            'node_group' => ['strategy' => 'const', 'lowercase' => true],
-            'norules' => ['strategy' => 'const', 'applicationRules' => false],
-            'optional' => ['strategy' => 'const', 'lowercase' => true, 'allowEmpty' => true],
-        ]]);
+        $this->addBehavior('CakeDC/Enum.Enum', [
+            'lists' => [
+                'no_check' => ['strategy' => 'const', 'callBeforeFind' => false],
+                'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
+                'status' => ['strategy' => 'const'],
+                'category' => ['strategy' => 'config'],
+                'node_type' => ['strategy' => 'const'],
+                'node_group' => ['strategy' => 'const', 'lowercase' => true],
+                'norules' => ['strategy' => 'const', 'applicationRules' => false],
+                'optional' => ['strategy' => 'const', 'lowercase' => true, 'allowEmpty' => true],
+            ],
+        ]);
     }
 }
 
@@ -104,6 +111,7 @@ class EnumBehaviorTest extends TestCase
                     'prefix' => 'PRIORITY',
                     'field' => 'priority',
                     'errorMessage' => 'Invalid priority',
+                    'callBeforeFind' => true,
                 ],
                 'status' => [
                     'strategy' => 'const',
@@ -111,12 +119,22 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'status',
                     'errorMessage' => 'The provided value is invalid',
                     'lowercase' => false,
+                    'callBeforeFind' => true,
+                ],
+                'no_check' => [
+                    'strategy' => 'const',
+                    'prefix' => 'STATUS',
+                    'field' => 'no_check',
+                    'errorMessage' => 'The provided value is invalid',
+                    'lowercase' => false,
+                    'callBeforeFind' => false,
                 ],
                 'category' => [
                     'strategy' => 'config',
                     'prefix' => 'ARTICLE_CATEGORY',
                     'field' => 'category',
                     'errorMessage' => 'The provided value is invalid',
+                    'callBeforeFind' => true,
                 ],
                 'node_type' => [
                     'strategy' => 'const',
@@ -124,6 +142,7 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'node_type',
                     'errorMessage' => 'The provided value is invalid',
                     'lowercase' => false,
+                    'callBeforeFind' => true,
                 ],
                 'node_group' => [
                     'strategy' => 'const',
@@ -131,6 +150,7 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'node_group',
                     'errorMessage' => 'The provided value is invalid',
                     'lowercase' => true,
+                    'callBeforeFind' => true,
                 ],
                 'optional' => [
                     'strategy' => 'const',
@@ -138,6 +158,7 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'optional',
                     'errorMessage' => 'The provided value is invalid',
                     'lowercase' => true,
+                    'callBeforeFind' => true,
                 ],
             ],
             'classMap' => [],
@@ -149,6 +170,7 @@ class EnumBehaviorTest extends TestCase
                     'lists' => [
                         'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
+                        'no_check' => ['strategy' => 'const', 'prefix' => 'STATUS', 'callBeforeFind' => false],
                         'category' => ['strategy' => 'config'],
                         'node_type' => ['strategy' => 'const'],
                         'node_group' => ['strategy' => 'const', 'lowercase' => true],
@@ -236,6 +258,7 @@ class EnumBehaviorTest extends TestCase
                 [
                     'priority' => 'URGENT',
                     'status' => 'DRAFT',
+                    'no_check' => 'DRAFT',
                     'category' => 2,
                     'node_type' => 'BLOG',
                     'node_group' => 'active',
@@ -250,6 +273,7 @@ class EnumBehaviorTest extends TestCase
                 [
                     'priority' => 'Urgent',
                     'status' => 'Drafted',
+                    'no_check' => 'Drafted',
                     'category' => 1,
                     'node_type' => 'Invalid value',
                     'node_group' => 'active',
@@ -259,6 +283,7 @@ class EnumBehaviorTest extends TestCase
                     'priority' => ['isValidPriority' => 'Invalid priority'],
                     'status' => ['isValidStatus' => 'The provided value is invalid'],
                     'node_type' => ['isValidNodeType' => 'The provided value is invalid'],
+                    'no_check' => ['isValidNoCheck' => 'The provided value is invalid'],
                 ],
             ],
         ];
@@ -310,6 +335,11 @@ class EnumBehaviorTest extends TestCase
                 'NORMAL' => 'Normal',
             ],
             'status' => [
+                'PUBLIC' => 'Published',
+                'DRAFT' => 'Drafted',
+                'ARCHIVE' => 'Archived',
+            ],
+            'no_check' => [
                 'PUBLIC' => 'Published',
                 'DRAFT' => 'Drafted',
                 'ARCHIVE' => 'Archived',
