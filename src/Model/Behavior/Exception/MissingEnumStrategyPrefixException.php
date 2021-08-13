@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Exception;
 
-use Cake\Core\Exception\Exception;
+use \Cake\Core\Exception\CakeException;
 
-class MissingEnumStrategyPrefixException extends Exception
+class MissingEnumStrategyPrefixException extends CakeException
 {
     protected $_messageTemplate = 'Missing prefix for strategy (%s)';
 }

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Exception;
 
-use Cake\Core\Exception\Exception;
+use \Cake\Core\Exception\CakeException;
 
-class MissingEnumStrategyException extends Exception
+class MissingEnumStrategyException extends CakeException
 {
     protected $_templateMessage = 'Missing enum strategy class (%s)';
 }

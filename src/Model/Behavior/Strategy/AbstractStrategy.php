@@ -55,9 +55,7 @@ abstract class AbstractStrategy implements StrategyInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @return void
+     * @inheritDoc
      */
     public function initialize(array $config): void
     {

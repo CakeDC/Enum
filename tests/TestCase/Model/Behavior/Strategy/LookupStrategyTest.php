@@ -19,6 +19,10 @@ use CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy;
 
 class LookupStrategyTest extends TestCase
 {
+    /**
+     * @var \CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy|mixed
+     */
+    public $Strategy;
     public $fixtures = [
         'plugin.CakeDC/Enum.Lookups',
     ];

@@ -24,7 +24,7 @@ class LookupStrategy extends AbstractStrategy
     use ModelAwareTrait;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param string $alias Strategy's alias.
      * @param \Cake\ORM\Table $table Table object.
@@ -37,7 +37,7 @@ class LookupStrategy extends AbstractStrategy
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param array $config (unused in this case).
      * @return array
@@ -63,7 +63,7 @@ class LookupStrategy extends AbstractStrategy
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param array $config Strategy's configuration.
      * @return void
@@ -74,11 +74,11 @@ class LookupStrategy extends AbstractStrategy
         $config = $this->getConfig();
         $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
 
-        $this->_table->belongsTo($assocName, [
-            'className' => $this->modelClass,
-            'foreignKey' => $config['field'],
-            'bindingKey' => 'name',
-            'conditions' => [$assocName . '.prefix' => $config['prefix']],
-        ]);
+        $this->_table
+            ->belongsTo($assocName)
+            ->setClassName($this->modelClass)
+            ->setForeignKey($config['field'])
+            ->setBindingKey('name')
+            ->setConditions([$assocName . '.prefix' => $config['prefix']]);
     }
 }

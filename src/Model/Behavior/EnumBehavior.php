@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace CakeDC\Enum\Model\Behavior;
 
 use BadMethodCallException;
-use Cake\Event\Event;
-use Cake\ORM\Behavior;
+use Cake\Event\EventInterface;use Cake\ORM\Behavior;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -77,9 +76,9 @@ class EnumBehavior extends Behavior
      * @var array
      */
     protected $_classMap = [
-        'lookup' => 'CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy',
-        'const' => 'CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy',
-        'config' => 'CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy',
+        'lookup' => \CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy::class,
+        'const' => \CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy::class,
+        'config' => \CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy::class,
     ];
 
     /**
@@ -245,7 +244,7 @@ class EnumBehavior extends Behavior
      * @param \Cake\ORM\RulesChecker $rules Rules checker.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(Event $event, RulesChecker $rules): \Cake\ORM\RulesChecker
+    public function buildRules(EventInterface $event, RulesChecker $rules): \Cake\ORM\RulesChecker
     {
         foreach ($this->getConfig('lists') as $alias => $config) {
             if (Hash::get($config, 'applicationRules') === false) {
@@ -298,7 +297,7 @@ class EnumBehavior extends Behavior
      * @param \ArrayObject $options The options for the query
      * @return void
      */
-    public function beforeFind(\Cake\Event\EventInterface $event, \Cake\ORM\Query $query, \ArrayObject $options)
+    public function beforeFind(EventInterface $event, \Cake\ORM\Query $query, \ArrayObject $options)
     {
         foreach ($this->getConfig('lists') as $alias => $config) {
             $strategy = $this->strategy($alias, $config['strategy']);

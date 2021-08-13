@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Exception;
 
-use Cake\Core\Exception\Exception;
+use \Cake\Core\Exception\CakeException;
 
-class MissingEnumConfigurationException extends Exception
+class MissingEnumConfigurationException extends CakeException
 {
     protected $_templateMessage = 'Missing enum configuration (%s)';
 }

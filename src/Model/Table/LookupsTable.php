@@ -18,7 +18,7 @@ use Cake\ORM\Table;
 class LookupsTable extends Table
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param array $config Table's configuration.
      * @return void

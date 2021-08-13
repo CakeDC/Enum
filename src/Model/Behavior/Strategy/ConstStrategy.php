@@ -29,7 +29,7 @@ class ConstStrategy extends AbstractStrategy
     protected $_constants;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param string $alias Strategy's alias.
      * @param \Cake\ORM\Table $table Table object.
@@ -42,7 +42,7 @@ class ConstStrategy extends AbstractStrategy
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param array $config List of callable filters to limit items generated from list.
      * @return array
@@ -72,7 +72,7 @@ class ConstStrategy extends AbstractStrategy
      */
     protected function _getConstants(): array
     {
-        if (isset($this->_constants)) {
+        if ($this->_constants !== null) {
             return $this->_constants;
         }
 
@@ -84,7 +84,7 @@ class ConstStrategy extends AbstractStrategy
         $constants = [];
 
         foreach ($classConstants as $key => $value) {
-            if (strpos($key, $prefix) === 0) {
+            if (strpos($key, (string)$prefix) === 0) {
                 $listKey = substr($key, $length);
                 if ($lowercase) {
                     $listKey = strtolower($listKey);

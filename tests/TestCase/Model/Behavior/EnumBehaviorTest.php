@@ -87,7 +87,7 @@ class EnumBehaviorTest extends TestCase
             ]);
 
         $this->Articles = TableRegistry::get('CakeDC/Enum.Articles', [
-            'className' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ArticlesTable',
+            'className' => \CakeDC\Enum\Test\TestCase\Model\Behavior\ArticlesTable::class,
             'table' => 'enum_articles',
         ]);
     }
@@ -319,7 +319,7 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
 
         foreach ($result as $assoc) {
-            $this->assertInstanceOf('\Cake\ORM\Association\BelongsTo', $this->Articles->getAssociation($assoc));
+            $this->assertInstanceOf(\Cake\ORM\Association\BelongsTo::class, $this->Articles->getAssociation($assoc));
         }
 
         $result = $this->Articles->get(1);
@@ -404,7 +404,7 @@ class EnumBehaviorTest extends TestCase
         return [
             [
                 [
-                    'classMap' => ['third_party' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ThirdPartyStrategy'],
+                    'classMap' => ['third_party' => \CakeDC\Enum\Test\TestCase\Model\Behavior\ThirdPartyStrategy::class],
                     'lists' => [
                         'article_category' => ['strategy' => 'third_party'],
                     ],

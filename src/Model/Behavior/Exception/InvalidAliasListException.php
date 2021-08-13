@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Exception;
 
-use Cake\Core\Exception\Exception;
+use \Cake\Core\Exception\CakeException;
 
-class InvalidAliasListException extends Exception
+class InvalidAliasListException extends CakeException
 {
     protected $_messageTemplate = 'Invalid alias %s. %s defined association %s.';
 }

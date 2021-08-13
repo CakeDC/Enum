@@ -20,7 +20,7 @@ class ConfigStrategy extends AbstractStrategy
     public const KEY = 'CakeDC/Enum';
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @param array $config (unused in this case).
      * @return array
