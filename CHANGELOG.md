@@ -1,6 +1,8 @@
 Changelog
 =========
 
+* 3.0.0-dev CakePHP 5.x support
+
 * 2.0.0 CakePHP 4.x support
 
 * 1.2.0

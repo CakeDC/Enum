@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -31,7 +31,7 @@ class ConstStrategy extends AbstractStrategy
      *
      * @var array
      */
-    protected $_constants;
+    protected array $constants;
 
     /**
      * {@inheritDoc}
@@ -51,10 +51,11 @@ class ConstStrategy extends AbstractStrategy
      *
      * @param array $config List of callable filters to limit items generated from list.
      * @return array
+     * @throws \ReflectionException
      */
     public function enum(array $config = []): array
     {
-        $constants = $this->_getConstants();
+        $constants = $this->getConstants();
         $keys = array_keys($constants);
 
         foreach ($config as $callable) {
@@ -74,22 +75,23 @@ class ConstStrategy extends AbstractStrategy
      * Returns defined constants for the current `$_table`.
      *
      * @return array
+     * @throws \ReflectionException
      */
-    protected function _getConstants(): array
+    protected function getConstants(): array
     {
-        if ($this->_constants !== null) {
-            return $this->_constants;
+        if ($this->constants !== null) {
+            return $this->constants;
         }
 
         $prefix = $this->getConfig('prefix');
         $lowercase = $this->getConfig('lowercase');
-        $className = $this->getConfig('className') ?: get_class($this->_table);
+        $className = $this->getConfig('className') ?: get_class($this->table);
         $length = strlen($prefix) + 1;
         $classConstants = (new ReflectionClass($className))->getConstants();
         $constants = [];
 
         foreach ($classConstants as $key => $value) {
-            if (strpos($key, (string)$prefix) === 0) {
+            if (str_starts_with($key, (string)$prefix)) {
                 $listKey = substr($key, $length);
                 if ($lowercase) {
                     $listKey = strtolower($listKey);
@@ -98,7 +100,7 @@ class ConstStrategy extends AbstractStrategy
             }
         }
 
-        return $this->_constants = $constants;
+        return $this->constants = $constants;
     }
 
     /**
@@ -107,16 +109,18 @@ class ConstStrategy extends AbstractStrategy
      * @param \ArrayObject $options The options for the query
      * @return void
      */
-    public function beforeFind(EventInterface $event, Query $query, ArrayObject $options)
+    public function beforeFind(EventInterface $event, Query $query, ArrayObject $options): void
     {
-        $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
-        if ($this->_table->hasAssociation($assocName)) {
-            throw new InvalidAliasListException([$this->_alias, $this->_table->getAlias(), $assocName]);
+        $assocName = Inflector::pluralize(Inflector::classify($this->alias));
+        if ($this->table->hasAssociation($assocName)) {
+            throw new InvalidAliasListException([$this->alias, $this->table->getAlias(), $assocName]);
         }
 
-        $contain = array_filter($query->getContain(), function ($value) use ($assocName) {
-            return $value !== $assocName;
-        }, ARRAY_FILTER_USE_KEY);
+        $contain = array_filter(
+            $query->getContain(),
+            fn($value): bool => $value !== $assocName,
+            ARRAY_FILTER_USE_KEY
+        );
 
         $query->clearContain()->contain($contain);
 
@@ -128,9 +132,9 @@ class ConstStrategy extends AbstractStrategy
 
                 $constant = Hash::get($row, $this->getConfig('field'));
 
-                $field = Inflector::singularize(Inflector::underscore($this->_alias));
+                $field = Inflector::singularize(Inflector::underscore($this->alias));
                 $value = new Entity([
-                    'label' => Hash::get($this->_getConstants(), $constant, $constant),
+                    'label' => Hash::get($this->getConstants(), $constant, $constant),
                     'prefix' => $this->getConfig('prefix'),
                     'value' => $constant,
                 ], ['markClean' => true, 'markNew' => false]);

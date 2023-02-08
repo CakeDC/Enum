@@ -8,7 +8,7 @@ class CreateEnumLookups extends AbstractMigration
      *
      * @return void
      */
-    public function change()
+    public function change(): void
     {
         $table = $this->table('enum_lookups');
 

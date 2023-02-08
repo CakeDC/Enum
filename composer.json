@@ -21,7 +21,8 @@
         "phpunit/phpunit": "^9.5.19",
         "cakephp/cakephp-codesniffer": "^5.0",
         "cakephp/bake": "3.x-dev",
-        "cakephp/migrations": "4.x-dev"
+        "cakephp/migrations": "4.x-dev",
+        "aura/intl": "^3.0"
     },
     "autoload": {
         "psr-4": {

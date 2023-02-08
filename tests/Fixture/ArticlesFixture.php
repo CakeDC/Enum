@@ -1,12 +1,13 @@
 <?php
+declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -16,9 +17,9 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class ArticlesFixture extends TestFixture
 {
-    public $table = 'enum_articles';
+    public string $table = 'enum_articles';
 
-    public $fields = [
+    public array $fields = [
         'id' => ['type' => 'integer'],
         'title' => ['type' => 'string'],
         'body' => ['type' => 'text'],
@@ -28,7 +29,7 @@ class ArticlesFixture extends TestFixture
         '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
     ];
 
-    public $records = [
+    public array $records = [
         [
             'title' => 'Dummy article',
             'body' => '',

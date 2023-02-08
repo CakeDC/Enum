@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -39,9 +39,9 @@ class Article extends Entity
 class ConstStrategyTest extends TestCase
 // @codingStandardsIgnoreEnd
 {
-    public $StrategyTable;
+    public ConstStrategy $StrategyTable;
 
-    public $StrategyEntity;
+    public ConstStrategy $StrategyEntity;
 
     public function setUp(): void
     {
@@ -64,6 +64,9 @@ class ConstStrategyTest extends TestCase
         unset($this->StrategyEntity);
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function testEnumTable()
     {
         $result = $this->StrategyTable->enum();
@@ -78,6 +81,9 @@ class ConstStrategyTest extends TestCase
         $this->assertEquals($expected, $this->StrategyTable->enum());
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function testEnumEntity()
     {
         $result = $this->StrategyEntity->enum();

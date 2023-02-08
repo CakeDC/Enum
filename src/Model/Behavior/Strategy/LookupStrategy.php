@@ -56,9 +56,9 @@ class LookupStrategy extends AbstractStrategy
     {
         parent::initialize($config);
         $config = $this->getConfig();
-        $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
+        $assocName = Inflector::pluralize(Inflector::classify($this->alias));
 
-        $this->_table
+        $this->table
             ->belongsTo($assocName)
             ->setClassName('CakeDC/Enum.Lookups')
             ->setForeignKey($config['field'])

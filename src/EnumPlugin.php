@@ -11,11 +11,11 @@ declare(strict_types=1);
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-namespace CakeDC\Enum\Model\Behavior\Exception;
+namespace CakeDC\Enum;
 
-use Cake\Core\Exception\CakeException;
+use Cake\Core\BasePlugin;
 
-class MissingEnumStrategyException extends CakeException
+class EnumPlugin extends BasePlugin
 {
-    protected string $_messageTemplate = 'Missing enum strategy class (%s)';
+
 }

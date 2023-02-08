@@ -3,7 +3,7 @@
 ## Composer
 
 ```
-composer require cakedc/enum:dev-master
+composer require cakedc/enum:3.0.0-dev
 ```
 
 ## Creating Required Tables
@@ -16,12 +16,8 @@ bin/cake migrations migrate -p CakeDC/Enum
 
 ## Load the Plugin
 
-Ensure the Enum Plugin is loaded in your config/bootstrap.php file
+Ensure the Enum Plugin is loaded in your `Application::bootstrap()` method:
 
 ```php
-Plugin::load('CakeDC/Enum');
-```
-or
-```php
-Plugin::loadAll();
+$this->addPlugin('CakeDC/Enum');
 ```

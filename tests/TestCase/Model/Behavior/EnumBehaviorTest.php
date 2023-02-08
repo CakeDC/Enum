@@ -2,20 +2,21 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Entity;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 
@@ -70,12 +71,12 @@ class ThirdPartyStrategy extends AbstractStrategy
 class EnumBehaviorTest extends TestCase
 // @codingStandardsIgnoreEnd
 {
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.CakeDC/Enum.Articles',
         'plugin.CakeDC/Enum.Lookups',
     ];
 
-    protected $Articles;
+    protected Table $Articles;
 
     public function setUp(): void
     {
@@ -86,8 +87,8 @@ class EnumBehaviorTest extends TestCase
                 'Open Source Software',
             ]);
 
-        $this->Articles = TableRegistry::get('CakeDC/Enum.Articles', [
-            'className' => \CakeDC\Enum\Test\TestCase\Model\Behavior\ArticlesTable::class,
+        $this->Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', [
+            'className' => ArticlesTable::class,
             'table' => 'enum_articles',
         ]);
     }
@@ -95,10 +96,10 @@ class EnumBehaviorTest extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        TableRegistry::clear();
+        $this->getTableLocator()->clear();
     }
 
-    public function provideBasicConfiguration()
+    public function provideBasicConfiguration(): array
     {
         $expected = [
             'defaultStrategy' => 'lookup',
@@ -187,14 +188,14 @@ class EnumBehaviorTest extends TestCase
      */
     public function testBasicConfiguration(array $config, array $expected)
     {
-        TableRegistry::clear();
-        $Articles = TableRegistry::get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
+        $this->getTableLocator()->clear();
+        $Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
         $Articles->addBehavior('CakeDC/Enum.Enum', $config);
         $result = $Articles->behaviors()->Enum->getConfig();
         $this->assertEquals($expected, $result);
     }
 
-    public function provideBasicLookups()
+    public function provideBasicLookups(): array
     {
         return [
             [
@@ -251,7 +252,7 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideBuildRules()
+    public function provideBuildRules(): array
     {
         return [
             [
@@ -294,7 +295,7 @@ class EnumBehaviorTest extends TestCase
      */
     public function testBuildRules($data, $expected)
     {
-        $article = new \Cake\ORM\Entity($data);
+        $article = new Entity($data);
         $this->Articles->save($article);
         $result = $article->getErrors();
         $this->assertEquals($expected, $result);
@@ -319,7 +320,7 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
 
         foreach ($result as $assoc) {
-            $this->assertInstanceOf(\Cake\ORM\Association\BelongsTo::class, $this->Articles->getAssociation($assoc));
+            $this->assertInstanceOf(BelongsTo::class, $this->Articles->getAssociation($assoc));
         }
 
         $result = $this->Articles->get(1);
@@ -399,12 +400,12 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideThirdPartyStrategy()
+    public function provideThirdPartyStrategy(): array
     {
         return [
             [
                 [
-                    'classMap' => ['third_party' => \CakeDC\Enum\Test\TestCase\Model\Behavior\ThirdPartyStrategy::class],
+                    'classMap' => ['third_party' => ThirdPartyStrategy::class],
                     'lists' => [
                         'article_category' => ['strategy' => 'third_party'],
                     ],
@@ -422,8 +423,8 @@ class EnumBehaviorTest extends TestCase
      */
     public function testThirdPartyStrategy(array $config, array $expected)
     {
-        TableRegistry::clear();
-        $Articles = TableRegistry::get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
+        $this->getTableLocator()->clear();
+        $Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
         $Articles->addBehavior('CakeDC/Enum.Enum', $config);
         $result = $Articles->enum('article_category');
         $this->assertEquals($expected, $result);
