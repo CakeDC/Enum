@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Exception;
 
-use \Cake\Core\Exception\CakeException;
+use Cake\Core\Exception\CakeException;
 
 class MissingEnumConfigurationException extends CakeException
 {

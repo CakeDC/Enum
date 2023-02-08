@@ -13,13 +13,18 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior;
 
+use ArrayObject;
 use BadMethodCallException;
 use Cake\Event\EventInterface;use Cake\ORM\Behavior;
+use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
+use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
+use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
+use CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy;
 use CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface;
 
 class EnumBehavior extends Behavior
@@ -76,9 +81,9 @@ class EnumBehavior extends Behavior
      * @var array
      */
     protected $_classMap = [
-        'lookup' => \CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy::class,
-        'const' => \CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy::class,
-        'config' => \CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy::class,
+        'lookup' => LookupStrategy::class,
+        'const' => ConstStrategy::class,
+        'config' => ConfigStrategy::class,
     ];
 
     /**
@@ -297,7 +302,7 @@ class EnumBehavior extends Behavior
      * @param \ArrayObject $options The options for the query
      * @return void
      */
-    public function beforeFind(EventInterface $event, \Cake\ORM\Query $query, \ArrayObject $options)
+    public function beforeFind(EventInterface $event, Query $query, ArrayObject $options)
     {
         foreach ($this->getConfig('lists') as $alias => $config) {
             $strategy = $this->strategy($alias, $config['strategy']);

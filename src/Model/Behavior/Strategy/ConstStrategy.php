@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
+use ArrayObject;
+use Cake\Collection\CollectionInterface;
+use Cake\Event\EventInterface;
+use Cake\ORM\Entity;
+use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -102,7 +107,7 @@ class ConstStrategy extends AbstractStrategy
      * @param \ArrayObject $options The options for the query
      * @return void
      */
-    public function beforeFind(\Cake\Event\EventInterface $event, \Cake\ORM\Query $query, \ArrayObject $options)
+    public function beforeFind(EventInterface $event, Query $query, ArrayObject $options)
     {
         $assocName = Inflector::pluralize(Inflector::classify($this->_alias));
         if ($this->_table->hasAssociation($assocName)) {
@@ -115,7 +120,7 @@ class ConstStrategy extends AbstractStrategy
 
         $query->clearContain()->contain($contain);
 
-        $query->formatResults(function (\Cake\Collection\CollectionInterface $results) {
+        $query->formatResults(function (CollectionInterface $results) {
             return $results->map(function ($row) {
                 if (is_string($row) || !$row) {
                     return $row;
@@ -124,7 +129,7 @@ class ConstStrategy extends AbstractStrategy
                 $constant = Hash::get($row, $this->getConfig('field'));
 
                 $field = Inflector::singularize(Inflector::underscore($this->_alias));
-                $value = new \Cake\ORM\Entity([
+                $value = new Entity([
                     'label' => Hash::get($this->_getConstants(), $constant, $constant),
                     'prefix' => $this->getConfig('prefix'),
                     'value' => $constant,
