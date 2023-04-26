@@ -1,3 +1,6 @@
 /composer.lock
 /plugins
 /vendor
+/auth.json
+/.ddev
+/.idea
