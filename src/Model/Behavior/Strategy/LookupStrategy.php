@@ -13,12 +13,26 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
-use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\Utility\Inflector;
+use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\ORM\Table;
 
 class LookupStrategy extends AbstractStrategy
 {
     use LocatorAwareTrait;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param string $alias Strategy's alias.
+     * @param \Cake\ORM\Table $table Table object.
+     */
+    public function __construct(string $alias, Table $table)
+    {
+        parent::__construct($alias, $table);
+        $this->modelClass = 'CakeDC/Enum.Lookups';
+        // $this->modelFactory('Table', [$this->getTableLocator(), 'get']);
+    }
 
     /**
      * {@inheritDoc}
@@ -28,11 +42,8 @@ class LookupStrategy extends AbstractStrategy
      */
     public function enum(array $config = []): array
     {
-        $query = $this->fetchTable('CakeDC/Enum.Lookups')
-            ->find('list', [
-                'keyField' => 'name',
-                'valueField' => 'label',
-            ])
+        $query = $this->fetchTable($this->modelClass)
+            ->find('list', keyField: 'name', valueField: 'label')
             ->where([
                 'prefix' => $this->getConfig('prefix'),
             ]);

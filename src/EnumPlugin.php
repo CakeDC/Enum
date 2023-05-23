@@ -17,5 +17,10 @@ use Cake\Core\BasePlugin;
 
 class EnumPlugin extends BasePlugin
 {
-
+    /**
+     * Plugin name.
+     *
+     * @var string
+     */
+    protected ?string $name = 'Enum';
 }

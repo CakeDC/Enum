@@ -11,7 +11,8 @@ declare(strict_types=1);
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-use Aura\Intl\Package;
+// use Aura\Intl\Package;
+use Cake\I18n\Package;
 use Cake\Core\Plugin;
 use Cake\I18n\I18n;
 use CakeDC\Enum\EnumPlugin;
@@ -39,6 +40,7 @@ if (file_exists($root . '/config/bootstrap.php')) {
 }
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
+require $root . '/vendor/cakephp/cakephp/src/functions.php';
 
 Plugin::getCollection()->add(new EnumPlugin(['path' => dirname(__FILE__, 2) . DS]));
 I18n::config('default', function ($name, $locale) {

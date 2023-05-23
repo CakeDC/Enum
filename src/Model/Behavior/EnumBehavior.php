@@ -19,6 +19,8 @@ use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
+use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
@@ -299,11 +301,11 @@ class EnumBehavior extends Behavior
 
     /**
      * @param \Cake\Event\EventInterface $event The beforeFind event that was fired.
-     * @param \Cake\ORM\Query $query Query
+     * @param \Cake\ORM\SelectQuery $query Query
      * @param \ArrayObject $options The options for the query
      * @return void
      */
-    public function beforeFind(EventInterface $event, Query $query, ArrayObject $options): void
+    public function beforeFind(EventInterface $event, \Cake\ORM\Query\SelectQuery $query, \ArrayObject $options)
     {
         foreach ($this->getConfig('lists') as $alias => $config) {
             $strategy = $this->strategy($alias, $config['strategy']);

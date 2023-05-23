@@ -31,7 +31,7 @@ class ConstStrategy extends AbstractStrategy
      *
      * @var array
      */
-    protected array $constants;
+    protected ?array $constants = null;
 
     /**
      * {@inheritDoc}
@@ -109,7 +109,7 @@ class ConstStrategy extends AbstractStrategy
      * @param \ArrayObject $options The options for the query
      * @return void
      */
-    public function beforeFind(EventInterface $event, Query $query, ArrayObject $options): void
+    public function beforeFind(EventInterface $event, \Cake\ORM\Query\SelectQuery $query, \ArrayObject $options)
     {
         $assocName = Inflector::pluralize(Inflector::classify($this->alias));
         if ($this->table->hasAssociation($assocName)) {
