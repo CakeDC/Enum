@@ -1,6 +1,6 @@
 {
     "name": "cakedc/enum",
-    "description": "Enumeration list Plugin for CakePHP 3",
+    "description": "Enumeration list Plugin for CakePHP 5",
     "type": "cakephp-plugin",
     "keywords": [
         "cakephp",
@@ -14,13 +14,15 @@
         "source": "https://github.com/cakedc/enum"
     },
     "require": {
-        "php": ">=7.2.0",
-        "cakephp/cakephp": "^4.0.0"
+        "php": ">=8.1",
+        "cakephp/cakephp": "5.x-dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5",
-        "vlucas/phpdotenv": "^3.3",
-        "cakephp/cakephp-codesniffer": "~4.0.0"
+        "phpunit/phpunit": "^9.5.19",
+        "cakephp/cakephp-codesniffer": "^5.0",
+        "cakephp/bake": "3.x-dev",
+        "cakephp/migrations": "4.x-dev",
+        "aura/intl": "^3.0"
     },
     "autoload": {
         "psr-4": {
@@ -38,7 +40,7 @@
         "analyse": [
             "@stan",
             "@psalm"
-         ],
+        ],
         "check": [
             "@cs-check",
             "@test",
@@ -49,8 +51,16 @@
         "test": "phpunit --stderr",
         "stan": "phpstan analyse src/",
         "psalm": "php vendor/psalm/phar/psalm.phar --show-info=false src/ ",
-        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:^0.12.7 psalm/phar:~3.8.0 && mv composer.backup composer.json",
-        "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.4.11 && mv composer.backup composer.json",
+        "stan-setup": "cp composer.json composer.backup && composer require --dev phpstan/phpstan:0.12.94 psalm/phar:~4.9.2 && mv composer.backup composer.json",
+        "stan-rebuild-baseline": "phpstan analyse --configuration phpstan.neon --error-format baselineNeon src/ > phpstan-baseline.neon",
+        "psalm-rebuild-baseline": "php vendor/psalm/phar/psalm.phar --show-info=false  --set-baseline=psalm-baseline.xml  src/",
+        "rector": "rector process",
+        "rector-setup": "cp composer.json composer.backup && composer require --dev rector/rector:^0.11.2 && mv composer.backup composer.json",
         "coverage-test": "phpunit --stderr --coverage-clover=clover.xml"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

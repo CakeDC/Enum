@@ -4,8 +4,8 @@ Home
 Requirements
 ------------
 
-* CakePHP 3.1+
-* PHP 5.4.16+ Note CakePHP 3.2 requires PHP 5.5 so 5.4 compatibility would be dropped sooner than later...
+* CakePHP 5.0+
+* PHP 8.1+
 
 Documentation
 -------------

@@ -2,20 +2,21 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 namespace CakeDC\Enum\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
+use Cake\ORM\Association\BelongsTo;
+use Cake\ORM\Entity;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 
@@ -25,6 +26,10 @@ class ArticlesTable extends Table
     public const STATUS_PUBLIC = 'Published';
     public const STATUS_DRAFT = 'Drafted';
     public const STATUS_ARCHIVE = 'Archived';
+
+    public const NO_CHECK_PUBLIC = 'Published';
+    public const NO_CHECK_DRAFT = 'Drafted';
+    public const NO_CHECK_ARCHIVE = 'Archived';
 
     public const NODE_TYPE_PAGE = 'Page';
     public const NODE_TYPE_BLOG = 'Blog';
@@ -37,15 +42,18 @@ class ArticlesTable extends Table
 
     public function initialize(array $config): void
     {
-        $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
-            'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
-            'status' => ['strategy' => 'const'],
-            'category' => ['strategy' => 'config'],
-            'node_type' => ['strategy' => 'const'],
-            'node_group' => ['strategy' => 'const', 'lowercase' => true],
-            'norules' => ['strategy' => 'const', 'applicationRules' => false],
-            'optional' => ['strategy' => 'const', 'lowercase' => true, 'allowEmpty' => true],
-        ]]);
+        $this->addBehavior('CakeDC/Enum.Enum', [
+            'lists' => [
+                'no_check' => ['strategy' => 'const', 'callBeforeFind' => false],
+                'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
+                'status' => ['strategy' => 'const'],
+                'category' => ['strategy' => 'config'],
+                'node_type' => ['strategy' => 'const'],
+                'node_group' => ['strategy' => 'const', 'lowercase' => true],
+                'norules' => ['strategy' => 'const', 'applicationRules' => false],
+                'optional' => ['strategy' => 'const', 'lowercase' => true, 'allowEmpty' => true],
+            ],
+        ]);
     }
 }
 
@@ -63,12 +71,12 @@ class ThirdPartyStrategy extends AbstractStrategy
 class EnumBehaviorTest extends TestCase
 // @codingStandardsIgnoreEnd
 {
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.CakeDC/Enum.Articles',
         'plugin.CakeDC/Enum.Lookups',
     ];
 
-    protected $Articles;
+    protected Table $Articles;
 
     public function setUp(): void
     {
@@ -79,8 +87,8 @@ class EnumBehaviorTest extends TestCase
                 'Open Source Software',
             ]);
 
-        $this->Articles = TableRegistry::get('CakeDC/Enum.Articles', [
-            'className' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ArticlesTable',
+        $this->Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', [
+            'className' => ArticlesTable::class,
             'table' => 'enum_articles',
         ]);
     }
@@ -88,10 +96,10 @@ class EnumBehaviorTest extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        TableRegistry::clear();
+        $this->getTableLocator()->clear();
     }
 
-    public function provideBasicConfiguration()
+    public function provideBasicConfiguration(): array
     {
         $expected = [
             'defaultStrategy' => 'lookup',
@@ -104,6 +112,7 @@ class EnumBehaviorTest extends TestCase
                     'prefix' => 'PRIORITY',
                     'field' => 'priority',
                     'errorMessage' => 'Invalid priority',
+                    'callBeforeFind' => true,
                 ],
                 'status' => [
                     'strategy' => 'const',
@@ -111,12 +120,22 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'status',
                     'errorMessage' => 'The provided value is invalid',
                     'lowercase' => false,
+                    'callBeforeFind' => true,
+                ],
+                'no_check' => [
+                    'strategy' => 'const',
+                    'prefix' => 'STATUS',
+                    'field' => 'no_check',
+                    'errorMessage' => 'The provided value is invalid',
+                    'lowercase' => false,
+                    'callBeforeFind' => false,
                 ],
                 'category' => [
                     'strategy' => 'config',
                     'prefix' => 'ARTICLE_CATEGORY',
                     'field' => 'category',
                     'errorMessage' => 'The provided value is invalid',
+                    'callBeforeFind' => true,
                 ],
                 'node_type' => [
                     'strategy' => 'const',
@@ -124,6 +143,7 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'node_type',
                     'errorMessage' => 'The provided value is invalid',
                     'lowercase' => false,
+                    'callBeforeFind' => true,
                 ],
                 'node_group' => [
                     'strategy' => 'const',
@@ -131,6 +151,7 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'node_group',
                     'errorMessage' => 'The provided value is invalid',
                     'lowercase' => true,
+                    'callBeforeFind' => true,
                 ],
                 'optional' => [
                     'strategy' => 'const',
@@ -138,6 +159,7 @@ class EnumBehaviorTest extends TestCase
                     'field' => 'optional',
                     'errorMessage' => 'The provided value is invalid',
                     'lowercase' => true,
+                    'callBeforeFind' => true,
                 ],
             ],
             'classMap' => [],
@@ -149,6 +171,7 @@ class EnumBehaviorTest extends TestCase
                     'lists' => [
                         'priority' => ['errorMessage' => 'Invalid priority', 'prefix' => 'PRIORITY'],
                         'status' => ['strategy' => 'const', 'prefix' => 'STATUS'],
+                        'no_check' => ['strategy' => 'const', 'prefix' => 'STATUS', 'callBeforeFind' => false],
                         'category' => ['strategy' => 'config'],
                         'node_type' => ['strategy' => 'const'],
                         'node_group' => ['strategy' => 'const', 'lowercase' => true],
@@ -165,14 +188,14 @@ class EnumBehaviorTest extends TestCase
      */
     public function testBasicConfiguration(array $config, array $expected)
     {
-        TableRegistry::clear();
-        $Articles = TableRegistry::get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
+        $this->getTableLocator()->clear();
+        $Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
         $Articles->addBehavior('CakeDC/Enum.Enum', $config);
         $result = $Articles->behaviors()->Enum->getConfig();
         $this->assertEquals($expected, $result);
     }
 
-    public function provideBasicLookups()
+    public function provideBasicLookups(): array
     {
         return [
             [
@@ -229,13 +252,14 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideBuildRules()
+    public function provideBuildRules(): array
     {
         return [
             [
                 [
                     'priority' => 'URGENT',
                     'status' => 'DRAFT',
+                    'no_check' => 'DRAFT',
                     'category' => 2,
                     'node_type' => 'BLOG',
                     'node_group' => 'active',
@@ -250,6 +274,7 @@ class EnumBehaviorTest extends TestCase
                 [
                     'priority' => 'Urgent',
                     'status' => 'Drafted',
+                    'no_check' => 'Drafted',
                     'category' => 1,
                     'node_type' => 'Invalid value',
                     'node_group' => 'active',
@@ -259,6 +284,7 @@ class EnumBehaviorTest extends TestCase
                     'priority' => ['isValidPriority' => 'Invalid priority'],
                     'status' => ['isValidStatus' => 'The provided value is invalid'],
                     'node_type' => ['isValidNodeType' => 'The provided value is invalid'],
+                    'no_check' => ['isValidNoCheck' => 'The provided value is invalid'],
                 ],
             ],
         ];
@@ -269,7 +295,7 @@ class EnumBehaviorTest extends TestCase
      */
     public function testBuildRules($data, $expected)
     {
-        $article = new \Cake\ORM\Entity($data);
+        $article = new Entity($data);
         $this->Articles->save($article);
         $result = $article->getErrors();
         $this->assertEquals($expected, $result);
@@ -294,7 +320,7 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
 
         foreach ($result as $assoc) {
-            $this->assertInstanceOf('\Cake\ORM\Association\BelongsTo', $this->Articles->getAssociation($assoc));
+            $this->assertInstanceOf(BelongsTo::class, $this->Articles->getAssociation($assoc));
         }
 
         $result = $this->Articles->get(1);
@@ -310,6 +336,11 @@ class EnumBehaviorTest extends TestCase
                 'NORMAL' => 'Normal',
             ],
             'status' => [
+                'PUBLIC' => 'Published',
+                'DRAFT' => 'Drafted',
+                'ARCHIVE' => 'Archived',
+            ],
+            'no_check' => [
                 'PUBLIC' => 'Published',
                 'DRAFT' => 'Drafted',
                 'ARCHIVE' => 'Archived',
@@ -369,12 +400,12 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideThirdPartyStrategy()
+    public function provideThirdPartyStrategy(): array
     {
         return [
             [
                 [
-                    'classMap' => ['third_party' => 'CakeDC\Enum\Test\TestCase\Model\Behavior\ThirdPartyStrategy'],
+                    'classMap' => ['third_party' => ThirdPartyStrategy::class],
                     'lists' => [
                         'article_category' => ['strategy' => 'third_party'],
                     ],
@@ -392,8 +423,8 @@ class EnumBehaviorTest extends TestCase
      */
     public function testThirdPartyStrategy(array $config, array $expected)
     {
-        TableRegistry::clear();
-        $Articles = TableRegistry::get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
+        $this->getTableLocator()->clear();
+        $Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
         $Articles->addBehavior('CakeDC/Enum.Enum', $config);
         $result = $Articles->enum('article_category');
         $this->assertEquals($expected, $result);

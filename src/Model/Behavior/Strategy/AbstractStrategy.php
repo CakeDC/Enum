@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2019, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -26,21 +26,21 @@ abstract class AbstractStrategy implements StrategyInterface
      *
      * @var array
      */
-    protected $_defaultConfig = [];
+    protected array $_defaultConfig = [];
 
     /**
      * Target table.
      *
      * @var \Cake\ORM\Table
      */
-    protected $_table;
+    protected Table $table;
 
     /**
      * Table alias.
      *
      * @var string
      */
-    protected $_alias;
+    protected string $alias;
 
     /**
      * Constructor.
@@ -50,28 +50,29 @@ abstract class AbstractStrategy implements StrategyInterface
      */
     public function __construct(string $alias, Table $table)
     {
-        $this->_alias = $alias;
-        $this->_table = $table;
+        $this->alias = $alias;
+        $this->table = $table;
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @return void
+     * @inheritDoc
      */
     public function initialize(array $config): void
     {
         $prefix = $this->getConfig('prefix');
         if (empty($config['prefix']) && empty($prefix)) {
-            $config['prefix'] = $this->_generatePrefix();
+            $config['prefix'] = $this->generatePrefix();
         }
 
         if (empty($config['field'])) {
-            $config['field'] = Inflector::underscore($this->_alias);
+            $config['field'] = Inflector::underscore($this->alias);
         }
 
         if (empty($config['errorMessage'])) {
             $config['errorMessage'] = __d('cake', 'The provided value is invalid');
+        }
+        if (!isset($config['callBeforeFind'])) {
+            $config['callBeforeFind'] = true;
         }
 
         $this->setConfig($config);
@@ -82,10 +83,10 @@ abstract class AbstractStrategy implements StrategyInterface
      *
      * @return string
      */
-    protected function _generatePrefix(): string
+    protected function generatePrefix(): string
     {
-        $prefix = Inflector::underscore(Inflector::singularize($this->_table->getAlias()));
-        $prefix .= '_' . $this->_alias;
+        $prefix = Inflector::underscore(Inflector::singularize($this->table->getAlias()));
+        $prefix .= '_' . $this->alias;
 
         return strtoupper($prefix);
     }
