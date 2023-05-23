@@ -11,10 +11,10 @@ declare(strict_types=1);
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-// use Aura\Intl\Package;
-use Cake\I18n\Package;
 use Cake\Core\Plugin;
 use Cake\I18n\I18n;
+// use Aura\Intl\Package;
+use Cake\I18n\Package;
 use CakeDC\Enum\EnumPlugin;
 
 /**

@@ -17,10 +17,8 @@ use ArrayObject;
 use BadMethodCallException;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
-use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
@@ -221,7 +219,7 @@ class EnumBehavior extends Behavior
         if ($this->getConfig('nested')) {
             array_walk(
                 $return,
-                function (&$item, $val) {
+                function (&$item, $val): void {
                     $item = ['value' => $val, 'text' => $item];
                 }
             );
@@ -305,7 +303,7 @@ class EnumBehavior extends Behavior
      * @param \ArrayObject $options The options for the query
      * @return void
      */
-    public function beforeFind(EventInterface $event, \Cake\ORM\Query\SelectQuery $query, \ArrayObject $options)
+    public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options): void
     {
         foreach ($this->getConfig('lists') as $alias => $config) {
             $strategy = $this->strategy($alias, $config['strategy']);

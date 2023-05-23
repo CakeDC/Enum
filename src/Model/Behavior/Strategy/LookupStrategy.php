@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
-use Cake\Utility\Inflector;
 use Cake\ORM\Locator\LocatorAwareTrait;
 use Cake\ORM\Table;
+use Cake\Utility\Inflector;
 
 class LookupStrategy extends AbstractStrategy
 {

@@ -17,7 +17,7 @@ use ArrayObject;
 use Cake\Collection\CollectionInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Entity;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -109,7 +109,7 @@ class ConstStrategy extends AbstractStrategy
      * @param \ArrayObject $options The options for the query
      * @return void
      */
-    public function beforeFind(EventInterface $event, \Cake\ORM\Query\SelectQuery $query, \ArrayObject $options)
+    public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options): void
     {
         $assocName = Inflector::pluralize(Inflector::classify($this->alias));
         if ($this->table->hasAssociation($assocName)) {
@@ -118,7 +118,7 @@ class ConstStrategy extends AbstractStrategy
 
         $contain = array_filter(
             $query->getContain(),
-            fn($value): bool => $value !== $assocName,
+            fn ($value): bool => $value !== $assocName,
             ARRAY_FILTER_USE_KEY
         );
 

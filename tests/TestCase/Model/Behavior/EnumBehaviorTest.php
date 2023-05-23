@@ -89,7 +89,7 @@ class EnumBehaviorTest extends TestCase
             ]);
 
         $this->Articles = TableRegistry::getTableLocator()->get('CakeDC/Enum.Articles', [
-            'className' => \CakeDC\Enum\Test\TestCase\Model\Behavior\ArticlesTable::class,
+            'className' => ArticlesTable::class,
             'table' => 'enum_articles',
         ]);
     }
@@ -324,7 +324,7 @@ class EnumBehaviorTest extends TestCase
             $this->assertInstanceOf(BelongsTo::class, $this->Articles->getAssociation($assoc));
         }
 
-        $result = $this->Articles->get(1);
+        $this->Articles->get(1);
     }
 
     public function testEnumMultipleAlias()
