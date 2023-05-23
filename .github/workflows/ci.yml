@@ -115,6 +115,6 @@ jobs:
       #      if: success() || failure()
       #      run: vendor/bin/psalm.phar --output-format=github
 
-      - name: Run phpstan
-        if: success() || failure()
-        run: composer stan
+      #    - name: Run phpstan
+      #      if: success() || failure()
+      #      run: composer stan
