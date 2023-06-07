@@ -13,7 +13,7 @@
   </testsuites>
   <!-- Setup a listener for fixtures -->
   <extensions>
-    <extension class="\Cake\TestSuite\Fixture\PHPUnitExtension"/>
+    <bootstrap class="Cake\TestSuite\Fixture\Extension\PHPUnitExtension"/>
   </extensions>
   <!-- Prevent coverage reports from looking in tests and vendors -->
 </phpunit>

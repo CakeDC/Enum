@@ -100,7 +100,7 @@ class EnumBehaviorTest extends TestCase
         TableRegistry::getTableLocator()->clear();
     }
 
-    public function provideBasicConfiguration(): array
+    public static function provideBasicConfiguration(): array
     {
         $expected = [
             'defaultStrategy' => 'lookup',
@@ -196,7 +196,7 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideBasicLookups(): array
+    public static function provideBasicLookups(): array
     {
         return [
             [
@@ -253,7 +253,7 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideBuildRules(): array
+    public static function provideBuildRules(): array
     {
         return [
             [
@@ -401,7 +401,7 @@ class EnumBehaviorTest extends TestCase
         $this->assertEquals($expected, $result);
     }
 
-    public function provideThirdPartyStrategy(): array
+    public static function provideThirdPartyStrategy(): array
     {
         return [
             [
