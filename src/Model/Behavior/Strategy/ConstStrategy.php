@@ -29,7 +29,7 @@ class ConstStrategy extends AbstractStrategy
     /**
      * Constants list
      *
-     * @var array
+     * @var array|null
      */
     protected ?array $constants = null;
 

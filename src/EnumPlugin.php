@@ -20,7 +20,7 @@ class EnumPlugin extends BasePlugin
     /**
      * Plugin name.
      *
-     * @var string
+     * @var string|null
      */
     protected ?string $name = 'Enum';
 }

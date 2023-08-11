@@ -4,3 +4,4 @@
 /auth.json
 /.ddev
 /.idea
+/.phpunit.result.cache

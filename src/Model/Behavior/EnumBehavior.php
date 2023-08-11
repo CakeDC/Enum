@@ -246,7 +246,7 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * @param \Cake\Event\Event $event Event.
+     * @param \Cake\Event\EventInterface $event Event.
      * @param \Cake\ORM\RulesChecker $rules Rules checker.
      * @return \Cake\ORM\RulesChecker
      */
@@ -299,7 +299,7 @@ class EnumBehavior extends Behavior
 
     /**
      * @param \Cake\Event\EventInterface $event The beforeFind event that was fired.
-     * @param \Cake\ORM\SelectQuery $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param \ArrayObject $options The options for the query
      * @return void
      */

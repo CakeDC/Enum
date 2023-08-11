@@ -14,25 +14,13 @@ declare(strict_types=1);
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
 use Cake\ORM\Locator\LocatorAwareTrait;
-use Cake\ORM\Table;
 use Cake\Utility\Inflector;
 
 class LookupStrategy extends AbstractStrategy
 {
     use LocatorAwareTrait;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param string $alias Strategy's alias.
-     * @param \Cake\ORM\Table $table Table object.
-     */
-    public function __construct(string $alias, Table $table)
-    {
-        parent::__construct($alias, $table);
-        $this->modelClass = 'CakeDC/Enum.Lookups';
-        // $this->modelFactory('Table', [$this->getTableLocator(), 'get']);
-    }
+    protected string $modelClass = 'CakeDC/Enum.Lookups';
 
     /**
      * {@inheritDoc}
