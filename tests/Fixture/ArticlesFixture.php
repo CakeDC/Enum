@@ -19,16 +19,6 @@ class ArticlesFixture extends TestFixture
 {
     public string $table = 'enum_articles';
 
-    public array $fields = [
-        'id' => ['type' => 'integer'],
-        'title' => ['type' => 'string'],
-        'body' => ['type' => 'text'],
-        'priority' => ['type' => 'string'],
-        'status' => ['type' => 'string'],
-        'article_category' => ['type' => 'integer'],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
-    ];
-
     public array $records = [
         [
             'title' => 'Dummy article',

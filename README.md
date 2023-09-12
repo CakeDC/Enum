@@ -11,14 +11,14 @@ Enumeration list for [CakePHP 5](http://cakephp.org).
 Versions and branches
 ---------------------
 
-| CakePHP    | CakeDC Enum Plugin                                      | Tag       | Notes    |
-|:-----------|:--------------------------------------------------------|:----------|:---------|
-| ^5.0.0-dev | [3.next](https://github.com/cakedc/enum/tree/3next)     | 3.0.0-dev | unstable |
-| ^4.0       | [2.next](https://github.com/cakedc/enum/tree/2.next)    | 2.0.4     | stable   |
-| ^3.7       | [master](https://github.com/cakedc/enum/tree/master)    | 1.5.0     | stable   |
-| ^3.7       | [develop](https://github.com/cakedc/enum/tree/develop)  | -         | unstable |
-| ^3.6       | [master](https://github.com/cakedc/enum/tree/1.4.0)     | 1.4.0     | stable   |
-| 3.1 - 3.5  |                                                         | 1.3.0     | stable   |
+| CakePHP   | CakeDC Enum Plugin                                     | Tag   | Notes    |
+|:----------|:-------------------------------------------------------|:------|:---------|
+| ^5.0.0    | [3.next](https://github.com/cakedc/enum/tree/3next)    | 3.0.0 | unstable |
+| ^4.0      | [2.next](https://github.com/cakedc/enum/tree/2.next)   | 2.0.4 | stable   |
+| ^3.7      | [master](https://github.com/cakedc/enum/tree/master)   | 1.5.0 | stable   |
+| ^3.7      | [develop](https://github.com/cakedc/enum/tree/develop) | -     | unstable |
+| ^3.6      | [master](https://github.com/cakedc/enum/tree/1.4.0)    | 1.4.0 | stable   |
+| 3.1 - 3.5 |                                                        | 1.3.0 | stable   |
 
 
 Install
@@ -27,7 +27,7 @@ Install
 Using [Composer](http://getcomposer.org):
 
 ```
-composer require cakedc/enum:3.0.0-dev
+composer require cakedc/enum
 ```
 
 You then need to load the plugin. You can use the shell command:

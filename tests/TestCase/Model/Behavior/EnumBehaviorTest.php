@@ -17,7 +17,6 @@ use Cake\Core\Configure;
 use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
-use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
 use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 
@@ -88,7 +87,7 @@ class EnumBehaviorTest extends TestCase
                 'Open Source Software',
             ]);
 
-        $this->Articles = TableRegistry::getTableLocator()->get('CakeDC/Enum.Articles', [
+        $this->Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', [
             'className' => ArticlesTable::class,
             'table' => 'enum_articles',
         ]);
@@ -97,7 +96,7 @@ class EnumBehaviorTest extends TestCase
     public function tearDown(): void
     {
         parent::tearDown();
-        TableRegistry::getTableLocator()->clear();
+        $this->getTableLocator()->clear();
     }
 
     public static function provideBasicConfiguration(): array
@@ -189,8 +188,8 @@ class EnumBehaviorTest extends TestCase
      */
     public function testBasicConfiguration(array $config, array $expected)
     {
-        TableRegistry::getTableLocator()->clear();
-        $Articles = TableRegistry::getTableLocator()->get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
+        $this->getTableLocator()->clear();
+        $Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
         $Articles->addBehavior('CakeDC/Enum.Enum', $config);
         $result = $Articles->behaviors()->Enum->getConfig();
         $this->assertEquals($expected, $result);
@@ -424,8 +423,8 @@ class EnumBehaviorTest extends TestCase
      */
     public function testThirdPartyStrategy(array $config, array $expected)
     {
-        TableRegistry::getTableLocator()->clear();
-        $Articles = TableRegistry::getTableLocator()->get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
+        $this->getTableLocator()->clear();
+        $Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
         $Articles->addBehavior('CakeDC/Enum.Enum', $config);
         $result = $Articles->enum('article_category');
         $this->assertEquals($expected, $result);

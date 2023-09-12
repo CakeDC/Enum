@@ -19,14 +19,6 @@ class LookupsFixture extends TestFixture
 {
     public string $table = 'enum_lookups';
 
-    public array $fields = [
-        'id' => ['type' => 'integer'],
-        'label' => ['type' => 'string'],
-        'prefix' => ['type' => 'string'],
-        'name' => ['type' => 'string'],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
-    ];
-
     public array $records = [
         [
             'label' => 'Urgent',
