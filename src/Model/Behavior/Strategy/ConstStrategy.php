@@ -65,7 +65,7 @@ class ConstStrategy extends AbstractStrategy
             }
         }
 
-        $values = array_map(fn($v): mixed => $constants[$v], $keys);
+        $values = array_map(fn ($v): mixed => $constants[$v], $keys);
 
         return array_combine($keys, $values);
     }
@@ -123,7 +123,7 @@ class ConstStrategy extends AbstractStrategy
 
         $query->clearContain()->contain($contain);
 
-        $query->formatResults(fn(CollectionInterface $results) => $results
+        $query->formatResults(fn (CollectionInterface $results) => $results
             ->map(function (EntityInterface $row): EntityInterface {
                 $constant = Hash::get($row, $this->getConfig('field'));
 
@@ -138,7 +138,6 @@ class ConstStrategy extends AbstractStrategy
                 $row->setDirty($field, false);
 
                 return $row;
-            })
-        );
+            }));
     }
 }

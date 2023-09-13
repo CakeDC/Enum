@@ -244,7 +244,7 @@ class EnumBehavior extends Behavior
     {
         $domain = $this->getConfig('translationDomain');
 
-        return array_map(fn($value) => __d($domain, $value), $list);
+        return array_map(fn ($value) => __d($domain, $value), $list);
     }
 
     /**
