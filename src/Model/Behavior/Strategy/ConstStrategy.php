@@ -104,7 +104,7 @@ class ConstStrategy extends AbstractStrategy
 
     /**
      * @param \Cake\Event\EventInterface $event The beforeFind event that was fired.
-     * @param \Cake\ORM\Query $query Query
+     * @param \Cake\ORM\Query\SelectQuery $query Query
      * @param \ArrayObject $options The options for the query
      * @return void
      */
