@@ -15,6 +15,7 @@ namespace CakeDC\Enum\Model\Behavior\Strategy;
 
 use ArrayObject;
 use Cake\Collection\CollectionInterface;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Entity;
 use Cake\ORM\Query\SelectQuery;
@@ -64,9 +65,7 @@ class ConstStrategy extends AbstractStrategy
             }
         }
 
-        $values = array_map(function ($v) use ($constants) {
-            return $constants[$v];
-        }, $keys);
+        $values = array_map(fn($v): mixed => $constants[$v], $keys);
 
         return array_combine($keys, $values);
     }
@@ -91,7 +90,7 @@ class ConstStrategy extends AbstractStrategy
         $constants = [];
 
         foreach ($classConstants as $key => $value) {
-            if (str_starts_with($key, (string)$prefix)) {
+            if (str_starts_with($key, $prefix)) {
                 $listKey = substr($key, $length);
                 if ($lowercase) {
                     $listKey = strtolower($listKey);
@@ -124,12 +123,8 @@ class ConstStrategy extends AbstractStrategy
 
         $query->clearContain()->contain($contain);
 
-        $query->formatResults(function (CollectionInterface $results) {
-            return $results->map(function ($row) {
-                if (is_string($row) || !$row) {
-                    return $row;
-                }
-
+        $query->formatResults(fn(CollectionInterface $results) => $results
+            ->map(function (EntityInterface $row): EntityInterface {
                 $constant = Hash::get($row, $this->getConfig('field'));
 
                 $field = Inflector::singularize(Inflector::underscore($this->alias));
@@ -139,17 +134,11 @@ class ConstStrategy extends AbstractStrategy
                     'value' => $constant,
                 ], ['markClean' => true, 'markNew' => false]);
 
-                if (is_array($row)) {
-                    $row[$field] = $value->toArray();
-
-                    return $row;
-                }
-
                 $row->set($field, $value);
                 $row->setDirty($field, false);
 
                 return $row;
-            });
-        });
+            })
+        );
     }
 }

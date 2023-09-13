@@ -16,6 +16,7 @@ namespace CakeDC\Enum\Model\Behavior\Strategy;
 use Cake\Core\InstanceConfigTrait;
 use Cake\ORM\Table;
 use Cake\Utility\Inflector;
+use function Cake\I18n\__d;
 
 abstract class AbstractStrategy implements StrategyInterface
 {

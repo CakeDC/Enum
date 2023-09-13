@@ -27,6 +27,7 @@ use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
 use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
 use CakeDC\Enum\Model\Behavior\Strategy\LookupStrategy;
 use CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface;
+use function Cake\I18n\__d;
 
 class EnumBehavior extends Behavior
 {
@@ -63,7 +64,7 @@ class EnumBehavior extends Behavior
      *   ];
      *   ```
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [
         'defaultStrategy' => 'lookup',
@@ -135,7 +136,10 @@ class EnumBehavior extends Behavior
             throw new MissingEnumStrategyException([$class]);
         }
 
-        return $this->strategies[$alias] = new $class($alias, $this->_table);
+        /** @var \CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface $strategy */
+        $strategy = new $class($alias, $this->_table);
+
+        return $this->strategies[$alias] = $strategy;
     }
 
     /**
@@ -219,7 +223,7 @@ class EnumBehavior extends Behavior
         if ($this->getConfig('nested')) {
             array_walk(
                 $return,
-                function (&$item, $val): void {
+                function (mixed &$item, mixed $val): void {
                     $item = ['value' => $val, 'text' => $item];
                 }
             );
@@ -240,9 +244,7 @@ class EnumBehavior extends Behavior
     {
         $domain = $this->getConfig('translationDomain');
 
-        return array_map(function ($value) use ($domain) {
-            return __d($domain, $value);
-        }, $list);
+        return array_map(fn($value) => __d($domain, $value), $list);
     }
 
     /**

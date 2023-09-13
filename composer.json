@@ -22,7 +22,8 @@
         "cakephp/cakephp-codesniffer": "^5.0",
         "cakephp/bake": "^3.0.0",
         "cakephp/migrations": "^4.0.0",
-        "aura/intl": "^3.0"
+        "aura/intl": "^3.0",
+        "vimeo/psalm": "^5.15"
     },
     "autoload": {
         "psr-4": {
