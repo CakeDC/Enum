@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace CakeDC\Enum\Model\Behavior\Strategy;
 
+use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
@@ -123,8 +124,12 @@ class ConstStrategy extends AbstractStrategy
 
                 $constant = Hash::get($row, $this->getConfig('field'));
 
+                if ($constant instanceof Entity) {
+                    return $row;
+                }
+
                 $field = Inflector::singularize(Inflector::underscore($this->_alias));
-                $value = new \Cake\ORM\Entity([
+                $value = new Entity([
                     'label' => Hash::get($this->_getConstants(), $constant, $constant),
                     'prefix' => $this->getConfig('prefix'),
                     'value' => $constant,
