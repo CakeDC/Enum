@@ -1,9 +1,15 @@
 Changelog
 =========
 
-* 3.0.0-dev CakePHP 5.x support
+* 3.1.0
+  * fixed issue with $constant beeing of type /Cake/ORM/Entity
+  * fixed issue with missing support for non hydrated results in src/Model/Behavior/Strategy/ConstStrategy.php
 
-* 2.0.0 CakePHP 4.x support
+* 3.0.0
+  * CakePHP 5.x support
+
+* 2.0.0
+  * CakePHP 4.x support
 
 * 1.2.0
   * Documentation improved

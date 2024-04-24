@@ -124,12 +124,12 @@ class ConstStrategy extends AbstractStrategy
         $query->clearContain()->contain($contain);
 
         $query->formatResults(fn (CollectionInterface $results) => $results
-            ->map(function (EntityInterface $row): EntityInterface {
-                $constant = Hash::get($row, $this->getConfig('field'));
-
-                if ($constant instanceof Entity) {
+            ->map(function (mixed $row): mixed {
+                if (is_string($row) || !$row) {
                     return $row;
                 }
+
+                $constant = Hash::get($row, $this->getConfig('field'));
 
                 $field = Inflector::singularize(Inflector::underscore($this->alias));
                 $value = new Entity([
@@ -138,8 +138,16 @@ class ConstStrategy extends AbstractStrategy
                     'value' => $constant,
                 ], ['markClean' => true, 'markNew' => false]);
 
-                $row->set($field, $value);
-                $row->setDirty($field, false);
+                if (is_array($row)) {
+                    $row[$field] = $value->toArray();
+
+                    return $row;
+                }
+
+                if ($row instanceof EntityInterface) {
+                    $row->set($field, $value);
+                    $row->setDirty($field, false);
+                }
 
                 return $row;
             }));
