@@ -4,7 +4,7 @@ Home
 Requirements
 ------------
 
-* CakePHP 5.0+
+* CakePHP 5.0.6+
 * PHP 8.1+
 
 Documentation
