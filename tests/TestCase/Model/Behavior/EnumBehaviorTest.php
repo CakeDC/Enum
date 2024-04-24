@@ -163,6 +163,7 @@ class EnumBehaviorTest extends TestCase
                 ],
             ],
             'classMap' => [],
+            'className' => 'CakeDC/Enum.Enum',
         ];
 
         return [
