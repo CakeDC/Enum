@@ -2,12 +2,12 @@
 declare(strict_types=1);
 
 /**
- * Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
+ * Copyright 2015 - 2024, Cake Development Corporation (http://cakedc.com)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright Copyright 2015 - 2023, Cake Development Corporation (http://cakedc.com)
+ * @copyright Copyright 2015 - 2024, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
@@ -124,10 +124,14 @@ class ConstStrategy extends AbstractStrategy
         $query->clearContain()->contain($contain);
 
         $query->formatResults(fn (CollectionInterface $results) => $results
-            ->map(function (EntityInterface $row): EntityInterface {
+            ->map(function (mixed $row): mixed {
+                if (is_string($row) || !$row) {
+                    return $row;
+                }
+
                 $constant = Hash::get($row, $this->getConfig('field'));
 
-                if ($constant instanceof Entity) {
+                if ($constant instanceof EntityInterface) {
                     return $row;
                 }
 
@@ -138,8 +142,16 @@ class ConstStrategy extends AbstractStrategy
                     'value' => $constant,
                 ], ['markClean' => true, 'markNew' => false]);
 
-                $row->set($field, $value);
-                $row->setDirty($field, false);
+                if (is_array($row)) {
+                    $row[$field] = $value->toArray();
+
+                    return $row;
+                }
+
+                if ($row instanceof EntityInterface) {
+                    $row->set($field, $value);
+                    $row->setDirty($field, false);
+                }
 
                 return $row;
             }));
