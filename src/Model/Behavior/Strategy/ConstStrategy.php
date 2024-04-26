@@ -131,6 +131,10 @@ class ConstStrategy extends AbstractStrategy
 
                 $constant = Hash::get($row, $this->getConfig('field'));
 
+                if ($constant instanceof EntityInterface) {
+                    return $row;
+                }
+
                 $field = Inflector::singularize(Inflector::underscore($this->alias));
                 $value = new Entity([
                     'label' => Hash::get($this->getConstants(), $constant, $constant),
