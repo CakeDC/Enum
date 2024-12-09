@@ -292,7 +292,7 @@ class EnumBehavior extends Behavior
             throw new MissingEnumConfigurationException([$alias]);
         }
 
-        if (!$entity->has($config['field']) && Hash::get($config, 'allowEmpty') === true) {
+        if ($entity->isEmpty($config['field']) && Hash::get($config, 'allowEmpty') === true) {
             return true;
         }
 
