@@ -76,6 +76,7 @@ class LookupStrategy extends AbstractStrategy
 
         $this->_table
             ->belongsTo($assocName)
+            ->setProperty($assocName . 'Enum')
             ->setClassName($this->modelClass)
             ->setForeignKey($config['field'])
             ->setBindingKey('name')

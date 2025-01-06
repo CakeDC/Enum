@@ -1,5 +1,7 @@
 <?php
-use Phinx\Migration\AbstractMigration;
+declare(strict_types=1);
+
+use Migrations\AbstractMigration;
 
 class CreateEnumLookups extends AbstractMigration
 {

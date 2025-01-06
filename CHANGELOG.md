@@ -1,6 +1,9 @@
 Changelog
 =========
 
+* 2.2.2
+  * Fixed migration
+  * Fixed property conflict in lookup strategy
 * 2.2.1
   * Fix plugin name
 * 2.2.0
