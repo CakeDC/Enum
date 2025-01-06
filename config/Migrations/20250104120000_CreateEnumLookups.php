@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use Migrations\AbstractMigration;
+
 /**
  * Copyright 2015 - 2024, Cake Development Corporation (http://cakedc.com)
  *
@@ -10,8 +12,6 @@ declare(strict_types=1);
  * @copyright Copyright 2015 - 2024, Cake Development Corporation (http://cakedc.com)
  * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
-use Phinx\Migration\AbstractMigration;
 
 class CreateEnumLookups extends AbstractMigration
 {
