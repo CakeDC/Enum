@@ -15,6 +15,7 @@ namespace CakeDC\Enum\Model\Behavior;
 
 use ArrayObject;
 use BadMethodCallException;
+use Cake\Datasource\EntityInterface;
 use Cake\Event\EventInterface;
 use Cake\ORM\Behavior;
 use Cake\ORM\Query\SelectQuery;
@@ -295,8 +296,14 @@ class EnumBehavior extends Behavior
         if ($entity->isEmpty($config['field']) && Hash::get($config, 'allowEmpty') === true) {
             return true;
         }
+        $value = $entity->{$config['field']};
+        if (is_array($value)) {
+            $value = $value['value'] ?? '';
+        } elseif ($value instanceof EntityInterface) {
+            $value = $value->get('value');
+        }
 
-        return array_key_exists($entity->{$config['field']}, $this->enum($alias));
+        return array_key_exists($value, $this->enum($alias));
     }
 
     /**

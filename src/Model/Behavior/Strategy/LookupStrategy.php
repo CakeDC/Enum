@@ -59,6 +59,7 @@ class LookupStrategy extends AbstractStrategy
 
         $this->table
             ->belongsTo($assocName)
+            ->setProperty($assocName."Enum")
             ->setClassName('CakeDC/Enum.Lookups')
             ->setForeignKey($config['field'])
             ->setBindingKey('name')
