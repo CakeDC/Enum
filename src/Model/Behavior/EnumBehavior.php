@@ -249,11 +249,13 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * @param \Cake\Event\EventInterface $event Event.
-     * @param \Cake\ORM\RulesChecker $rules Rules checker.
-     * @return \Cake\ORM\RulesChecker
+     * Build the rules for enumeration lists with activated application rules
+     *
+     * @param \Cake\Event\EventInterface $event The trigggered Event.
+     * @param \Cake\ORM\RulesChecker $rules The RulesChecker to ammend.
+     * @return void
      */
-    public function buildRules(EventInterface $event, RulesChecker $rules): RulesChecker
+    public function buildRules(EventInterface $event, RulesChecker $rules): void
     {
         foreach ($this->getConfig('lists') as $alias => $config) {
             if (Hash::get($config, 'applicationRules') === false) {
@@ -267,7 +269,7 @@ class EnumBehavior extends Behavior
             ]);
         }
 
-        return $rules;
+        $event->setResult($rules);
     }
 
     /**
