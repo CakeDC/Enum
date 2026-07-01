@@ -249,7 +249,7 @@ class EnumBehaviorTest extends TestCase
      */
     public function testBasicLookups($group, $expected)
     {
-        $result = $this->Articles->enum($group);
+        $result = $this->Articles->getBehavior('Enum')->enum($group);
         $this->assertEquals($expected, $result);
     }
 
@@ -305,7 +305,7 @@ class EnumBehaviorTest extends TestCase
     public function testEnumNested()
     {
         $this->Articles->behaviors()->Enum->setConfig('nested', true);
-        $result = $this->Articles->enum('priority');
+        $result = $this->Articles->getBehavior('Enum')->enum('priority');
         $expected = [
             ['value' => 'URGENT', 'text' => 'Urgent'],
             ['value' => 'HIGH', 'text' => 'High'],
@@ -329,7 +329,7 @@ class EnumBehaviorTest extends TestCase
 
     public function testEnumMultipleAlias()
     {
-        $result = $this->Articles->enum();
+        $result = $this->Articles->getBehavior('Enum')->enum();
         $expected = [
             'priority' => [
                 'URGENT' => 'Urgent',
@@ -366,10 +366,10 @@ class EnumBehaviorTest extends TestCase
         ];
         $this->assertEquals($expected, $result);
 
-        $result = $this->Articles->enum([]);
+        $result = $this->Articles->getBehavior('Enum')->enum([]);
         $this->assertEquals($expected, $result);
 
-        $result = $this->Articles->enum(['priority', 'status']);
+        $result = $this->Articles->getBehavior('Enum')->enum(['priority', 'status']);
         $expected = [
             'priority' => [
                 'URGENT' => 'Urgent',
@@ -388,11 +388,11 @@ class EnumBehaviorTest extends TestCase
     public function testTranslatedValues()
     {
         $this->Articles->behaviors()->Enum->setConfig('translate', true);
-        $result = $this->Articles->enum('node_group');
+        $result = $this->Articles->getBehavior('Enum')->enum('node_group');
 
         $this->assertEquals(['active' => 'Translated Active'], $result);
 
-        $result = $this->Articles->enum(['node_group', 'norules']);
+        $result = $this->Articles->getBehavior('Enum')->enum(['node_group', 'norules']);
 
         $expected = [
             'node_group' => ['active' => 'Translated Active'],
@@ -427,7 +427,7 @@ class EnumBehaviorTest extends TestCase
         $this->getTableLocator()->clear();
         $Articles = $this->getTableLocator()->get('CakeDC/Enum.Articles', ['table' => 'enum_articles']);
         $Articles->addBehavior('CakeDC/Enum.Enum', $config);
-        $result = $Articles->enum('article_category');
+        $result = $Articles->getBehavior('Enum')->enum('article_category');
         $this->assertEquals($expected, $result);
     }
 }
