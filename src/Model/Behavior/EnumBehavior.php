@@ -81,7 +81,7 @@ class EnumBehavior extends Behavior
     /**
      * Class map.
      *
-     * @var array
+     * @var array<string, class-string<\CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface>>
      */
     protected array $classMap = [
         'lookup' => LookupStrategy::class,
@@ -92,14 +92,14 @@ class EnumBehavior extends Behavior
     /**
      * Stack of strategies in use.
      *
-     * @var array
+     * @var array<string, \CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface>
      */
     protected array $strategies = [];
 
     /**
      * Initializes the behavior.
      *
-     * @param array $config Strategy's configuration.
+     * @param array<string, mixed> $config Strategy's configuration.
      * @return void
      */
     public function initialize(array $config): void
@@ -181,8 +181,8 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * @param array|string|null $alias Defined list's alias/name.
-     * @return array
+     * @param array<int, string>|string|null $alias Defined list's alias/name.
+     * @return array<string, mixed>
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
      */
     public function enum(array|string|null $alias = null): array
@@ -211,8 +211,8 @@ class EnumBehavior extends Behavior
 
     /**
      * @param string $alias List alias.
-     * @param array $config Config
-     * @return array
+     * @param array<string, mixed> $config Config
+     * @return array<string, mixed>
      */
     protected function enumList(string $alias, array $config): array
     {
@@ -238,8 +238,8 @@ class EnumBehavior extends Behavior
     /**
      * Translate list values.
      *
-     * @param array $list List.
-     * @return array
+     * @param array<string, mixed> $list List.
+     * @return array<string, mixed>
      */
     protected function translate(array $list): array
     {
@@ -249,7 +249,7 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * @param \Cake\Event\EventInterface $event Event.
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event.
      * @param \Cake\ORM\RulesChecker $rules Rules checker.
      * @return void
      */
@@ -274,7 +274,7 @@ class EnumBehavior extends Behavior
      * Universal validation rule for lists.
      *
      * @param string $method Method name.
-     * @param array $args Method's arguments.
+     * @param array<int, mixed> $args Method's arguments.
      * @return bool
      * @throws \BadMethodCallException
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
@@ -307,9 +307,9 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * @param \Cake\Event\EventInterface $event The beforeFind event that was fired.
-     * @param \Cake\ORM\Query\SelectQuery $query Query
-     * @param \ArrayObject $options The options for the query
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event The beforeFind event that was fired.
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query
+     * @param \ArrayObject<string, mixed> $options The options for the query
      * @return void
      */
     public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options): void

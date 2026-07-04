@@ -18,7 +18,7 @@ use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
 use CakeDC\Enum\Model\Behavior\Strategy\ConstStrategy;
 
-// @codingStandardsIgnoreStart
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses,Squiz.Classes.ClassFileName.NoMatch
 class ArticlesTable extends Table
 {
     public const EXTRA_VALUE = 'Extra';
@@ -37,7 +37,7 @@ class Article extends Entity
     public const STATUS_ARCHIVE = 'Archived';
 }
 class ConstStrategyTest extends TestCase
-// @codingStandardsIgnoreEnd
+// phpcs:enable PSR1.Classes.ClassDeclaration.MultipleClasses,Squiz.Classes.ClassFileName.NoMatch
 {
     public ConstStrategy $StrategyTable;
 

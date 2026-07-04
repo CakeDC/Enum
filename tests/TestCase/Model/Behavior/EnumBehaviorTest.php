@@ -20,7 +20,7 @@ use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
 use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 
-// @codingStandardsIgnoreStart
+// phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses,Squiz.Classes.ClassFileName.NoMatch
 class ArticlesTable extends Table
 {
     public const STATUS_PUBLIC = 'Published';
@@ -69,7 +69,7 @@ class ThirdPartyStrategy extends AbstractStrategy
 }
 
 class EnumBehaviorTest extends TestCase
-// @codingStandardsIgnoreEnd
+// phpcs:enable PSR1.Classes.ClassDeclaration.MultipleClasses,Squiz.Classes.ClassFileName.NoMatch
 {
     public array $fixtures = [
         'plugin.CakeDC/Enum.Articles',

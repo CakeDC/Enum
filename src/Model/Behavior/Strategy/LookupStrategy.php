@@ -25,8 +25,8 @@ class LookupStrategy extends AbstractStrategy
     /**
      * {@inheritDoc}
      *
-     * @param array $config (unused in this case).
-     * @return array
+     * @param array<string, mixed> $config (unused in this case).
+     * @return array<string, mixed>
      */
     public function enum(array $config = []): array
     {
@@ -48,7 +48,7 @@ class LookupStrategy extends AbstractStrategy
     /**
      * {@inheritDoc}
      *
-     * @param array $config Strategy's configuration.
+     * @param array<string, mixed> $config Strategy's configuration.
      * @return void
      */
     public function initialize(array $config): void

@@ -16,13 +16,13 @@ namespace CakeDC\Enum\Model\Behavior\Strategy;
 interface StrategyInterface
 {
     /**
-     * @param array $config Strategy's configuration.
-     * @return array
+     * @param array<string, mixed> $config Strategy's configuration.
+     * @return array<string, mixed>
      */
     public function enum(array $config = []): array;
 
     /**
-     * @param array $config Configuration.
+     * @param array<string, mixed> $config Configuration.
      * @return void
      */
     public function initialize(array $config): void;

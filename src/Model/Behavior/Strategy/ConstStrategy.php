@@ -30,7 +30,7 @@ class ConstStrategy extends AbstractStrategy
     /**
      * Constants list
      *
-     * @var array|null
+     * @var array<string, mixed>|null
      */
     protected ?array $constants = null;
 
@@ -50,8 +50,8 @@ class ConstStrategy extends AbstractStrategy
     /**
      * {@inheritDoc}
      *
-     * @param array $config List of callable filters to limit items generated from list.
-     * @return array
+     * @param array<string, mixed> $config List of callable filters to limit items generated from list.
+     * @return array<string, mixed>
      * @throws \ReflectionException
      */
     public function enum(array $config = []): array
@@ -73,7 +73,7 @@ class ConstStrategy extends AbstractStrategy
     /**
      * Returns defined constants for the current `$_table`.
      *
-     * @return array
+     * @return array<string, mixed>
      * @throws \ReflectionException
      */
     protected function getConstants(): array
@@ -103,9 +103,9 @@ class ConstStrategy extends AbstractStrategy
     }
 
     /**
-     * @param \Cake\Event\EventInterface $event The beforeFind event that was fired.
-     * @param \Cake\ORM\Query\SelectQuery $query Query
-     * @param \ArrayObject $options The options for the query
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event The beforeFind event that was fired.
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query
+     * @param \ArrayObject<string, mixed> $options The options for the query
      * @return void
      */
     public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options): void
