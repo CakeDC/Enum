@@ -226,7 +226,7 @@ class EnumBehavior extends Behavior
                 $return,
                 function (mixed &$item, mixed $val): void {
                     $item = ['value' => $val, 'text' => $item];
-                }
+                },
             );
 
             $return = array_values($return);
@@ -245,7 +245,7 @@ class EnumBehavior extends Behavior
     {
         $domain = $this->getConfig('translationDomain');
 
-        return array_map(fn ($value) => __d($domain, $value), $list);
+        return array_map(fn($value) => __d($domain, $value), $list);
     }
 
     /**

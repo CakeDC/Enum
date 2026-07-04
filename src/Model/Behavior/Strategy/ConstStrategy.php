@@ -65,7 +65,7 @@ class ConstStrategy extends AbstractStrategy
             }
         }
 
-        $values = array_map(fn ($v): mixed => $constants[$v], $keys);
+        $values = array_map(fn($v): mixed => $constants[$v], $keys);
 
         return array_combine($keys, $values);
     }
@@ -117,13 +117,13 @@ class ConstStrategy extends AbstractStrategy
 
         $contain = array_filter(
             $query->getContain(),
-            fn ($value): bool => $value !== $assocName,
-            ARRAY_FILTER_USE_KEY
+            fn($value): bool => $value !== $assocName,
+            ARRAY_FILTER_USE_KEY,
         );
 
         $query->clearContain()->contain($contain);
 
-        $query->formatResults(fn (CollectionInterface $results) => $results
+        $query->formatResults(fn(CollectionInterface $results) => $results
             ->map(function (mixed $row): mixed {
                 if (is_string($row) || !$row) {
                     return $row;

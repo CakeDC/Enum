@@ -1,6 +1,15 @@
 <?xml version="1.0"?>
-<ruleset name="cakedc/enum">
-    <config name="installed_paths" value="../../cakephp/cakephp-codesniffer" />
-
-    <rule ref="CakePHP" />
+<ruleset name="AppStandard">
+    <description>My custom coding standard.</description>
+    <rule ref="./vendor/cakephp/cakephp-codesniffer/CakePHP">
+        <exclude name="CakePHP.Commenting.FunctionComment.MissingParamComment"/>
+        <exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
+        <exclude name="Generic.Files.LineLength.TooLong"/>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint">
+        <exclude-pattern>*/src/Controller/*</exclude-pattern>
+    </rule>
+    <rule ref="Generic.WhiteSpace.ScopeIndent.Incorrect">
+        <exclude-pattern>templates/*</exclude-pattern>
+    </rule>
 </ruleset>

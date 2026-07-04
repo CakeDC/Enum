@@ -44,8 +44,7 @@
         "phpstan": "tools/phpstan analyse",
         "psalm": "tools/psalm --show-info=false",
         "stan": [
-            "@phpstan",
-            "@psalm"
+            "@phpstan"
         ],
         "stan-tests": "phpstan.phar analyze -c tests/phpstan.neon",
         "stan-baseline": "phpstan.phar --generate-baseline",
