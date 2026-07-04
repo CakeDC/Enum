@@ -83,7 +83,7 @@ jobs:
 
     - name: Install PHP tools with phive
       run: |
-        phive install --trust-gpg-keys CF1A108D0E7AE720,51C67305FFC2E5C0,12CE0F1D262429A5
+        phive install --trust-gpg-keys CF1A108D0E7AE720,51C67305FFC2E5C0,12CE0F1D262429A5,99BF4D9A33D65E1E
 
     - name: Run PHP CodeSniffer
       run: composer cs-check
