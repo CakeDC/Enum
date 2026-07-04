@@ -41,11 +41,11 @@ jobs:
       if: matrix.php-version == '8.2' && matrix.os == 'ubuntu-latest'
       run: |
         export CODECOVERAGE=1
-        vendor/bin/phpunit --configuration=phpunit.xml --display-deprecations --display-incomplete --display-skipped --coverage-clover=coverage.xml
+        vendor/bin/phpunit --configuration=phpunit.xml.dist --display-deprecations --display-incomplete --display-skipped --coverage-clover=coverage.xml
 
     - name: Run PHPUnit without coverage
       if: matrix.php-version != '8.3' || matrix.os != 'ubuntu-latest'
-      run: vendor/bin/phpunit --configuration=phpunit.xml
+      run: vendor/bin/phpunit --configuration=phpunit.xml.dist
 
     - name: Submit code coverage
       if: matrix.php-version == '8.3' && matrix.os == 'ubuntu-latest'
