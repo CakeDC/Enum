@@ -22,8 +22,8 @@ class ConfigStrategy extends AbstractStrategy
     /**
      * {@inheritDoc}
      *
-     * @param array $config (unused in this case).
-     * @return array
+     * @param array<string, mixed> $config (unused in this case).
+     * @return array<string, mixed>
      */
     public function enum(array $config = []): array
     {

@@ -81,7 +81,7 @@ class EnumBehavior extends Behavior
     /**
      * Class map.
      *
-     * @var array
+     * @var array<string, class-string<\CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface>>
      */
     protected array $classMap = [
         'lookup' => LookupStrategy::class,
@@ -92,14 +92,14 @@ class EnumBehavior extends Behavior
     /**
      * Stack of strategies in use.
      *
-     * @var array
+     * @var array<string, \CakeDC\Enum\Model\Behavior\Strategy\StrategyInterface>
      */
     protected array $strategies = [];
 
     /**
      * Initializes the behavior.
      *
-     * @param array $config Strategy's configuration.
+     * @param array<string, mixed> $config Strategy's configuration.
      * @return void
      */
     public function initialize(array $config): void
@@ -181,8 +181,8 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * @param array|string|null $alias Defined list's alias/name.
-     * @return array
+     * @param array<int, string>|string|null $alias Defined list's alias/name.
+     * @return array<string, mixed>
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
      */
     public function enum(array|string|null $alias = null): array
@@ -211,8 +211,8 @@ class EnumBehavior extends Behavior
 
     /**
      * @param string $alias List alias.
-     * @param array $config Config
-     * @return array
+     * @param array<string, mixed> $config Config
+     * @return array<string, mixed>
      */
     protected function enumList(string $alias, array $config): array
     {
@@ -226,7 +226,7 @@ class EnumBehavior extends Behavior
                 $return,
                 function (mixed &$item, mixed $val): void {
                     $item = ['value' => $val, 'text' => $item];
-                }
+                },
             );
 
             $return = array_values($return);
@@ -238,22 +238,22 @@ class EnumBehavior extends Behavior
     /**
      * Translate list values.
      *
-     * @param array $list List.
-     * @return array
+     * @param array<string, mixed> $list List.
+     * @return array<string, mixed>
      */
     protected function translate(array $list): array
     {
         $domain = $this->getConfig('translationDomain');
 
-        return array_map(fn ($value) => __d($domain, $value), $list);
+        return array_map(fn($value) => __d($domain, $value), $list);
     }
 
     /**
-     * @param \Cake\Event\EventInterface $event Event.
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event.
      * @param \Cake\ORM\RulesChecker $rules Rules checker.
-     * @return \Cake\ORM\RulesChecker
+     * @return void
      */
-    public function buildRules(EventInterface $event, RulesChecker $rules): RulesChecker
+    public function buildRules(EventInterface $event, RulesChecker $rules): void
     {
         foreach ($this->getConfig('lists') as $alias => $config) {
             if (Hash::get($config, 'applicationRules') === false) {
@@ -267,14 +267,14 @@ class EnumBehavior extends Behavior
             ]);
         }
 
-        return $rules;
+        $event->setResult($rules);
     }
 
     /**
      * Universal validation rule for lists.
      *
      * @param string $method Method name.
-     * @param array $args Method's arguments.
+     * @param array<int, mixed> $args Method's arguments.
      * @return bool
      * @throws \BadMethodCallException
      * @throws \CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException
@@ -293,7 +293,7 @@ class EnumBehavior extends Behavior
             throw new MissingEnumConfigurationException([$alias]);
         }
 
-        if ($entity->isEmpty($config['field']) && Hash::get($config, 'allowEmpty') === true) {
+        if (!$entity->hasValue($config['field']) && Hash::get($config, 'allowEmpty') === true) {
             return true;
         }
         $value = $entity->{$config['field']};
@@ -307,9 +307,9 @@ class EnumBehavior extends Behavior
     }
 
     /**
-     * @param \Cake\Event\EventInterface $event The beforeFind event that was fired.
-     * @param \Cake\ORM\Query\SelectQuery $query Query
-     * @param \ArrayObject $options The options for the query
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event The beforeFind event that was fired.
+     * @param \Cake\ORM\Query\SelectQuery<\Cake\Datasource\EntityInterface> $query Query
+     * @param \ArrayObject<string, mixed> $options The options for the query
      * @return void
      */
     public function beforeFind(EventInterface $event, SelectQuery $query, ArrayObject $options): void

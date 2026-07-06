@@ -2,21 +2,91 @@ name: CI
 
 on:
   push:
-    branches:
-      - master
-      - 3.next-cake5
   pull_request:
     branches:
       - '*'
 
-permissions:
-  contents: read
-
 jobs:
   testsuite:
-    uses: cakephp/.github/.github/workflows/testsuite-with-db.yml@5.x
-    secrets: inherit
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.2', '8.3', '8.4']
+        os: [ubuntu-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mbstring, intl, pdo_sqlite
+        coverage: pcov
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.composer/cache
+        key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+
+    - name: composer install
+      run: composer install --prefer-dist --no-progress
+
+    - name: Setup problem matchers for PHPUnit
+      if: matrix.php-version == '8.2' && matrix.os == 'ubuntu-latest'
+      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Run PHPUnit with coverage
+      if: matrix.php-version == '8.2' && matrix.os == 'ubuntu-latest'
+      run: |
+        export CODECOVERAGE=1
+        vendor/bin/phpunit --configuration=phpunit.xml.dist --display-deprecations --display-incomplete --display-skipped --coverage-clover=coverage.xml
+
+    - name: Run PHPUnit without coverage
+      if: matrix.php-version != '8.3' || matrix.os != 'ubuntu-latest'
+      run: vendor/bin/phpunit --configuration=phpunit.xml.dist
+
+    - name: Submit code coverage
+      if: matrix.php-version == '8.3' && matrix.os == 'ubuntu-latest'
+      uses: codecov/codecov-action@v3
 
   cs-stan:
-    uses: cakephp/.github/.github/workflows/cs-stan.yml@5.x
-    secrets: inherit
+    name: Coding Standard & Static Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mbstring, intl, pdo_sqlite
+        coverage: none
+        tools: phive
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.composer/cache
+        key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+
+    - name: composer install
+      run: composer install --prefer-dist --no-progress
+
+    - name: Install phive
+      run: |
+        wget -O phive.phar https://phar.io/releases/phive.phar
+        chmod +x phive.phar
+        sudo mv phive.phar /usr/local/bin/phive
+
+    - name: Install PHP tools with phive
+      run: |
+        phive install --trust-gpg-keys CF1A108D0E7AE720,51C67305FFC2E5C0,12CE0F1D262429A5,99BF4D9A33D65E1E
+
+    - name: Run PHP CodeSniffer
+      run: composer cs-check
+
+    - name: Run phpstan
+      run: composer stan
