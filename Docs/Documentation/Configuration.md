@@ -80,3 +80,40 @@ $this->addBehavior('CakeDC/Enum.Enum', [
     ]
 ]);
 ```
+
+### Validation Configuration
+
+By default the behavior only checks list values with an application rule (`isValid<Alias>`), which runs when the entity is saved. Disable it per list with `'applicationRules' => false`.
+
+Set the `validation` option to also add the check to a table validator, so invalid values are reported by `newEntity()` and `patchEntity()`:
+
+* `true`: adds the rule to the `default` validator.
+* a validator name or an array of names, e.g. `'api'` or `['default', 'api']`: adds the rule to those validators. The table must define the matching `validation<Name>()` method.
+* `false` (default): no validation rule is added.
+
+The rule is named `isValid<Alias>`, uses the list `errorMessage`, and is added after the rules of your `validation<Name>()` method. When `allowEmpty` is `true`, the field is also allowed to be empty in the validator.
+
+```php
+$this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
+    'status' => [
+        'strategy' => 'const',
+        'validation' => true,
+        'errorMessage' => 'Invalid status',
+    ],
+    'priority' => [
+        'validation' => ['default', 'api'],
+    ],
+]]);
+```
+
+Set `validation` at the behavior level to enable it for all lists; a list can still override it:
+
+```php
+$this->addBehavior('CakeDC/Enum.Enum', [
+    'validation' => true,
+    'lists' => [
+        'status' => ['strategy' => 'const'],
+        'priority' => ['validation' => false],
+    ],
+]);
+```

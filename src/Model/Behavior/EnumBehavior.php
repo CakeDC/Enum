@@ -22,6 +22,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use Cake\Validation\Validator;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
 use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
@@ -40,6 +41,8 @@ class EnumBehavior extends Behavior
      *   be translated. Defaults to `false`.
      * - `translationDomain`: Domain to use when translating list value.
      *   Defaults to "default".
+     * - `validation`: Default value for the lists' `validation` option.
+     *   Defaults to `false`.
      * - `nested`: (bool) If `true` the array returned by enum() method will be of form
      *   `[['value' => 'v1', 'text' => 't1'], ['value' => 'v2', 'text' => 't2']`
      *   instead of default `['v1' => 't1', 'v2' => 't2']`.
@@ -60,7 +63,10 @@ class EnumBehavior extends Behavior
      *           // Create application rule to ensure only valid enum value can be saved.
      *           'applicationRules' => true,
      *           // Allow saving field without any enum value.
-     *           'allowEmpty' => false
+     *           'allowEmpty' => false,
+     *           // Add a validation rule to the given validators. `true` means
+     *           // `['default']`, a string or an array names the validators.
+     *           'validation' => false,
      *       ],
      *   ];
      *   ```
@@ -71,6 +77,7 @@ class EnumBehavior extends Behavior
         'defaultStrategy' => 'lookup',
         'translate' => false,
         'translationDomain' => 'default',
+        'validation' => false,
         'implementedMethods' => [
             'enum' => 'enum',
         ],
@@ -271,6 +278,70 @@ class EnumBehavior extends Behavior
     }
 
     /**
+     * Adds a validation rule to the validator for each list enabling it.
+     *
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event.
+     * @param \Cake\Validation\Validator $validator Validator.
+     * @param string $name Validator name.
+     * @return void
+     */
+    public function buildValidator(EventInterface $event, Validator $validator, string $name): void
+    {
+        foreach ($this->getConfig('lists') as $alias => $config) {
+            if (!in_array($name, $this->validatorNames($config), true)) {
+                continue;
+            }
+
+            $field = $config['field'];
+            $validator->add($field, 'isValid' . Inflector::camelize($alias), [
+                'rule' => fn(mixed $value): bool => $this->isValidValue($alias, $value),
+                'message' => $config['errorMessage'],
+            ]);
+
+            if (Hash::get($config, 'allowEmpty') === true) {
+                $validator->allowEmptyString($field);
+            }
+        }
+    }
+
+    /**
+     * Returns the names of the validators a list adds its rule to.
+     *
+     * @param array<string, mixed> $config List configuration.
+     * @return array<string>
+     */
+    protected function validatorNames(array $config): array
+    {
+        $validation = $config['validation'] ?? $this->getConfig('validation');
+        if ($validation === true) {
+            return ['default'];
+        }
+
+        return $validation ? (array)$validation : [];
+    }
+
+    /**
+     * Checks whether the value is a key of the list.
+     *
+     * @param string $alias List alias.
+     * @param mixed $value Value to check.
+     * @return bool
+     */
+    protected function isValidValue(string $alias, mixed $value): bool
+    {
+        if (is_array($value)) {
+            $value = $value['value'] ?? '';
+        } elseif ($value instanceof EntityInterface) {
+            $value = $value->get('value');
+        }
+
+        $config = $this->getConfig('lists.' . $alias);
+        $list = $this->strategy($alias, $config['strategy'])->enum($config);
+
+        return array_key_exists($value, $list);
+    }
+
+    /**
      * Universal validation rule for lists.
      *
      * @param string $method Method name.
@@ -296,14 +367,8 @@ class EnumBehavior extends Behavior
         if (!$entity->hasValue($config['field']) && Hash::get($config, 'allowEmpty') === true) {
             return true;
         }
-        $value = $entity->{$config['field']};
-        if (is_array($value)) {
-            $value = $value['value'] ?? '';
-        } elseif ($value instanceof EntityInterface) {
-            $value = $value->get('value');
-        }
 
-        return array_key_exists($value, $this->enum($alias));
+        return $this->isValidValue($alias, $entity->{$config['field']});
     }
 
     /**
