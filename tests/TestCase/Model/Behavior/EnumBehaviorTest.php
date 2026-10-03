@@ -118,7 +118,7 @@ class EnumBehaviorTest extends TestCase
                     'strategy' => 'const',
                     'prefix' => 'STATUS',
                     'field' => 'status',
-                    'errorMessage' => 'The provided value is invalid',
+                    'errorMessage' => "Invalid value ':value', expected values are :expected.",
                     'lowercase' => false,
                     'callBeforeFind' => true,
                 ],
@@ -126,7 +126,7 @@ class EnumBehaviorTest extends TestCase
                     'strategy' => 'const',
                     'prefix' => 'STATUS',
                     'field' => 'no_check',
-                    'errorMessage' => 'The provided value is invalid',
+                    'errorMessage' => "Invalid value ':value', expected values are :expected.",
                     'lowercase' => false,
                     'callBeforeFind' => false,
                 ],
@@ -134,14 +134,14 @@ class EnumBehaviorTest extends TestCase
                     'strategy' => 'config',
                     'prefix' => 'ARTICLE_CATEGORY',
                     'field' => 'category',
-                    'errorMessage' => 'The provided value is invalid',
+                    'errorMessage' => "Invalid value ':value', expected values are :expected.",
                     'callBeforeFind' => true,
                 ],
                 'node_type' => [
                     'strategy' => 'const',
                     'prefix' => 'NODE_TYPE',
                     'field' => 'node_type',
-                    'errorMessage' => 'The provided value is invalid',
+                    'errorMessage' => "Invalid value ':value', expected values are :expected.",
                     'lowercase' => false,
                     'callBeforeFind' => true,
                 ],
@@ -149,7 +149,7 @@ class EnumBehaviorTest extends TestCase
                     'strategy' => 'const',
                     'prefix' => 'NODE_GROUP',
                     'field' => 'node_group',
-                    'errorMessage' => 'The provided value is invalid',
+                    'errorMessage' => "Invalid value ':value', expected values are :expected.",
                     'lowercase' => true,
                     'callBeforeFind' => true,
                 ],
@@ -157,7 +157,7 @@ class EnumBehaviorTest extends TestCase
                     'strategy' => 'const',
                     'prefix' => 'OPTIONAL',
                     'field' => 'optional',
-                    'errorMessage' => 'The provided value is invalid',
+                    'errorMessage' => "Invalid value ':value', expected values are :expected.",
                     'lowercase' => true,
                     'callBeforeFind' => true,
                 ],
@@ -268,7 +268,7 @@ class EnumBehaviorTest extends TestCase
                     'optional' => 'bar',
                 ],
                 [
-                    'category' => ['isValidCategory' => 'The provided value is invalid'],
+                    'category' => ['isValidCategory' => "Invalid value '2', expected values are '0' or '1'."],
                 ],
             ],
             [
@@ -283,9 +283,15 @@ class EnumBehaviorTest extends TestCase
                 ],
                 [
                     'priority' => ['isValidPriority' => 'Invalid priority'],
-                    'status' => ['isValidStatus' => 'The provided value is invalid'],
-                    'node_type' => ['isValidNodeType' => 'The provided value is invalid'],
-                    'no_check' => ['isValidNoCheck' => 'The provided value is invalid'],
+                    'status' => [
+                        'isValidStatus' => "Invalid value 'Drafted', expected values are 'PUBLIC', 'DRAFT' or 'ARCHIVE'.",
+                    ],
+                    'node_type' => [
+                        'isValidNodeType' => "Invalid value 'Invalid value', expected values are 'PAGE' or 'BLOG'.",
+                    ],
+                    'no_check' => [
+                        'isValidNoCheck' => "Invalid value 'Drafted', expected values are 'PUBLIC', 'DRAFT' or 'ARCHIVE'.",
+                    ],
                 ],
             ],
         ];
@@ -300,6 +306,19 @@ class EnumBehaviorTest extends TestCase
         $this->Articles->save($article);
         $result = $article->getErrors();
         $this->assertEquals($expected, $result);
+    }
+
+    public function testBuildRulesCustomMessagePlaceholders()
+    {
+        $this->Articles->behaviors()->Enum->setConfig(
+            'lists.status.errorMessage',
+            'Status :value is not one of :expected',
+        );
+        $article = new Entity(['priority' => 'URGENT', 'status' => 'Drafted', 'category' => 1]);
+        $this->Articles->save($article);
+
+        $expected = ['isValidStatus' => "Status Drafted is not one of 'PUBLIC', 'DRAFT' or 'ARCHIVE'"];
+        $this->assertEquals($expected, $article->getError('status'));
     }
 
     public function testEnumNested()

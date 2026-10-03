@@ -22,6 +22,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use Cake\Utility\Text;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
 use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
@@ -56,6 +57,7 @@ class EnumBehavior extends Behavior
      *           'strategy' => 'lookup',
      *           'prefix' => 'PRIORITY',
      *           'field' => 'priority',
+     *           // Supports `:value` (given value) and `:expected` (valid values) placeholders.
      *           'errorMessage' => 'Invalid priority',
      *           // Create application rule to ensure only valid enum value can be saved.
      *           'applicationRules' => true,
@@ -263,7 +265,7 @@ class EnumBehavior extends Behavior
             $ruleName = 'isValid' . Inflector::camelize($alias);
             $rules->add([$this, $ruleName], $ruleName, [
                 'errorField' => $config['field'],
-                'message' => $config['errorMessage'],
+                'message' => fn(EntityInterface $entity): string => $this->errorMessage($alias, $entity),
             ]);
         }
 
@@ -296,14 +298,50 @@ class EnumBehavior extends Behavior
         if (!$entity->hasValue($config['field']) && Hash::get($config, 'allowEmpty') === true) {
             return true;
         }
-        $value = $entity->{$config['field']};
+
+        return array_key_exists($this->fieldValue($entity, $config['field']), $this->enum($alias));
+    }
+
+    /**
+     * Builds the validation error message for a list, replacing the `:value`
+     * and `:expected` placeholders.
+     *
+     * @param string $alias List alias.
+     * @param \Cake\Datasource\EntityInterface $entity Entity being validated.
+     * @return string
+     */
+    protected function errorMessage(string $alias, EntityInterface $entity): string
+    {
+        $config = $this->getConfig('lists.' . $alias);
+        $expected = array_map(
+            fn($key): string => "'" . $key . "'",
+            array_keys($this->strategy($alias, $config['strategy'])->enum($config)),
+        );
+
+        return Text::insert($config['errorMessage'], [
+            'value' => (string)$this->fieldValue($entity, $config['field']),
+            'expected' => Text::toList($expected, __d('cake', 'or')),
+        ]);
+    }
+
+    /**
+     * Extracts the enum value stored in an entity's field.
+     *
+     * @param \Cake\Datasource\EntityInterface $entity Entity.
+     * @param string $field Field name.
+     * @return mixed
+     */
+    protected function fieldValue(EntityInterface $entity, string $field): mixed
+    {
+        $value = $entity->get($field);
         if (is_array($value)) {
-            $value = $value['value'] ?? '';
-        } elseif ($value instanceof EntityInterface) {
-            $value = $value->get('value');
+            return $value['value'] ?? '';
+        }
+        if ($value instanceof EntityInterface) {
+            return $value->get('value');
         }
 
-        return array_key_exists($value, $this->enum($alias));
+        return $value;
     }
 
     /**

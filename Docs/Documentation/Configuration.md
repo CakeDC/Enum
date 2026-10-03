@@ -80,3 +80,23 @@ $this->addBehavior('CakeDC/Enum.Enum', [
     ]
 ]);
 ```
+
+### Validation Error Message
+
+Unless `applicationRules` is set to `false`, an application rule validates that the saved value belongs to the list. The default error message shows the given value and the expected ones:
+
+```
+Invalid value 'Drafted', expected values are 'PUBLIC', 'DRAFT' or 'ARCHIVE'.
+```
+
+Use `errorMessage` to customize it. The `:value` (given value) and `:expected` (list of valid values) placeholders are replaced when the rule fails:
+
+```php
+$this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
+    'status' => [
+        'strategy' => 'const',
+        'prefix' => 'STATUS',
+        'errorMessage' => 'Status :value is not one of :expected',
+    ],
+]]);
+```
