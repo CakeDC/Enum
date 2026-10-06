@@ -25,7 +25,7 @@ abstract class AbstractStrategy implements StrategyInterface
     /**
      * Default configuration.
      *
-     * @var array
+     * @var array<string, mixed>
      */
     protected array $_defaultConfig = [];
 
@@ -56,6 +56,7 @@ abstract class AbstractStrategy implements StrategyInterface
     }
 
     /**
+     * @param array<string, mixed> $config
      * @inheritDoc
      */
     public function initialize(array $config): void

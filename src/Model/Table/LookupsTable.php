@@ -20,7 +20,7 @@ class LookupsTable extends Table
     /**
      * {@inheritDoc}
      *
-     * @param array $config Table's configuration.
+     * @param array<string, mixed> $config Table's configuration.
      * @return void
      */
     public function initialize(array $config): void
