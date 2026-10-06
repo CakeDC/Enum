@@ -18,6 +18,7 @@ use Cake\ORM\Association\BelongsTo;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\TestSuite\TestCase;
+use Cake\Validation\Validator;
 use CakeDC\Enum\Model\Behavior\Strategy\AbstractStrategy;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MultipleClasses,Squiz.Classes.ClassFileName.NoMatch
@@ -54,6 +55,19 @@ class ArticlesTable extends Table
                 'optional' => ['strategy' => 'const', 'lowercase' => true, 'allowEmpty' => true],
             ],
         ]);
+    }
+}
+
+class ValidatedArticlesTable extends ArticlesTable
+{
+    public function initialize(array $config): void
+    {
+        $this->addBehavior('CakeDC/Enum.Enum', $config['enum']);
+    }
+
+    public function validationCustom(Validator $validator): Validator
+    {
+        return $validator;
     }
 }
 
@@ -105,6 +119,7 @@ class EnumBehaviorTest extends TestCase
             'defaultStrategy' => 'lookup',
             'translate' => false,
             'translationDomain' => 'default',
+            'validation' => false,
             'implementedMethods' => ['enum' => 'enum'],
             'lists' => [
                 'priority' => [
@@ -418,6 +433,142 @@ class EnumBehaviorTest extends TestCase
             'norules' => ['FOO' => 'translated foo'],
         ];
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Builds an articles table with the Enum behavior using the given configuration.
+     *
+     * @param array<string, mixed> $config Behavior configuration.
+     * @return \Cake\ORM\Table
+     */
+    protected function articlesWithEnum(array $config): Table
+    {
+        $this->getTableLocator()->clear();
+
+        return $this->getTableLocator()->get('CakeDC/Enum.Articles', [
+            'className' => ValidatedArticlesTable::class,
+            'table' => 'enum_articles',
+            'enum' => $config,
+        ]);
+    }
+
+    public function testValidationRejectsInvalidValue()
+    {
+        $Articles = $this->articlesWithEnum([
+            'lists' => [
+                'status' => ['strategy' => 'const', 'validation' => true],
+            ],
+        ]);
+
+        $article = $Articles->newEntity(['status' => 'bogus']);
+        $expected = ['status' => ['isValidStatus' => "Invalid value 'bogus', expected values are 'PUBLIC', 'DRAFT' or 'ARCHIVE'."]];
+        $this->assertEquals($expected, $article->getErrors());
+
+        $article = $Articles->newEntity(['status' => 'DRAFT']);
+        $this->assertEmpty($article->getErrors());
+    }
+
+    public function testValidationDisabledByDefault()
+    {
+        $Articles = $this->articlesWithEnum([
+            'lists' => [
+                'status' => ['strategy' => 'const'],
+            ],
+        ]);
+
+        $article = $Articles->newEntity(['status' => 'bogus']);
+        $this->assertEmpty($article->getErrors());
+    }
+
+    public function testValidationOnNamedValidatorOnly()
+    {
+        $Articles = $this->articlesWithEnum([
+            'lists' => [
+                'status' => ['strategy' => 'const', 'validation' => ['custom']],
+            ],
+        ]);
+
+        $article = $Articles->newEntity(['status' => 'bogus']);
+        $this->assertEmpty($article->getErrors());
+
+        $article = $Articles->newEntity(['status' => 'bogus'], ['validate' => 'custom']);
+        $expected = ['status' => ['isValidStatus' => "Invalid value 'bogus', expected values are 'PUBLIC', 'DRAFT' or 'ARCHIVE'."]];
+        $this->assertEquals($expected, $article->getErrors());
+    }
+
+    public function testValidationFromBehaviorDefault()
+    {
+        $Articles = $this->articlesWithEnum([
+            'validation' => true,
+            'lists' => [
+                'status' => ['strategy' => 'const'],
+                'node_type' => ['strategy' => 'const', 'validation' => false],
+            ],
+        ]);
+
+        $article = $Articles->newEntity(['status' => 'bogus', 'node_type' => 'bogus']);
+        $expected = ['status' => ['isValidStatus' => "Invalid value 'bogus', expected values are 'PUBLIC', 'DRAFT' or 'ARCHIVE'."]];
+        $this->assertEquals($expected, $article->getErrors());
+    }
+
+    public function testValidationAllowEmpty()
+    {
+        $Articles = $this->articlesWithEnum([
+            'lists' => [
+                'optional' => [
+                    'strategy' => 'const',
+                    'lowercase' => true,
+                    'allowEmpty' => true,
+                    'validation' => true,
+                ],
+            ],
+        ]);
+
+        $article = $Articles->newEntity(['optional' => '']);
+        $this->assertEmpty($article->getErrors());
+
+        $article = $Articles->newEntity(['optional' => 'bogus']);
+        $expected = ['optional' => ['isValidOptional' => "Invalid value 'bogus', expected values are 'bar'."]];
+        $this->assertEquals($expected, $article->getErrors());
+    }
+
+    public function testValidationLookupStrategy()
+    {
+        $Articles = $this->articlesWithEnum([
+            'lists' => [
+                'priority' => ['prefix' => 'PRIORITY', 'errorMessage' => 'Invalid priority', 'validation' => true],
+            ],
+        ]);
+
+        $article = $Articles->newEntity(['priority' => 'Urgent']);
+        $expected = ['priority' => ['isValidPriority' => 'Invalid priority']];
+        $this->assertEquals($expected, $article->getErrors());
+
+        $article = $Articles->newEntity(['priority' => 'HIGH']);
+        $this->assertEmpty($article->getErrors());
+    }
+
+    public function testValidationIgnoresNestedAndTranslateOptions()
+    {
+        $Articles = $this->articlesWithEnum([
+            'nested' => true,
+            'translate' => true,
+            'lists' => [
+                'node_group' => ['strategy' => 'const', 'lowercase' => true, 'validation' => true],
+            ],
+        ]);
+
+        $article = $Articles->newEntity(['node_group' => 'active']);
+        $this->assertEmpty($article->getErrors());
+    }
+
+    public function testBuildRulesWithNestedEnum()
+    {
+        $this->Articles->behaviors()->Enum->setConfig('nested', true);
+
+        $article = new Entity(['status' => 'DRAFT', 'norules' => 'invalid']);
+        $this->Articles->save($article);
+        $this->assertArrayNotHasKey('status', $article->getErrors());
     }
 
     public static function provideThirdPartyStrategy(): array

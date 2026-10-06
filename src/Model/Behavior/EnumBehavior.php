@@ -23,6 +23,7 @@ use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Cake\Utility\Text;
+use Cake\Validation\Validator;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
 use CakeDC\Enum\Model\Behavior\Strategy\ConfigStrategy;
@@ -41,6 +42,8 @@ class EnumBehavior extends Behavior
      *   be translated. Defaults to `false`.
      * - `translationDomain`: Domain to use when translating list value.
      *   Defaults to "default".
+     * - `validation`: Default value for the lists' `validation` option.
+     *   Defaults to `false`.
      * - `nested`: (bool) If `true` the array returned by enum() method will be of form
      *   `[['value' => 'v1', 'text' => 't1'], ['value' => 'v2', 'text' => 't2']`
      *   instead of default `['v1' => 't1', 'v2' => 't2']`.
@@ -62,7 +65,10 @@ class EnumBehavior extends Behavior
      *           // Create application rule to ensure only valid enum value can be saved.
      *           'applicationRules' => true,
      *           // Allow saving field without any enum value.
-     *           'allowEmpty' => false
+     *           'allowEmpty' => false,
+     *           // Add a validation rule to the given validators. `true` means
+     *           // `['default']`, a string or an array names the validators.
+     *           'validation' => false,
      *       ],
      *   ];
      *   ```
@@ -73,6 +79,7 @@ class EnumBehavior extends Behavior
         'defaultStrategy' => 'lookup',
         'translate' => false,
         'translationDomain' => 'default',
+        'validation' => false,
         'implementedMethods' => [
             'enum' => 'enum',
         ],
@@ -251,8 +258,10 @@ class EnumBehavior extends Behavior
     }
 
     /**
+     * Build the rules for enumeration lists with activated application rules
+     *
      * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event.
-     * @param \Cake\ORM\RulesChecker $rules Rules checker.
+     * @param \Cake\ORM\RulesChecker $rules The RulesChecker to ammend.
      * @return void
      */
     public function buildRules(EventInterface $event, RulesChecker $rules): void
@@ -265,11 +274,72 @@ class EnumBehavior extends Behavior
             $ruleName = 'isValid' . Inflector::camelize($alias);
             $rules->add([$this, $ruleName], $ruleName, [
                 'errorField' => $config['field'],
-                'message' => fn(EntityInterface $entity): string => $this->errorMessage($alias, $entity),
+                'message' => fn(EntityInterface $entity): string => $this->errorMessage(
+                    $alias,
+                    $entity->get($config['field']),
+                ),
             ]);
         }
 
         $event->setResult($rules);
+    }
+
+    /**
+     * Adds a validation rule to the validator for each list enabling it.
+     *
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event.
+     * @param \Cake\Validation\Validator $validator Validator.
+     * @param string $name Validator name.
+     * @return void
+     */
+    public function buildValidator(EventInterface $event, Validator $validator, string $name): void
+    {
+        foreach ($this->getConfig('lists') as $alias => $config) {
+            if (!in_array($name, $this->validatorNames($config), true)) {
+                continue;
+            }
+
+            $field = $config['field'];
+            $validator->add($field, 'isValid' . Inflector::camelize($alias), [
+                'rule' => fn(mixed $value): bool|string => $this->isValidValue($alias, $value)
+                    ?: $this->errorMessage($alias, $value),
+            ]);
+
+            if (Hash::get($config, 'allowEmpty') === true) {
+                $validator->allowEmptyString($field);
+            }
+        }
+    }
+
+    /**
+     * Returns the names of the validators a list adds its rule to.
+     *
+     * @param array<string, mixed> $config List configuration.
+     * @return array<string>
+     */
+    protected function validatorNames(array $config): array
+    {
+        $validation = $config['validation'] ?? $this->getConfig('validation');
+        if ($validation === true) {
+            return ['default'];
+        }
+
+        return $validation ? (array)$validation : [];
+    }
+
+    /**
+     * Checks whether the value is a key of the list.
+     *
+     * @param string $alias List alias.
+     * @param mixed $value Value to check.
+     * @return bool
+     */
+    protected function isValidValue(string $alias, mixed $value): bool
+    {
+        $config = $this->getConfig('lists.' . $alias);
+        $list = $this->strategy($alias, $config['strategy'])->enum($config);
+
+        return array_key_exists($this->normalizeValue($value), $list);
     }
 
     /**
@@ -299,7 +369,7 @@ class EnumBehavior extends Behavior
             return true;
         }
 
-        return array_key_exists($this->fieldValue($entity, $config['field']), $this->enum($alias));
+        return $this->isValidValue($alias, $entity->get($config['field']));
     }
 
     /**
@@ -307,10 +377,10 @@ class EnumBehavior extends Behavior
      * and `:expected` placeholders.
      *
      * @param string $alias List alias.
-     * @param \Cake\Datasource\EntityInterface $entity Entity being validated.
+     * @param mixed $value Value being validated.
      * @return string
      */
-    protected function errorMessage(string $alias, EntityInterface $entity): string
+    protected function errorMessage(string $alias, mixed $value): string
     {
         $config = $this->getConfig('lists.' . $alias);
         $expected = array_map(
@@ -319,21 +389,19 @@ class EnumBehavior extends Behavior
         );
 
         return Text::insert($config['errorMessage'], [
-            'value' => (string)$this->fieldValue($entity, $config['field']),
+            'value' => (string)$this->normalizeValue($value),
             'expected' => Text::toList($expected, __d('cake', 'or')),
         ]);
     }
 
     /**
-     * Extracts the enum value stored in an entity's field.
+     * Extracts the enum value from a field value.
      *
-     * @param \Cake\Datasource\EntityInterface $entity Entity.
-     * @param string $field Field name.
+     * @param mixed $value Field value.
      * @return mixed
      */
-    protected function fieldValue(EntityInterface $entity, string $field): mixed
+    protected function normalizeValue(mixed $value): mixed
     {
-        $value = $entity->get($field);
         if (is_array($value)) {
             return $value['value'] ?? '';
         }
