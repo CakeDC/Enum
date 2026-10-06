@@ -81,6 +81,26 @@ $this->addBehavior('CakeDC/Enum.Enum', [
 ]);
 ```
 
+### Validation Error Message
+
+Unless `applicationRules` is set to `false`, an application rule validates that the saved value belongs to the list. The default error message shows the given value and the expected ones:
+
+```
+Invalid value 'Drafted', expected values are 'PUBLIC', 'DRAFT' or 'ARCHIVE'.
+```
+
+Use `errorMessage` to customize it. The `:value` (given value) and `:expected` (list of valid values) placeholders are replaced when the rule fails:
+
+```php
+$this->addBehavior('CakeDC/Enum.Enum', ['lists' => [
+    'status' => [
+        'strategy' => 'const',
+        'prefix' => 'STATUS',
+        'errorMessage' => 'Status :value is not one of :expected',
+    ],
+]]);
+```
+
 ### Validation Configuration
 
 By default the behavior only checks list values with an application rule (`isValid<Alias>`), which runs when the entity is saved. Disable it per list with `'applicationRules' => false`.
@@ -91,7 +111,7 @@ Set the `validation` option to also add the check to a table validator, so inval
 * a validator name or an array of names, e.g. `'api'` or `['default', 'api']`: adds the rule to those validators. The table must define the matching `validation<Name>()` method.
 * `false` (default): no validation rule is added.
 
-The rule is named `isValid<Alias>`, uses the list `errorMessage`, and is added after the rules of your `validation<Name>()` method. When `allowEmpty` is `true`, the field is also allowed to be empty in the validator.
+The rule is named `isValid<Alias>`, uses the list `errorMessage` (with the same placeholders), and is added after the rules of your `validation<Name>()` method. When `allowEmpty` is `true`, the field is also allowed to be empty in the validator.
 
 ```php
 $this->addBehavior('CakeDC/Enum.Enum', ['lists' => [

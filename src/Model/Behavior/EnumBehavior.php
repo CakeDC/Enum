@@ -22,6 +22,7 @@ use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use Cake\Utility\Text;
 use Cake\Validation\Validator;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumConfigurationException;
 use CakeDC\Enum\Model\Behavior\Exception\MissingEnumStrategyException;
@@ -59,6 +60,7 @@ class EnumBehavior extends Behavior
      *           'strategy' => 'lookup',
      *           'prefix' => 'PRIORITY',
      *           'field' => 'priority',
+     *           // Supports `:value` (given value) and `:expected` (valid values) placeholders.
      *           'errorMessage' => 'Invalid priority',
      *           // Create application rule to ensure only valid enum value can be saved.
      *           'applicationRules' => true,
@@ -272,7 +274,10 @@ class EnumBehavior extends Behavior
             $ruleName = 'isValid' . Inflector::camelize($alias);
             $rules->add([$this, $ruleName], $ruleName, [
                 'errorField' => $config['field'],
-                'message' => $config['errorMessage'],
+                'message' => fn(EntityInterface $entity): string => $this->errorMessage(
+                    $alias,
+                    $entity->get($config['field']),
+                ),
             ]);
         }
 
@@ -296,8 +301,8 @@ class EnumBehavior extends Behavior
 
             $field = $config['field'];
             $validator->add($field, 'isValid' . Inflector::camelize($alias), [
-                'rule' => fn(mixed $value): bool => $this->isValidValue($alias, $value),
-                'message' => $config['errorMessage'],
+                'rule' => fn(mixed $value): bool|string => $this->isValidValue($alias, $value)
+                    ?: $this->errorMessage($alias, $value),
             ]);
 
             if (Hash::get($config, 'allowEmpty') === true) {
@@ -331,16 +336,10 @@ class EnumBehavior extends Behavior
      */
     protected function isValidValue(string $alias, mixed $value): bool
     {
-        if (is_array($value)) {
-            $value = $value['value'] ?? '';
-        } elseif ($value instanceof EntityInterface) {
-            $value = $value->get('value');
-        }
-
         $config = $this->getConfig('lists.' . $alias);
         $list = $this->strategy($alias, $config['strategy'])->enum($config);
 
-        return array_key_exists($value, $list);
+        return array_key_exists($this->normalizeValue($value), $list);
     }
 
     /**
@@ -370,7 +369,47 @@ class EnumBehavior extends Behavior
             return true;
         }
 
-        return $this->isValidValue($alias, $entity->{$config['field']});
+        return $this->isValidValue($alias, $entity->get($config['field']));
+    }
+
+    /**
+     * Builds the validation error message for a list, replacing the `:value`
+     * and `:expected` placeholders.
+     *
+     * @param string $alias List alias.
+     * @param mixed $value Value being validated.
+     * @return string
+     */
+    protected function errorMessage(string $alias, mixed $value): string
+    {
+        $config = $this->getConfig('lists.' . $alias);
+        $expected = array_map(
+            fn($key): string => "'" . $key . "'",
+            array_keys($this->strategy($alias, $config['strategy'])->enum($config)),
+        );
+
+        return Text::insert($config['errorMessage'], [
+            'value' => (string)$this->normalizeValue($value),
+            'expected' => Text::toList($expected, __d('cake', 'or')),
+        ]);
+    }
+
+    /**
+     * Extracts the enum value from a field value.
+     *
+     * @param mixed $value Field value.
+     * @return mixed
+     */
+    protected function normalizeValue(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            return $value['value'] ?? '';
+        }
+        if ($value instanceof EntityInterface) {
+            return $value->get('value');
+        }
+
+        return $value;
     }
 
     /**
