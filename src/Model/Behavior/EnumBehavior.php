@@ -249,8 +249,10 @@ class EnumBehavior extends Behavior
     }
 
     /**
+     * Build the rules for enumeration lists with activated application rules
+     *
      * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event.
-     * @param \Cake\ORM\RulesChecker $rules Rules checker.
+     * @param \Cake\ORM\RulesChecker $rules The RulesChecker to ammend.
      * @return void
      */
     public function buildRules(EventInterface $event, RulesChecker $rules): void
