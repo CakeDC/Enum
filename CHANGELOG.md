@@ -1,5 +1,13 @@
 Changelog
 =========
+* 3.3.0
+  * Added `validation` option to add list rules to table validators, so invalid values are reported by `newEntity()` and `patchEntity()`
+  * Improved default validation error message: shows the given value and the expected values (#39)
+  * Added `:value` and `:expected` placeholders support to `errorMessage`
+  * Application rules validate against the raw strategy list, unaffected by `translate` and `nested` options
+  * Requires CakePHP ^5.3 and PHP >= 8.2
+  * CI moved to GitHub Actions (PHP 8.2 - 8.4), code style and PHPStan checks
+
 * 3.2.0
   * fixed enum validation
   * fixed property conflict in lookup strategy

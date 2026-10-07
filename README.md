@@ -1,7 +1,7 @@
 CakeDC Enum Plugin
 ==================
 
-[![Build Status](https://img.shields.io/travis/CakeDC/Enum/master.svg?style=flat-square)](https://travis-ci.org/CakeDC/Enum)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/CakeDC/Enum/ci.yml?branch=3.next-cake5&style=flat-square)](https://github.com/CakeDC/Enum/actions/workflows/ci.yml)
 [![Coverage](https://img.shields.io/codecov/c/github/CakeDC/Enum.svg?style=flat-square)](https://codecov.io/github/CakeDC/Enum)
 [![Total Downloads](https://img.shields.io/packagist/dt/cakedc/enum.svg?style=flat-square)](https://packagist.org/packages/cakedc/enum)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
@@ -13,7 +13,7 @@ Versions and branches
 
 | CakePHP | CakeDC Enum Plugin                                         | Tag   | Notes  |
 |:--------|:-----------------------------------------------------------|:------|:-------|
-| ^5.0.6  | [3.next](https://github.com/cakedc/enum/tree/3.next-cake5) | 3.1.0 | stable |
+| ^5.3    | [3.next](https://github.com/cakedc/enum/tree/3.next-cake5) | 3.3.0 | stable |
 | ^4.0    | [2.next](https://github.com/cakedc/enum/tree/2.next)       | 2.0.4 | stable |
 
 Install
@@ -40,8 +40,16 @@ $this->addPlugin('CakeDC/Enum');
 Requirements
 ------------
 
-* CakePHP 5.0.6+
-* PHP 8.1+
+* CakePHP 5.3+
+* PHP 8.2+
+
+Features
+--------
+
+* Enumeration lists stored in a lookup table, class constants or `Configure` (`lookup`, `const` and `config` strategies), plus custom strategies.
+* `enum()` table method returning plain, translated or nested lists.
+* Application rules ensuring only valid list values are saved, with descriptive error messages (`:value` and `:expected` placeholders).
+* Optional validation rules (`validation` option) so invalid values are reported by `newEntity()` and `patchEntity()`.
 
 Documentation
 -------------
